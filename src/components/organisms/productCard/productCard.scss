@@ -1,3 +1,5 @@
+@import 'src/App.scss';
+
 .productCardWrapper {
     display: flex;
     flex-direction: column;
@@ -18,6 +20,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 14px;
+    font-size: $bodyTextSize;
     padding: 8px;
 }
