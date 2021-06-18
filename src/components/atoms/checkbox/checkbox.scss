@@ -1,0 +1,26 @@
+@import 'src/App.scss';
+
+label {
+    font-size: 14px;
+    padding: 4px;
+}
+
+input[type="checkbox"] {
+    padding: 0px;
+    margin: 0px;
+}
+
+input:checked + label {
+    color: $primary;
+}
+
+input[type="checkbox"]:checked {
+    background: $primary;
+}
+
+.checkboxWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
