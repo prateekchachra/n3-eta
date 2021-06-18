@@ -2,14 +2,14 @@ import React from 'react';
 
 import './productCard.scss';
 
-interface Props {
+type ProductCardProps = {
     productTitle: string;
     price: number;
     discountPrice: number;
     
 }
 
-const ProductCard: React.FunctionComponent<Props> = (props) => {
+const ProductCard = ({productTitle, price, discountPrice = 0} : ProductCardProps) => {
     return (
         <div className="productCardWrapper">
             <div className="productCardImageCarousel">
@@ -17,10 +17,10 @@ const ProductCard: React.FunctionComponent<Props> = (props) => {
             </div>
             <div className="productCardText">
                 <div>
-                    {props.productTitle}
+                    {productTitle}
                 </div>
                 <div>
-                    {props.price} - {props.discountPrice}
+                    {price} - {discountPrice}
                 </div>
             </div>
             <div className="productCardActions">

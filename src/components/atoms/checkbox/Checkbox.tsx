@@ -2,19 +2,18 @@ import React from 'react';
 
 import './checkbox.scss';
 
-
-type Props = {//checkBoxProps
+type checkBoxProps = {
     id: string;
     name: string;
     value: string;
     label: string;
 }
 
-const Checkbox = (props: Props) => {
+const Checkbox = ({id, name, value, label}: checkBoxProps) => {
     return (
         <div className="checkboxWrapper">
-            <input id={props.id} name={props.name} type="checkbox" value={props.value}/>
-            <label>{props.label}</label>
+            <input id={id} name={name} type="checkbox" value={value}/>
+            <label>{label}</label>
         </div>
     );
 }

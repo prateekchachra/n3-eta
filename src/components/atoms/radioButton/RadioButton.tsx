@@ -2,18 +2,18 @@ import React from 'react';
 
 import './radioButton.scss';
 
-interface Props {
+type RadioButtonProps = {
     id: string;
     name: string;
     value: string;
     label: string;
 }
 
-const RadioButton : React.FunctionComponent<Props> = (props) => {
+const RadioButton = ({id, name, value, label} : RadioButtonProps) => {
     return (
         <div className="radioButtonWrapper">
-            <input id={props.id} name={props.name} type="radio" value={props.value}/>
-            <label>{props.label}</label>
+            <input id={id} name={name} type="radio" value={value}/>
+            <label>{label}</label>
         </div>
     );
 }
