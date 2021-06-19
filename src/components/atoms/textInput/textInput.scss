@@ -1,0 +1,18 @@
+@import 'src/App.scss';
+
+
+.textInput{
+    border: 0.1rem solid #adadad;
+    background-color: #f3f3f3;
+    outline: none;
+    color: #000;
+    border-radius: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    width: 14rem;
+    margin: 1rem;
+    align-items: flex-start;
+}
+
+.textInput::placeholder{
+    color: #0a0a0a;
+}
