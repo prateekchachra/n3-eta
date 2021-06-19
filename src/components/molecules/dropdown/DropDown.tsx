@@ -3,9 +3,13 @@ import { string } from 'yargs';
 
 import './dropDown.scss';
 
+type option = {
+    label: string,
+    value: string
+}
 
 type dropDownProps = {
-    options: [string],
+    options: [option],
     onSelect: any
 }
 

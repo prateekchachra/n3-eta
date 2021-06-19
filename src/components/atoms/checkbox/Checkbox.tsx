@@ -3,16 +3,17 @@ import React from 'react';
 import './checkbox.scss';
 
 type checkBoxProps = {
-    id: string;
-    name: string;
-    value: string;
-    label: string;
+    id: string,
+    name: string,
+    value: string,
+    label: string,
+    onChange: any,
 }
 
-const Checkbox = ({id, name, value, label}: checkBoxProps) => {
+const Checkbox = ({id, name, value, label, onChange}: checkBoxProps) => {
     return (
         <div className="checkboxWrapper">
-            <input id={id} name={name} type="checkbox" value={value}/>
+            <input id={id} name={name} onChange={(e) => onChange(e.target.value === 'checked' ? true : false)} type="checkbox" value={value}/>
             <label>{label}</label>
         </div>
     );
