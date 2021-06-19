@@ -1,0 +1,12 @@
+@import 'src/App.scss';
+
+
+.searchContainer input{
+    border: 0.1rem solid #000;
+    outline: none;
+    border-radius: 0.2rem;
+    padding: 0.6rem 0.8rem;
+    width: 14rem;
+    margin: 1rem;
+    align-items: flex-start;
+}

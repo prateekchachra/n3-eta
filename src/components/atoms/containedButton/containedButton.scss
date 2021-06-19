@@ -1,0 +1,26 @@
+@import 'src/App.scss';
+
+.buttonContained {
+    background-color: #2e77ba;
+    display: inline-block;
+    border: none;
+    border-radius: 0.2rem;
+    padding: 0.5rem 1.5rem;
+    margin: 1rem;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.buttonContained:hover, .buttonContained:focus {
+    background-color: #0069ed;
+}
+
+.buttonContained:active {
+    transform: scale(0.9);
+}

@@ -1,0 +1,27 @@
+@import 'src/App.scss';
+
+.buttonOutlined {
+    color: #2e77ba;
+    background-color: #fff;
+    display: inline-block;
+    border: 0.1rem solid #2e77ba;
+    border-radius: 0.2rem;
+    padding: 0.5rem 1.5rem;
+    margin: 1rem;
+    text-decoration: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.buttonOutlined:hover, .buttonOutlined:focus {
+    color: #0069ed;
+    border: 0.1rem solid #0069ed;
+}
+
+.buttonOutlined:active {
+    transform: scale(0.9);
+}
