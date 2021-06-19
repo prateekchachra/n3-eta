@@ -1,11 +1,11 @@
 import React from 'react';
 
-import './productCard.scss';
+import './ProductCard.scss';
 
 type ProductCardProps = {
     productTitle: string;
     price: number;
-    discountPrice: number;
+    discountPrice?: number;
     
 }
 
