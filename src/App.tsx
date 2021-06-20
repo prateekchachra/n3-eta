@@ -8,10 +8,21 @@ import OutlinedButton from './components/atoms/outlinedButton/OutlinedButton';
 import Search from './components/atoms/search/Search';
 import Button from './components/molecules/button/Button';
 import TextInput from './components/atoms/textInput/TextInput';
-import DropDown from './components/molecules/dropdown/DropDown';
-import Filters from './components/organisms/filters/Filters';
+import DropDown, { DropDownOption } from './components/molecules/dropdown/DropDown';
+import Filters, { FilterOption } from './components/organisms/filters/Filters';
+import { SyntheticEvent } from 'react';
 
-function App() {
+
+const DROPDOWN_OPTIONS: [DropDownOption] = [{label: 'english', value: 'English'} , {label: 'english',
+value: 'English'}];
+
+const FILTER_OPTIONS: [FilterOption] = [{label: 'TShirt', value: false, number: 245}, 
+{label: 'Trouser', value: false, number: 105},
+{label: 'Jacker', value: false, number: 65},
+{label: 'Kurtas', value: false, number: 188}, ]
+
+
+function App (): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
@@ -33,12 +44,8 @@ function App() {
         <TextInput placeholder="Name" onChangeText={(value: string) => {console.log(value)}}/>
 
 
-        {/* <DropDown options={[{label: 'english', value: 'English'} , {label: 'english',
-      value: 'English'}]}/> */}
-        {/* <Filters  options={[{label: 'TShirt', value: false, number: 245}, 
-        {label: 'Trouser', value: false, number: 105},
-        {label: 'Jacker', value: false, number: 65},
-        {label: 'Kurtas', value: false, number: 188}, ]} onSelect={(filterOptions: [any]) => console.log('Updated Filter Options: ', filterOptions)} label="CATEGORIES"/> */}
+        <DropDown onSelect={(event: SyntheticEvent) => {console.log('Selected', (event.target as HTMLSelectElement).value)}} options={DROPDOWN_OPTIONS}/>
+         <Filters  options={FILTER_OPTIONS} onSelect={(filterOptions: [FilterOption]) => console.log('Updated Filter Options: ', filterOptions)} label="CATEGORIES"/>
       </header>
    
     </div>

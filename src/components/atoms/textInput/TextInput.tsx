@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { ChangeEvent }  from 'react';
 
 
 import './textInput.scss';
 
-type textInputProps = {
+export type TextInputProps = {
     placeholder: string,
-    onChangeText: any
+    onChangeText: (val: string) => void
 }
 
 
-const TextInput = ({ placeholder, onChangeText} : textInputProps) => {
+const TextInput = ({ placeholder, onChangeText} : TextInputProps) : JSX.Element => {
+
+    const onInputChange = (event: ChangeEvent) => {
+        const {target} = event;
+        if(target){
+            onChangeText((target as HTMLInputElement).value);
+        }
+      }
 
     return (
-            <input type="text" className="textInput" onChange={(event: any) => onChangeText(event.target.value)} placeholder={placeholder} />
+            <input type="text" className="textInput" onChange={onInputChange} placeholder={placeholder} />
     )
 } 
 

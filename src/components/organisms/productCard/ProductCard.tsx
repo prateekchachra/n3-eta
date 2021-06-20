@@ -2,14 +2,14 @@ import React from 'react';
 
 import './productCard.scss';
 
-type ProductCardProps = {
+export type ProductCardProps = {
     productTitle: string;
     price: number;
     discountPrice: number;
     
 }
 
-const ProductCard = ({productTitle, price, discountPrice = 0} : ProductCardProps) => {
+const ProductCard = ({productTitle, price, discountPrice = 0} : ProductCardProps): JSX.Element => {
     return (
         <div className="productCardWrapper">
             <div className="productCardImageCarousel">

@@ -1,19 +1,28 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 
 import './checkbox.scss';
 
-type checkBoxProps = {
+export type CheckBoxProps = {
     id: string,
     name: string,
     value: string,
     label: string,
-    onChange: any,
+    onChange: (val: boolean) => void,
 }
 
-const Checkbox = ({id, name, value, label, onChange}: checkBoxProps) => {
+const Checkbox = ({id, name, value, label, onChange}: CheckBoxProps) : JSX.Element => {
+
+    const onCheckboxChange = (e: ChangeEvent) => {
+                
+        const {target} = e;
+        if(target)
+        onChange((target as HTMLInputElement).value === 'checked' ? true : false)
+        
+        }
+        
     return (
         <div className="checkboxWrapper">
-            <input id={id} name={name} onChange={(e) => onChange(e.target.value === 'checked' ? true : false)} type="checkbox" value={value}/>
+            <input id={id} name={name} onChange={onCheckboxChange} type="checkbox" value={value}/>
             <label>{label}</label>
         </div>
     );

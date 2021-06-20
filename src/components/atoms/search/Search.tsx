@@ -1,23 +1,31 @@
-import React, {useState} from 'react';
+import React, {useState, MouseEventHandler} from 'react';
+import { ChangeEvent } from 'react';
 
 import './search.scss';
 
 
-type searchProps = {
+export type SearchProps = {
     placeholder: string,
-    onEnterPress: (value: string) => void,
+    onEnterPress: any,
 }
 
 
-const Search = ({placeholder, onEnterPress} : searchProps) => {
+const Search = ({placeholder, onEnterPress} : SearchProps) : JSX.Element => {
 
     const [inputVal, setInputVal] = useState('');
 
+    const onChangeText = (e : ChangeEvent) => {
+        const {target} = e;
+        if(target){
+            setInputVal((target as HTMLInputElement).value)
+        }
+    }
 
     return (
     <div className="searchContainer">
         <input type="text" placeholder={placeholder} value={inputVal}
-        onChange={(e) => setInputVal(e.target.value)}/>
+        onChange={onChangeText}/>
+        <span onClick={onEnterPress}></span>
     </div>)
 }
 export default Search;

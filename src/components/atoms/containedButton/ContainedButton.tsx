@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 import './containedButton.scss';
 
 
 
-type containedButtonProps = {
+export type ContainedButtonProps = {
     label: string,
-    onClick: any
+    onClick: MouseEventHandler
 }
 
 
-const ContainedButton = ({label, onClick = () => {console.log('clicked')}}: containedButtonProps) => {
+const ContainedButton = ({label, onClick}: ContainedButtonProps) : JSX.Element => {
     return(
         <button className="buttonContained" onClick={onClick}>{label}</button>
     )

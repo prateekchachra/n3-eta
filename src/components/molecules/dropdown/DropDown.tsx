@@ -1,24 +1,23 @@
-import React from 'react';
-import { string } from 'yargs';
+import React, {ReactEventHandler} from 'react';
 
 import './dropDown.scss';
 
-type option = {
+export type DropDownOption = {
     label: string,
     value: string
 }
 
-type dropDownProps = {
-    options: [option],
-    onSelect: any
+export type DropDownProps = {
+    options: [DropDownOption],
+    onSelect: ReactEventHandler
 }
 
-const DropDown = ({options, onSelect} : dropDownProps) => {
+const DropDown = ({options, onSelect} : DropDownProps): JSX.Element => {
 
     return (
         <div>
             <select onSelect={onSelect}>
-                {options.map((item : any) => <option value={item.value} key={item.value}>{item.label}</option>)}
+                {options.map((item : DropDownOption) => <option value={item.value} key={item.value}>{item.label}</option>)}
             </select>
         </div>
     )

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { MouseEventHandler }from 'react';
 
 import './outlinedButton.scss';
 
-type outlinedButtonProps = {
+export type OutlinedButtonProps = {
     label: string,
-    onClick: any,
+    onClick: MouseEventHandler,
 }
 
-const OutlinedButton = ({label, onClick = () => {console.log('clicked')}} : outlinedButtonProps) => {
+const OutlinedButton = ({label, onClick} : OutlinedButtonProps): JSX.Element => {
 
     return (
         <button className="buttonOutlined" onClick={onClick}>{label}</button>
