@@ -13,10 +13,10 @@ import Filters, { FilterOption } from './components/organisms/filters/Filters';
 import { SyntheticEvent } from 'react';
 
 
-const DROPDOWN_OPTIONS: [DropDownOption] = [{label: 'english', value: 'English'} , {label: 'english',
-value: 'English'}];
+const DROPDOWN_OPTIONS: DropDownOption[] = [{label: 'english', value: 'English'} , {label: 'spanish',
+value: 'Spanish'}, {label: 'russian', value: 'Russian'}];
 
-const FILTER_OPTIONS: [FilterOption] = [{label: 'TShirt', value: false, number: 245}, 
+const FILTER_OPTIONS: FilterOption[] = [{label: 'TShirt', value: false, number: 245}, 
 {label: 'Trouser', value: false, number: 105},
 {label: 'Jacker', value: false, number: 65},
 {label: 'Kurtas', value: false, number: 188}, ]
@@ -34,18 +34,18 @@ function App (): JSX.Element {
 
         <ProductCard productTitle="Jack & Jones T-Shirt" price={300} discountPrice={20} /> 
         
-        <ContainedButton label="Add To Cart" onClick={() => {console.log('clicked')}} />
+        <ContainedButton primary label="Add To Cart" onClick={() => {console.log('clicked')}} />
 
-        <OutlinedButton label="Buy Now" onClick={() => {console.log('clicked')}} />
+        <OutlinedButton  secondary label="Buy Now" onClick={() => {console.log('clicked')}} />
 
-        <Button type="contained" label="PLACE ORDER" onClick={() => {console.log('clicked')}} />
+        <Button type="contained" secondary label="PLACE ORDER" onClick={() => {console.log('clicked')}} />
 
-        <Search placeholder="Search Here..." onEnterPress={(value: string) => {console.log(value)}}/>
+        <Search placeholder="Search Here..." onEnterPress={(event: SyntheticEvent) => {console.log(event)}}/>
         <TextInput placeholder="Name" onChangeText={(value: string) => {console.log(value)}}/>
 
 
         <DropDown onSelect={(event: SyntheticEvent) => {console.log('Selected', (event.target as HTMLSelectElement).value)}} options={DROPDOWN_OPTIONS}/>
-         <Filters  options={FILTER_OPTIONS} onSelect={(filterOptions: [FilterOption]) => console.log('Updated Filter Options: ', filterOptions)} label="CATEGORIES"/>
+         <Filters  options={FILTER_OPTIONS} onSelect={(filterOptions: FilterOption[]) => console.log('Updated Filter Options: ', filterOptions)} label="Categories"/>
       </header>
    
     </div>

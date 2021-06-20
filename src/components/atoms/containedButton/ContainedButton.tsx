@@ -6,13 +6,16 @@ import './containedButton.scss';
 
 export type ContainedButtonProps = {
     label: string,
-    onClick: MouseEventHandler
+    onClick: MouseEventHandler,
+    primary?: boolean,
+    secondary?: boolean
 }
 
 
-const ContainedButton = ({label, onClick}: ContainedButtonProps) : JSX.Element => {
+const ContainedButton = (props: ContainedButtonProps) : JSX.Element => {
+    const {label, onClick, primary, secondary} = props;
     return(
-        <button className="buttonContained" onClick={onClick}>{label}</button>
+        <button className={`buttonContained ${primary ? 'button-primary' : ''} ${secondary ? 'button-secondary' : ''}`} onClick={onClick}>{label}</button>
     )
 }
 

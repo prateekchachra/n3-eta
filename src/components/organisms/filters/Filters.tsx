@@ -13,8 +13,8 @@ export type FilterOption = {
 }
 export type FilterProps = {
     label: string,
-    options: [FilterOption],
-    onSelect: (val: [FilterOption]) => void
+    options: FilterOption[],
+    onSelect: (val: FilterOption[]) => void
 }
 
 
@@ -24,7 +24,7 @@ const Filters = ({options, label, onSelect} : FilterProps): JSX.Element => {
 
 
     const onCheckboxChange = (value: boolean, index: number) => {
-        const updatedFilterOptions : [FilterOption] = [...filterOptions]
+        const updatedFilterOptions : FilterOption[] = [...filterOptions]
         updatedFilterOptions[index] = {...filterOptions[index], value}
         setFilterOptions(updatedFilterOptions);
         
@@ -32,20 +32,20 @@ const Filters = ({options, label, onSelect} : FilterProps): JSX.Element => {
     }
     function renderFilterOptions() {
         return (
-            <>
+            <div className="filterContainer">
             {options.map((item: FilterOption, index: number) => {
 
             const {label, value, number} = item;
 
             const labelStr = `${label} (${number})`
             return (
-                <Checkbox 
+                <Checkbox
                 onChange={(value: boolean) => onCheckboxChange(value, index)}
                 key={label} id={label} name={item.label} value={value ? 'checked' : 'unchecked'}
                 label={labelStr}/>
             )
             })}
-            </>
+            </div>
         )
     }
 

@@ -8,7 +8,7 @@ export type DropDownOption = {
 }
 
 export type DropDownProps = {
-    options: [DropDownOption],
+    options: DropDownOption[],
     onSelect: ReactEventHandler
 }
 

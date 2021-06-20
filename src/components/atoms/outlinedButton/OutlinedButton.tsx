@@ -5,12 +5,14 @@ import './outlinedButton.scss';
 export type OutlinedButtonProps = {
     label: string,
     onClick: MouseEventHandler,
+    primary?: boolean,
+    secondary?: boolean
 }
 
-const OutlinedButton = ({label, onClick} : OutlinedButtonProps): JSX.Element => {
+const OutlinedButton = ({label, onClick, primary, secondary} : OutlinedButtonProps): JSX.Element => {
 
     return (
-        <button className="buttonOutlined" onClick={onClick}>{label}</button>
+        <button className={`buttonOutlined ${primary ? 'button-primary' : ''} ${secondary ? 'button-secondary' : ''}`} onClick={onClick}>{label}</button>
     )
 
 }

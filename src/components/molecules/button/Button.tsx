@@ -6,7 +6,9 @@ import OutlinedButton from '../../atoms/outlinedButton/OutlinedButton';
 export type ButtonProps = {
     label: string,
     type: string,
-    onClick: MouseEventHandler
+    onClick: MouseEventHandler,
+    primary?: boolean,
+    secondary?: boolean
 }
 
 export enum ButtonTypes {
@@ -14,17 +16,19 @@ export enum ButtonTypes {
 }
 
 
-const Button = ({label, type, onClick} : ButtonProps) : JSX.Element => {
+const Button = ({label, type, onClick, primary, secondary} : ButtonProps) : JSX.Element => {
 
     
     function renderButton(){
         if(type === ButtonTypes.Contained){
             return (
-                <ContainedButton  label={label} onClick={onClick}/>
+                <ContainedButton  label={label} onClick={onClick} primary={primary}
+                secondary={secondary}/>
             )
         } else {
             return (
-                <OutlinedButton label={label} onClick={onClick}/>
+                <OutlinedButton label={label} onClick={onClick} primary={primary}
+                secondary={secondary}/>
             )
         }
     
