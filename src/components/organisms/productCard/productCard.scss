@@ -3,7 +3,7 @@
 .productCardWrapper {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 228px;
     height: 300px;
     border: 3px #E5E5E5;
     border-radius: 2px;
@@ -11,7 +11,8 @@
 }
 
 .productCardImageCarousel {
-    height: 204px;
+    max-height: 204px;
+    display: block;
     background: #E5E5E5;
     border-radius: 2px 2px 0px 0px;
 }
@@ -19,7 +20,35 @@
 .productCardText {
     display: flex;
     flex-direction: column;
+    height: 56px;
     align-items: flex-start;
+    justify-content: space-evenly;
     font-size: $bodyTextSize;
-    padding: 8px;
+    padding: 4px;
+}
+
+.priceWrapper {
+    font-size: $productCardPriceTextSize;
+    padding-right: 4px;
+    font-weight: medium;
+}
+
+.discountPriceWrapper {
+    font-size: $productCardDiscountPriceTextSize;
+    padding-left: 4px;
+    color: $disable;
+    text-decoration: line-through;
+}
+
+.discountPercentageWrapper {
+    font-size: $productCardDiscountPriceTextSize;
+    padding-left: 4px;
+    color: $error;
+}
+
+.productCardActions {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
 }
