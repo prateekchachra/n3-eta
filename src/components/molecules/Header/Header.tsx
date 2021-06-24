@@ -38,9 +38,23 @@ const Header = () :JSX.Element => {
     function renderQuickQctionLinks() {
         return (
             <div className="quickActionLinkWrapper">
-                <Heart/>
-                <Bag/>
-                <Person/>
+                <div>
+                    <a href="" className="wishListIcon">
+                        <Heart/>
+                        <span className="quantityBadge">1</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="" className="cartIcon">
+                        <Bag/>
+                        <span className="quantityBadge">1</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="" className="userAccountIcon">
+                        <Person/>
+                    </a>
+                </div>
             </div>
         );
     }
