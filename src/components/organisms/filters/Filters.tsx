@@ -16,7 +16,7 @@ export type FilterProps = {
     options: FilterOption[],
     onSelect: (val: FilterOption[]) => void
 }
-
+//onchange handlers should be wrapped in useCallback hooks.
 
 const Filters = ({options, label, onSelect} : FilterProps): JSX.Element => {
 

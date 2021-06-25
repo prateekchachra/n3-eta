@@ -11,6 +11,8 @@ export type ContainedButtonProps = {
     secondary?: boolean
 }
 
+//useMemo to store the classname
+
 
 const ContainedButton = (props: ContainedButtonProps) : JSX.Element => {
     const {label, onClick, primary, secondary} = props;
