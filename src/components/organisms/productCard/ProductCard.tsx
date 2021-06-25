@@ -35,7 +35,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, imgs, buyNowHand
     return (
         <div className="productCardWrapper">
             <div className="productCardImageCarousel">
-                <ImageSlider id="slider" name="slider" images={imgs} />
+                <ImageSlider id="slider" name="slider" images={imgs} style={{ height: "204px"}}/>
             </div>
             <div className="productCardText">
                 <div>
