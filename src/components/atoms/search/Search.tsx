@@ -1,11 +1,11 @@
-import React, {useState, KeyboardEventHandler, ChangeEvent} from 'react';
+import React, {useState, KeyboardEventHandler, ChangeEvent, MouseEventHandler} from 'react';
 
 import './search.scss';
 
 
 export type SearchProps = {
     placeholder: string,
-    onEnterPress: KeyboardEventHandler,
+    onEnterPress: MouseEventHandler,
 }
 
 
