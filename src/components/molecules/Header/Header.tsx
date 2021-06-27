@@ -5,12 +5,14 @@ import './Header.scss';
 import Search from '../../atoms/search/Search';
 import { Bag, Heart, Person } from 'react-bootstrap-icons';
 
-const Header = () :JSX.Element => {
+import { Link, useHistory } from 'react-router-dom';
 
+const Header = () :JSX.Element => {
+    const history = useHistory();
     function renderLogo() {
         return(
             <div className="logoWrapper">
-                <span className="logo">Style Zone</span>
+                <span className="logo" onClick={() => history.push('/')}>Style Zone</span>
             </div>
         )
     }
@@ -19,10 +21,10 @@ const Header = () :JSX.Element => {
         return(
             <div className="navLinkContainer">
                 <div className="navLinkWrapper">
-                    <a href="" className="navLink">Men</a>
+                    <Link to="list" className="navLink">Men</Link>
                 </div>
                 <div className="navLinkWrapper">
-                    <a href="" className="navLink">Women</a>
+                    <Link to="list" className="navLink">Women</Link>
                 </div>
             </div>
         );
@@ -40,19 +42,19 @@ const Header = () :JSX.Element => {
             <div className="quickActionLinkWrapper">
                 <div>
                     <a href="" className="wishListIcon">
-                        <Heart/>
+                        <Heart onClick={() => history.push('wishlist')}/>
                         <span className="quantityBadge">1</span>
                     </a>
                 </div>
                 <div>
                     <a href="" className="cartIcon">
-                        <Bag/>
+                        <Bag onClick={() => history.push('cart')}/>
                         <span className="quantityBadge">1</span>
                     </a>
                 </div>
                 <div>
                     <a href="" className="userAccountIcon">
-                        <Person/>
+                        <Person onClick={() => history.push('profile')}/>
                     </a>
                 </div>
             </div>

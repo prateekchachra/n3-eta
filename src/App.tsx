@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.scss';
+
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import RadioButton from './components/atoms/radioButton/RadioButton';
 import CheckBox from './components/atoms/checkbox/Checkbox';
 import ContainedButton from './components/atoms/containedButton/ContainedButton';
@@ -14,6 +16,15 @@ import SizeSelector from './components/organisms/sizeSelector/SizeSelector';
 import ProductCard from './components/organisms/productCard/ProductCard';
 import { SyntheticEvent } from 'react';
 import CustomerReview, {CustomerReviewType} from './components/organisms/customerReview/CustomerReview';
+import HomePage from './pages/Home/HomePage';
+import Profile from './pages/Profile/Profile';
+import Cart from './pages/Cart/Cart';
+import Wishlist from './pages/Wishlist/Wishlist';
+import Addresses from './pages/Addresses/Addresses';
+import ProductList from './pages/ProductList/ProductList';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
+import Checkout from './pages/Checkout/Checkout';
+import Orders from './pages/Orders/Orders';
 
 
 const DROPDOWN_OPTIONS: DropDownOption[] = [{label: 'english', value: 'English'} , {label: 'spanish',
@@ -34,15 +45,28 @@ const REVIEW : CustomerReviewType = {
   date: '20 Dec 2017',
   score: 3
 }
-
-function App (): JSX.Element {
 const imgs = [
   "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
 ];
 
+function App (): JSX.Element {
+
   return (
     <div className="App">
-      <header className="App-header">
+      <BrowserRouter>
+        <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/profile" component={Profile} />
+                <Route path="/cart" component={Cart} />
+                <Route path="/list" component={ProductList} />
+                <Route path="/item" component={ProductDetail} />
+                <Route path="/wishlist" component={Wishlist} />
+                <Route path="/orders" component={Orders} />
+                <Route path="/checkout" component={Checkout} />
+                <Route path="/addresses" component={Addresses} />
+        </Switch>
+      </BrowserRouter>
+      {/* <header className="App-header">
         TEAM N3-ETA
         <RadioButton id="male" name="gender" value="male" label="Male" onChange={(value) => console.log(value)}/>
         <RadioButton id="female" name="gender" value="female" label="Female" onChange={(value) => console.log(value)}/>
@@ -65,9 +89,9 @@ const imgs = [
         <ColorSelector label="Select Color" values={COLOR_SELECTOR_OPTIONS}
         onSelectedChange={(selected) => console.log(selected)}/>
         <DropDown onSelect={(event: SyntheticEvent) => {console.log('Selected', (event.target as HTMLSelectElement).value)}} options={DROPDOWN_OPTIONS}/>
-         <Filters  options={FILTER_OPTIONS} onSelect={(filterOptions: FilterOption[]) => console.log('Updated Filter Options: ', filterOptions)} label="Categories"/>
          <CustomerReview review={REVIEW}/>
-      </header>
+         <Filters  options={FILTER_OPTIONS} onSelect={(filterOptions: FilterOption[]) => console.log('Updated Filter Options: ', filterOptions)} label="Categories"/>
+      </header> */}
    
     </div>
   );
