@@ -5,10 +5,11 @@ import './ProductListPage.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
+import Filters from '../../components/organisms/filters/Filters';
 import RadioButton from '../../components/atoms/RadioButton/RadioButton';
 import Checkbox from '../../components/atoms/CheckBox/Checkbox';
 
-import JsonProductList from './Products.json';
+import JsonProductList from '../../assets/sampleData/Products.json';
 import { addProductToCart } from '../../redux/actions/Cart.action';
 
 const ProductListPage = () => {
