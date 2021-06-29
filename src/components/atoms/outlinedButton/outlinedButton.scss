@@ -1,0 +1,41 @@
+@import '../../../App.scss';
+
+.buttonOutlined {
+    color: $primary;
+    border: 0.1rem solid $primary;
+    background-color: #fff;
+    display: inline-block;
+    border-radius: 0.2rem;
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.buttonOutlined:active {
+    transform: scale(0.9);
+}
+
+.buttonOutlined.button-primary{ 
+    color: $primary;
+    border: 0.1rem solid $primary;
+}
+
+.buttonOutlined.button-secondary{
+    color: $secondary;
+    border: 0.1rem solid $secondary;
+
+}
+.buttonOutlined.button-primary:hover, .buttonOutlined.button-primary:focus {
+    color: $primary-hover;
+    border: 0.1rem solid $primary-hover;
+}
+.buttonOutlined.button-secondary:hover, .buttonOutlined.button-secondary:focus {
+    color: $secondary-hover;
+    border: 0.1rem solid $secondary-hover;
+}

@@ -1,0 +1,8 @@
+@import '../../../App.scss';
+
+.colorItem{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    border: $border-color solid 1px;
+}
