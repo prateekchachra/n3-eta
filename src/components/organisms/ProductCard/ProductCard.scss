@@ -1,0 +1,86 @@
+@import 'src/App.scss';
+
+.productCardWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 228px;
+    height: 308px;
+    border: 3px #9e9b9b;
+    border-radius: 2px;
+    position: relative;
+    margin: 1% 1%;
+}
+
+.productCardWrapper:hover {
+    box-shadow: 0 2px 16px 4px #E5E5E5;
+    cursor: pointer;
+}
+
+.productCardImageCarousel {
+    height: 204px;
+    display: block;
+    background: #E5E5E5;
+    border-radius: 2px 2px 0px 0px;
+}
+
+.favouriteButtonWrapper {
+    position: absolute;
+    bottom: 104px;
+    align-self: flex-end;
+    padding: 0 8px 8px 0;
+    color: $disable;
+}
+
+.favouriteButtonWrapper:hover {
+    color: $error;
+}
+
+.productCardText {
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    font-size: $bodyTextSize;
+    padding: 4px;
+    color: $text-color;
+}
+
+.productTitlebar {
+    text-align: start;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 86%;
+}
+
+.productPricebar {
+    display: block;
+}
+
+.priceWrapper {
+    font-size: $productCardPriceTextSize;
+    padding-right: 4px;
+    font-weight: 550;
+}
+
+.discountPriceWrapper {
+    font-size: $productCardDiscountPriceTextSize;
+    padding-left: 4px;
+    color: $disable;
+    text-decoration: line-through;
+}
+
+.discountPercentageWrapper {
+    font-size: $productCardDiscountPriceTextSize;
+    padding-left: 4px;
+    color: $error;
+}
+
+.productCardActions {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0 2px;
+}

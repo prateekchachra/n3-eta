@@ -1,0 +1,11 @@
+@import 'src/App.scss';
+
+
+.searchContainer input{
+    border: 0.1rem solid #000;
+    outline: none;
+    border-radius: 0.2rem;
+    width: 14rem;
+    align-items: flex-start;
+    font-size: $titleTextSize;
+}

@@ -1,0 +1,104 @@
+@import 'src/App.scss';
+
+.bodyComponent {
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    padding: 0 32px;
+}
+
+.breadCrumsContainer {
+    padding: 20px 0 0 0;
+}
+
+.breadCrums {
+    text-align: start;
+    font-size: $bodyTextSize;
+}
+
+.pageTitleContainer {
+    padding: 16px 0 0 0;
+}
+
+.pageTitle {
+    text-align: start;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: $text-color;
+}
+
+.mainBody {
+    display: flex;
+    flex-direction: row;
+}
+
+.filterColumnContainer {
+    width: 12%;
+    padding: 12px 0 0 0;
+    display: -webkit-flex;
+    flex-direction: column;
+}
+
+.filterTitleContainer {
+    display: -webkit-flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filterTitle {
+    text-align: start;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: $primary;
+}
+
+.clearFilterTitle {
+    text-align: end;
+    text-transform: uppercase;
+    font-weight: 600;
+    align-self: flex-end;
+    cursor: pointer;
+    color: $error;
+    font-size: $bodyTextSize;
+}
+
+.filterContainer {
+    padding: 16px 0 16px 24px;
+    border-top: 1px #e9e9e9 solid;
+    border-right: 1px #e9e9e9 solid;
+    align-content: center;
+    justify-content: flex-start;
+}
+
+.primaryFilterText {
+    font-weight: 600;
+}
+
+.secondaryFilterTitleText {
+    text-transform: uppercase;
+    text-align: start;
+    width: 100%;
+    font-size: $bodyTextSize;
+    padding-left: 0;
+    font-weight: 600;
+}
+
+.secondaryFilterText {
+    color: $text-color;
+    font-weight: 300;
+}
+
+.productSearchListColumnContainer {
+    width: 88%;
+    padding: 25px 0 0 12px;
+}
+
+.productListContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: space-between;
+}
