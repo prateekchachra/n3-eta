@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 
-import './ProductCard.scss';
+import './productCard.scss';
 
 import Button from '../../molecules/button/Button'
 import ImageSlider from '../../molecules/ImageSlider/ImageSlider';

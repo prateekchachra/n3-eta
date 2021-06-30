@@ -16,7 +16,7 @@ const HomePage = () => {
 
     function onProductCardClickHandler(event: any) {
         event.preventDefault();
-        history.push("/product-detail");
+        history.push("/item");
     }
 
     function renderBannerColumn() {

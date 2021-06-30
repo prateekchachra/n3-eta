@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './ProductDetailPage.scss';
+import './ProductDetail.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
 

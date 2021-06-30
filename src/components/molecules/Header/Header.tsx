@@ -20,10 +20,10 @@ const Header = () :JSX.Element => {
         return(
             <div className="navLinkContainer">
                 <div className="navLinkWrapper">
-                    <a href="/mens" className="navLink">Men</a>
+                    <a href="/list" className="navLink">Men</a>
                 </div>
                 <div className="navLinkWrapper">
-                    <a href="/womens" className="navLink">Women</a>
+                    <a href="/list" className="navLink">Women</a>
                 </div>
             </div>
         );
