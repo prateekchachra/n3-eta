@@ -7,3 +7,7 @@ test('Renders home page on landing', () => {
   const linkElement = screen.getByText(/Categories to bag/i);
   expect(linkElement).toBeInTheDocument();
 });
+describe("Test testCase", () => {
+  test("Test testCase", async () => {
+  });
+});

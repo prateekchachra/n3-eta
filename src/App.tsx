@@ -2,8 +2,6 @@ import React from 'react';
 import './App.scss';
 
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import RadioButton from './components/atoms/radioButton/RadioButton';
-import CheckBox from './components/atoms/checkbox/Checkbox';
 import ContainedButton from './components/atoms/containedButton/ContainedButton';
 import OutlinedButton from './components/atoms/outlinedButton/OutlinedButton';
 import Search from './components/atoms/search/Search';
@@ -13,7 +11,6 @@ import DropDown, { DropDownOption } from './components/molecules/dropdown/DropDo
 import Filters, { FilterOption } from './components/organisms/filters/Filters';
 import ColorSelector from './components/organisms/colorSelector/ColorSelector';
 import SizeSelector from './components/organisms/sizeSelector/SizeSelector';
-import ProductCard from './components/organisms/productCard/ProductCard';
 import { SyntheticEvent } from 'react';
 import CustomerReview, {CustomerReviewType} from './components/organisms/customerReview/CustomerReview';
 import HomePage from './pages/Home/HomePage';

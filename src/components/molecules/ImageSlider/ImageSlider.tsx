@@ -31,7 +31,7 @@ const ImageSlider = ( {id, name, images, style}: ImageSliderProps ) :JSX.Element
 
     return (
         <div id={id} className="imageSliderContainer" style={style}>
-            <Carousel indicators={false} className="imageSlider">
+            <Carousel indicators={false} className="imageSlider" controls={images.length > 1}>
                 {renderImageItems(images)}
             </Carousel>
         </div>
