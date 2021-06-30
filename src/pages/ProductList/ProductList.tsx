@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { connect, ConnectedProps, RootStateOrAny, useDispatch } from 'react-redux'
 
 import './ProductList.scss';
 
@@ -11,10 +11,14 @@ import RadioButton from '../../components/atoms/radioButton/RadioButton';
 import Checkbox from '../../components/atoms/checkBox/Checkbox';
 
 import JsonProductList from '../../assets/sampleData/Products.json';
-import { addProductToCart } from '../../redux/actions/Cart.action';
+import { addProductToCart } from '../../redux/actions/CartAction';
+import { ADD_PRODUCT_TO_CART } from '../../redux/constants/CartActionConstants';
+import { ProductModel } from '../../redux/reducers/CartReducer';
 
-const ProductListPage = () => {
+const ProductList = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
+
     const productList = [...JSON.parse(JSON.stringify(JsonProductList))];
 
     function onProductCardClickHandler(event: any) {
@@ -23,9 +27,9 @@ const ProductListPage = () => {
     }
 
     function onAddtoCartButtonClickHandler(productId: number) {
-        const product = productList.find((product: any) => product.id === productId);
+        const product: ProductModel = productList.find((product: any) => product.id === productId);
         console.log(product);
-        addProductToCart(product);
+        dispatch(addProductToCart(product));
     }
 
     //TODO: create component for BreadCrums
@@ -136,8 +140,4 @@ const ProductListPage = () => {
     )
 }
 
-const mapStateToProps = (state: any) => ({
-    cartState: state.cartState
-})
-  
-export default connect(mapStateToProps, {addProductToCart})(ProductListPage);
+export default ProductList;

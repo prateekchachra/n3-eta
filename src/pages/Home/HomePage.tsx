@@ -32,7 +32,7 @@ const HomePage = () => {
         const productListColumnRendererArray: ReactNodeArray = [];
         [1,2,3].forEach(element => {
             productListColumnRendererArray.push(
-                <div className="productListColumnContainer">
+                <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
                         <h4 className="textBannerTitle">Categories to bag</h4>
                         <a href="">

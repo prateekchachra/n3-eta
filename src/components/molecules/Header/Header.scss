@@ -45,15 +45,20 @@
 
 .navLinkWrapper {
     display: inline;
+    line-height: 80px;
 }
 
 .navLink {
+    display: inline;
+    height: inherit;
+    vertical-align: middle;
     color: $text-color;
     font-size: $bodyTextSize;
     padding: 0 16px 28px;
     letter-spacing: .5px;
     text-transform: uppercase;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .searchBarWrapper {
