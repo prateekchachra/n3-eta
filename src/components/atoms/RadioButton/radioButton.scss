@@ -3,6 +3,8 @@
 label {
     font-size: $bodyTextSize;
     padding: 4px;
+    margin: 0 !important;
+    text-align: center;
 }
 
 input[type="radio"] {
@@ -22,5 +24,5 @@ input[type="radio"]:checked {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
