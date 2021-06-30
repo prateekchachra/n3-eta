@@ -1,6 +1,6 @@
 import { 
     ADD_PRODUCT_TO_CART
-} from './../constants/ActionContants';
+} from '../constants/CartActionConstants';
 
 
 const initialState = {
