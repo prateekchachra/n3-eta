@@ -1,5 +1,12 @@
-@import 'src/App.scss';
-
 .filterLabel{
-    
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin: 2rem;
+}
+
+.filterContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 }

@@ -1,29 +1,20 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import './PageTemplate.scss'
 
 import Header from '../molecules/Header/Header';
 
-type PageTemplateProps = {
-    bodyComponent: ReactNode
+export type PageTemplateProps = {
+    children: JSX.Element
 }
 
-const PageTemplate = ({bodyComponent}: PageTemplateProps) :JSX.Element => {
+const PageTemplate = ({children}: PageTemplateProps) :JSX.Element => {
 
     function renderHeader() {
         return (
             <Header />
         );
     }
-
-    function renderBody(bodyComponent: ReactNode) {
-        return (
-            <>
-                {bodyComponent}
-            </>
-        );
-    }
-
     function renderFooter() {
         return (
             <div>
@@ -36,7 +27,7 @@ const PageTemplate = ({bodyComponent}: PageTemplateProps) :JSX.Element => {
     return (
         <>
             {renderHeader()}
-            {renderBody(bodyComponent)}
+            {children}
             {renderFooter()}
         </>
     )

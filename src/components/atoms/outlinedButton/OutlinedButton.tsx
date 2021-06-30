@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { MouseEventHandler }from 'react';
 
 import './outlinedButton.scss';
 
-type outlinedButtonProps = {
+export type OutlinedButtonProps = {
     label: string,
-    onClick: any,
+    onClick: MouseEventHandler,
+    primary?: boolean,
+    secondary?: boolean
 }
 
-const OutlinedButton = ({label, onClick = () => {console.log('clicked')}} : outlinedButtonProps) => {
+const OutlinedButton = ({label, onClick, primary, secondary} : OutlinedButtonProps): JSX.Element => {
 
     return (
-        <button className="buttonOutlined" onClick={onClick}>{label}</button>
+        <button className={`buttonOutlined ${primary ? 'button-primary' : ''} ${secondary ? 'button-secondary' : ''}`} onClick={onClick}>{label}</button>
     )
 
 }

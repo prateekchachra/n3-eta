@@ -132,7 +132,7 @@ const ProductListPage = () => {
 
     return (
         <>
-            <PageTemplate bodyComponent={renderBody()}/>
+            <PageTemplate>{renderBody()}</PageTemplate>
         </>
     )
 }

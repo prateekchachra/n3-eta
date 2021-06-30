@@ -16,9 +16,7 @@ function ProductDetailPage() {
 
 
     return (
-        <>
-            <PageTemplate bodyComponent={renderBody()}/>
-        </>
+            <PageTemplate>{renderBody()}</PageTemplate>
     )
 }
 

@@ -1,7 +1,14 @@
+
+//TODO: Extract out the color vars in theme.scss
+
 @import "~bootstrap/scss/bootstrap";
 //--------- COLOR VARIABLES ---------//
 $primary: #2E77BA;
 $secondary: #249C46;
+$primary-hover: #779ecb;
+$secondary-hover: #77dd77;
+$border-color: #A3A3A3;
+$text-gray: #707070;
 $other: #EABA0F;
 $error: #DC4040;
 $disable: #848484;
