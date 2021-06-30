@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 
 import './Header.scss';
 
@@ -7,7 +8,7 @@ import Search from '../../atoms/search/Search';
 import Badge from '../../atoms/Badge/Badge';
 
 const Header = () :JSX.Element => {
-
+    const history = useHistory();
     function renderLogo() {
         return(
             <div className="logoWrapper">
@@ -39,22 +40,28 @@ const Header = () :JSX.Element => {
     function renderQuickQctionLinks() {
         return (
             <div className="quickActionLinkWrapper">
-                <div>
-                    <a href="" className="wishListIcon">
-                        <Heart/>
-                        <Badge value={1} />
-                    </a>
+                <div className="wishListIcon">
+                    <Heart onClick={(event: any) => {
+                            event.preventDefault();
+                            history.push("/wishlist");
+                        }
+                    }/>
+                    <Badge value={1} />
                 </div>
-                <div>
-                    <a href="" className="cartIcon">
-                        <Bag/>
-                        <Badge value={1} />
-                    </a>
+                <div className="cartIcon">
+                    <Bag onClick={(event: any) => {
+                            event.preventDefault();
+                            history.push("/cart");
+                        }
+                    }  />
+                    <Badge value={1} />
                 </div>
-                <div>
-                    <a href="" className="userAccountIcon">
-                        <Person/>
-                    </a>
+                <div className="userAccountIcon">
+                    <Person onClick={(event: any) => {
+                            event.preventDefault();
+                            history.push("/profile");
+                        }
+                    }/>
                 </div>
             </div>
         );
