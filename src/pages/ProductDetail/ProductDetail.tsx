@@ -1,22 +1,34 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import './ProductDetail.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
 import ImageSlider from '../../components/molecules/ImageSlider/ImageSlider';
-
-import JsonProductList from '../../assets/sampleData/Products.json';
-import { useParams } from 'react-router-dom';
 import SizeSelector from '../../components/organisms/sizeSelector/SizeSelector';
 import ColorSelector from '../../components/organisms/colorSelector/ColorSelector';
+import ContainedButton from '../../components/atoms/containedButton/ContainedButton';
+import CustomerReview, { CustomerReviewType } from '../../components/organisms/customerReview/CustomerReview';
+import ProductCard from '../../components/organisms/ProductCard/ProductCard';
+
+import JsonProductList from '../../assets/sampleData/Products.json';
 
 const SIZE_SELECTOR_OPTIONS = ['39', '40', '41', '42'];
-const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow']
+const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow'];
+const REVIEW : CustomerReviewType = {
+    title: 'This product is awesome',
+    text: 'Loved using this product! Every single thing was perfect',
+    reviewerName: 'Prateek',
+    date: '20 Dec 2017',
+    score: 3
+  }
 
 function ProductDetailPage() {
 
     const {productId} = useParams<Record<string, string | undefined>>();
-    const product = [...JSON.parse(JSON.stringify(JsonProductList))].find(product => (product.id.toString() === productId));
+    const productList = [...JSON.parse(JSON.stringify(JsonProductList))];
+    const product = productList.find(product => (product.id.toString() === productId));
+    const similarProductList = productList.filter(p => (p.category === product.category));
     
 
     function renderBody() {
@@ -52,48 +64,127 @@ function ProductDetailPage() {
 
         console.log(product);
         return (
-            <div className="productDetailComponent">
-                <div className="productImageSliderContainer">
-                    <ImageSlider
-                        id={product.id}
-                        name={product.name}
-                        images={product.images} 
-                        style={{ height: "504px"}}
-                    />
+            <div className="productDetailPage">
+                <div className="productDetailComponent">
+                    <div className="productImageSliderContainer">
+                        <ImageSlider
+                            id={product.id}
+                            name={product.name}
+                            images={product.images} 
+                            style={{ height: "504px"}}
+                        />
+                    </div>
+                    <div className="productDetailContainer">
+                        <div className="productTitleWrapper">
+                            <h2 className="productTitle">{product.name}</h2>
+                        </div>
+                        <div className="productDiscriptionWrapper">
+                            <h4 className="productDiscritpion">{product.name}</h4>
+                        </div>
+                        <div className="productDetailPriceWrapper">
+                            {displayPrice()}
+                            {displayDiscountPrice()}
+                        </div>
+                        <div className="productPriceInclusiveAllTaxesWrapper">
+                            <span className="productPriceInclusiveAllTaxes">inclusive of all taxes</span>
+                        </div>
+                        <div className="productSizeSelectorWrapper">
+                            <SizeSelector
+                                label="select size"
+                                values={SIZE_SELECTOR_OPTIONS}
+                                onSelectedChange={(selected) => {
+                                    console.log(selected);
+                                    product.size = selected;
+                                }}
+                            />
+                        </div>
+                        <div className="productColorSelectorWrapper">
+                            <ColorSelector
+                                label="select colour"
+                                values={COLOR_SELECTOR_OPTIONS}
+                                onSelectedChange={(selected) => {
+                                    console.log(selected);
+                                    product.color = selected;
+                                }}
+                            />
+                        </div>
+                        <div className="productDetailButtonActionsWrapper">
+                            <div className="addToCartButton">
+                                <ContainedButton
+                                    label="Add to Cart"
+                                    onClick={() => {
+                                        console.log("Add to Cart");
+                                    }}
+                                />
+                            </div>
+                            <div className="buyNowButton">
+                                <ContainedButton
+                                    label="Buy Now"
+                                    secondary={true}
+                                    onClick={() => {
+                                        console.log("Add to Cart");
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="productDetailDiscriptionWrapper">
+                            <span className="productDetailTitle">
+                                product details
+                            </span>
+                            <p className="productDetail">
+                                White and sea green slim fit striped casual shirt, has a spread collar, button pocket,
+                                1 pocket, long sleeves, curved hem
+                            </p>
+                            <span className="productDetailTitle">
+                                size and fit
+                            </span>
+                            <p className="productDetail">
+                                Slim Fit
+                            </p>
+                            <p className="productDetail">
+                                The model is wearing size 40
+                            </p>
+                        </div>
+                        <div className="productCustomerReviewWrapper">
+                            <span className="productCustomerReviewTitle">
+                                customer reviews
+                            </span>
+                            <div className="productCustomerReview">
+                                <CustomerReview
+                                    review={REVIEW}
+                                />
+                                <CustomerReview
+                                    review={REVIEW}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="productDetailContainer">
-                    <div className="productTitleWrapper">
-                        <h2 className="productTitle">{product.name}</h2>
-                    </div>
-                    <div className="productDiscriptionWrapper">
-                        <h4 className="productDiscritpion">{product.name}</h4>
-                    </div>
-                    <div className="productDetailPriceWrapper">
-                        {displayPrice()}
-                        {displayDiscountPrice()}
-                    </div>
-                    <div className="productPriceInclusiveAllTaxesWrapper">
-                        <span className="productPriceInclusiveAllTaxes">inclusive of all taxes</span>
-                    </div>
-                    <div className="productSizeSelectorWrapper">
-                        <SizeSelector
-                            label="select size"
-                            values={SIZE_SELECTOR_OPTIONS}
-                            onSelectedChange={(selected) => {
-                                console.log(selected);
-                                product.size = selected;
-                            }}
-                        />
-                    </div>
-                    <div className="productColorSelectorWrapper">
-                        <ColorSelector
-                            label="select size"
-                            values={COLOR_SELECTOR_OPTIONS}
-                            onSelectedChange={(selected) => {
-                                console.log(selected);
-                                product.color = selected;
-                            }}
-                        />
+                <div className="similarProductsContainer">
+                    <span className="similarProductsTitle">
+                        similar products
+                    </span>
+                    <div className="similarProductListWrapper">
+                    {   similarProductList &&
+                        similarProductList.map((product: any) => {
+
+                            return (<ProductCard key={product.id}
+                                productTitle={product.name} 
+                                price={product.price} 
+                                discountPercent={product.discountPercent} 
+                                imgs={product.images} 
+                                buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
+                                addToCartHandler={(e) => {
+                                    console.log("Add to Cart Clicked");
+                                    // onAddtoCartButtonClickHandler(product.id);
+                                }}
+                                onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
+                                    event.preventDefault();
+                                    // onProductCardClickHandler(product.id);
+                                }}
+                            />)
+                        })
+                    }
                     </div>
                 </div>
             </div>

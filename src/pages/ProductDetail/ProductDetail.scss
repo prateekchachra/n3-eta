@@ -1,16 +1,20 @@
 @import 'src/App.scss';
 
+.productDetailPage {
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px;
+    margin-top: 80px;
+}
+
 .productDetailComponent {
     display: flex;
     flex-direction: row;
-    margin-top: 80px;
-    padding: 0 32px;
 }
 
 .productImageSliderContainer {
     width: 40%;
     padding: 32px 0;
-
 }
 
 .productDetailContainer {
@@ -46,10 +50,11 @@
 .productDetailPriceWrapper {
     display: flex;
     flex-direction: row;
+    align-items: baseline;
 }
 
 .productPriceWrapper {
-    font-size: $productSubTitleTextSize;
+    font-size: $productTitleTextSize;
     font-weight: 550;
     margin-right: 12px;
 }
@@ -99,4 +104,86 @@
     align-content: flex-start;
     width: fit-content;
     margin-bottom: 12px;
+}
+
+.productDetailButtonActionsWrapper {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px $border-color solid;
+}
+
+.buyNowButton {
+    margin: 0 12px 32px 0;
+}
+
+.addToCartButton {
+    margin: 0 8px 32px 0;
+}
+
+.productDetailDiscriptionWrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px $border-color solid;
+}
+
+.productDetailTitle {
+    text-align: start;
+    font-size: $productDetailTextSize;
+    font-weight: 550;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 16px 0;
+}
+
+.productDetail {
+    text-align: start;
+    font-size: $productDetailTextSize;
+    color: $disable;
+    font-weight: 400;
+    margin-bottom: 12;
+}
+
+.productCustomerReviewWrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px $border-color solid;
+}
+
+.productCustomerReviewTitle {
+    text-align: start;
+    font-size: $productDetailTextSize;
+    font-weight: 550;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 16px 0;
+}
+
+.productCustomerReview {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 16px 0;
+}
+
+.similarProductsContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 0;
+}
+
+.similarProductsTitle {
+    font-size: $productSubTitleTextSize;
+    text-align: start;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.similarProductListWrapper {
+    display: flex;
+    flex-direction: row;
 }
