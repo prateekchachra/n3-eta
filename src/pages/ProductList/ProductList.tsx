@@ -11,8 +11,8 @@ import RadioButton from '../../components/atoms/radioButton/RadioButton';
 import Checkbox from '../../components/atoms/checkBox/Checkbox';
 
 import JsonProductList from '../../assets/sampleData/Products.json';
-import { addProductToCart } from '../../redux/actions/CartAction';
-import { ProductModel } from '../../redux/reducers/CartReducer';
+import { addProductToCart } from '../../redux/cart/CartAction';
+import { ProductModel } from '../../redux/cart/CartReducer';
 
 const ProductList = () => {
     const history = useHistory();
@@ -26,8 +26,7 @@ const ProductList = () => {
 
     function onAddtoCartButtonClickHandler(productId: number) {
         const product: ProductModel = productList.find((product: any) => product.id === productId);
-        console.log(product);
-        dispatch(addProductToCart(product));
+        dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
     }
 
     //TODO: create component for BreadCrums

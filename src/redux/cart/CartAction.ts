@@ -1,5 +1,5 @@
-import { ADD_PRODUCT_TO_CART } from '../constants/CartActionConstants';
-import { ProductModel } from './../reducers/CartReducer';
+import { ADD_PRODUCT_TO_CART } from './CartTypes';
+import { ProductModel } from './CartReducer';
 
 export type CART_ACTIONS =
     { type: string, payload: ProductModel}

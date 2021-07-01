@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
-import { ProductModel } from '../../redux/reducers/CartReducer';
+import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 
 import './Cart.scss'
@@ -20,7 +20,7 @@ const Cart = () :JSX.Element => {
                 <span>
                 {
                     cartState.cartItems.map((product: ProductModel) => {
-                        return <li key={product.id}> {product.name} </li> 
+                        return <li key={product.id}> {product.name} - {product.quantity} </li> 
                     })
                 }    
             </span></div>
