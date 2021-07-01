@@ -6,11 +6,12 @@ import './ProductList.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
-import Filters from '../../components/organisms/filters/Filters';
+import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
 import RadioButton from '../../components/atoms/radioButton/RadioButton';
 import Checkbox from '../../components/atoms/checkBox/Checkbox';
 
 import JsonProductList from '../../assets/sampleData/Products.json';
+import JsonCategoryList from '../../assets/sampleData/Categories.json';
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 
@@ -19,6 +20,13 @@ const ProductList = () => {
     const dispatch = useDispatch();
 
     const productList = [...JSON.parse(JSON.stringify(JsonProductList))];
+    const categoryFilterOptionList: FilterOption[] = [...JSON.parse(JSON.stringify(JsonCategoryList))].map(category => {
+        return {
+            label: category,
+            value: false,
+            number: 10
+        }
+    });
 
     function onProductCardClickHandler(productId: number) {
         history.push(`/item/${productId}`);
@@ -61,33 +69,20 @@ const ProductList = () => {
                     <RadioButton id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
                     <RadioButton id="women" name="gender" value="women" label="Women" onChange={() => {console.log("")}}/>
                 </div>
-                <div className="filterContainer secondaryFilterText">
-                    <label className="secondaryFilterTitleText">Categories</label>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                </div>
-                <div className="filterContainer secondaryFilterText">
-                    <label className="secondaryFilterTitleText">Categories</label>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                </div>
-                <div className="filterContainer secondaryFilterText">
-                    <label className="secondaryFilterTitleText">Categories</label>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <Checkbox id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                </div>
+                <Filters 
+                    options={categoryFilterOptionList} 
+                    label="Categories" 
+                    onSelect={ (value: FilterOption[]) => {
+                        console.log(value);
+                    }}
+                />  
+                <Filters 
+                    options={categoryFilterOptionList} 
+                    label="Categories" 
+                    onSelect={ (value: FilterOption[]) => {
+                        console.log(value);
+                    }}
+                />
                 
             </div>
         );

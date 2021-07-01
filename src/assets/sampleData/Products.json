@@ -37,7 +37,7 @@
         "name": "Men's Polo Shirt",
         "price": 550,
         "discountPercent": 60,
-        "category": "tshirt",
+        "category": "shirt",
         "images": [
             "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
         ]
