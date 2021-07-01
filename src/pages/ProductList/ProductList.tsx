@@ -1,6 +1,6 @@
-import React, { Dispatch, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { connect, ConnectedProps, RootStateOrAny, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import './ProductList.scss';
 
@@ -12,7 +12,6 @@ import Checkbox from '../../components/atoms/checkBox/Checkbox';
 
 import JsonProductList from '../../assets/sampleData/Products.json';
 import { addProductToCart } from '../../redux/actions/CartAction';
-import { ADD_PRODUCT_TO_CART } from '../../redux/constants/CartActionConstants';
 import { ProductModel } from '../../redux/reducers/CartReducer';
 
 const ProductList = () => {
@@ -21,9 +20,8 @@ const ProductList = () => {
 
     const productList = [...JSON.parse(JSON.stringify(JsonProductList))];
 
-    function onProductCardClickHandler(event: any) {
-        event.preventDefault();
-        history.push("/item");
+    function onProductCardClickHandler(productId: number) {
+        history.push(`/item/${productId}`);
     }
 
     function onAddtoCartButtonClickHandler(productId: number) {
@@ -106,14 +104,17 @@ const ProductList = () => {
                             return (<ProductCard key={product.id}
                                 productTitle={product.name} 
                                 price={product.price} 
-                                discountPercent={product.discountPercentage} 
+                                discountPercent={product.discountPercent} 
                                 imgs={product.images} 
                                 buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
                                 addToCartHandler={(e) => {
                                     console.log("Add to Cart Clicked");
                                     onAddtoCartButtonClickHandler(product.id);
                                 }}
-                                onClickHandler={onProductCardClickHandler}
+                                onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
+                                    event.preventDefault();
+                                    onProductCardClickHandler(product.id);
+                                }}
                             />)
                         })
                     }

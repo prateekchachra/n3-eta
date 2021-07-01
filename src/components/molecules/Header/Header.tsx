@@ -31,7 +31,7 @@ const Header = () :JSX.Element => {
                 <div className="navLinkWrapper">
                     <label className="navLink" onClick={ (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
                         event.preventDefault();
-                        history.push("/list");
+                        history.push(`/list/${'men'}`);
                     }}>
                         Men
                     </label>
@@ -39,7 +39,7 @@ const Header = () :JSX.Element => {
                 <div className="navLinkWrapper">
                     <label className="navLink" onClick={ (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
                         event.preventDefault();
-                        history.push("/list");
+                        history.push(`/list/${'women'}`);
                     }}>
                         Women
                     </label>
