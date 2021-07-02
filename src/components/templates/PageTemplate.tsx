@@ -24,11 +24,13 @@ const PageTemplate = ({children}: PageTemplateProps) :JSX.Element => {
 
 
     return (
-        <>
+        <div className="templateContainer">
+            <div className="templateInnerContainer">
             {renderHeader()}
             {children}
             {renderFooter()}
-        </>
+            </div>
+        </div>
     )
 }
 

@@ -1,14 +1,14 @@
 @import '../../../App.scss';
 
 .buttonContained {
-    background-color: $primary;
+    background-color: #000;
     display: inline-block;
     border: none;
     width: max-content;
     border-radius: 0.2rem;
     padding: 0.5rem 1.5rem;
     text-decoration: none;
-    color: #ffffff;
+    color:  #f7bd0b;
     font-size: 0.8rem;
     cursor: pointer;
     text-align: center;

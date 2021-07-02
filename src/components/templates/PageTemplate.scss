@@ -1,5 +1,10 @@
-.pageTemplateContainer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+.templateContainer {
+    background: radial-gradient(circle, rgba(255,213,136,1) 0%, rgba(255,213,136,1) 82%, rgba(255,148,153,1) 100%);
+    padding: 48px;
+}
+.templateInnerContainer {
+    background-color: #ffebc1;
+    border: 4px solid #fff;
+    border-radius: 48px;
+    position: relative;
 }

@@ -1,15 +1,15 @@
 @import '../../../App.scss';
 
 .buttonOutlined {
-    color: $primary;
-    border: 0.1rem solid $primary;
-    background-color: #fff;
+    color: #f7bd0b;
+    background-color: #000;
+    border: 0.1rem solid #000;
     display: inline-block;
     width: max-content;
-    border-radius: 0.2rem;
-    padding: 0.5rem 1.5rem;
+    border-radius: 24px;
+    padding: 0.5rem 1.2rem;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 12px;
     cursor: pointer;
     text-align: center;
     transition: background 100ms ease-in-out, 
