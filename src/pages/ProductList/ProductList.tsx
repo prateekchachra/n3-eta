@@ -7,11 +7,11 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters from '../../components/organisms/filters/Filters';
-import RadioButton from '../../components/atoms/radioButton/RadioButton';
-import Checkbox from '../../components/atoms/checkBox/Checkbox';
+import RadioButton from '../../components/atoms/RadioButton/RadioButton';
+import Checkbox from '../../components/atoms/CheckBox/Checkbox';
 
 import JsonProductList from '../../assets/sampleData/Products.json';
-import { addProductToCart } from '../../redux/actions/Cart.action';
+import { addProductToCart } from '../../redux/actions/CartAction';
 
 const ProductListPage = () => {
     const history = useHistory();
@@ -24,7 +24,6 @@ const ProductListPage = () => {
 
     function onAddtoCartButtonClickHandler(productId: number) {
         const product = productList.find((product: any) => product.id === productId);
-        console.log(product);
         addProductToCart(product);
     }
 

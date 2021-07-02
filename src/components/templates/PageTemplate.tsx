@@ -3,6 +3,7 @@ import React from 'react'
 import './PageTemplate.scss'
 
 import Header from '../molecules/Header/Header';
+import Footer from '../molecules/Footer/Footer';
 
 export type PageTemplateProps = {
     children: JSX.Element
@@ -17,9 +18,7 @@ const PageTemplate = ({children}: PageTemplateProps) :JSX.Element => {
     }
     function renderFooter() {
         return (
-            <div>
-                <span>FOOTER</span>
-            </div>
+            <Footer />
         )
     }
 

@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import './Header.scss';
 
 import { Bag, Heart, Person } from 'react-bootstrap-icons';
-import Search from '../../atoms/search/Search';
 import Badge from '../../atoms/Badge/Badge';
 
 const Header = () :JSX.Element => {
