@@ -1,10 +1,23 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import cartState from './redux/cart/CartReducer';
+import cartState, { CartState } from './redux/cart/CartReducer';
+
+export type RootState = {
+    cartState: CartState
+}
 
 const rootReducer = combineReducers({
     cartState
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
+const loadStateFromLocalStorage = () => {
+    const stateString = localStorage.getItem("state");
+    return stateString ? JSON.parse(stateString) : undefined;
+}
 
-export const store = createStore(rootReducer);
+const persistedStore = loadStateFromLocalStorage();
+
+export const store = createStore(rootReducer, persistedStore);
+
+store.subscribe( () => {
+    localStorage.setItem("state", JSON.stringify(store.getState()));
+})
