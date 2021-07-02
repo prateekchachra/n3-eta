@@ -7,9 +7,12 @@ import { getProductIndex } from './utils'
 export type ProductModel = {
     id: number,
     name: string,
-    price: number,
-    discountPercentage: number,
+    price: number | 0,
+    discountPercent: number | 0,
     images: string[],
+    category: string,
+    size: number | 0,
+    color: string,
     quantity: number
 }
 
