@@ -1,12 +1,15 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import cartState, { CartState } from './redux/cart/CartReducer';
+import userState, { UserState } from './redux/user/UserReducers';
 
 export type RootState = {
-    cartState: CartState
+    cartState: CartState,
+    userState: UserState
 }
 
 const rootReducer = combineReducers({
-    cartState
+    cartState,
+    userState
 });
 
 const middlewareEnhancer = applyMiddleware();

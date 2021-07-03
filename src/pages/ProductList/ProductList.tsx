@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from '../../api/axios';
 import './ProductList.scss';
 
@@ -11,6 +11,7 @@ import RadioButton from '../../components/atoms/radioButton/RadioButton';
 
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
+import { RootState } from '../../store';
 
 type ProductListProps = {
     searchQuery?: string
@@ -20,6 +21,7 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     const history = useHistory();
     const {gender} = useParams<Record<string, string | undefined>>();
     const dispatch = useDispatch();
+    const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
@@ -70,7 +72,7 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     }
 
     function onAddtoCartButtonClickHandler(productId: number) {
-        if(productList) {
+        if(userState.isLoggedIn && productList) {
             const product: any = productList.find((product: ProductModel) => product.id === productId);
             dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
         }
