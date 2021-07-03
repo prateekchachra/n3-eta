@@ -1,63 +1,44 @@
 import React, { MouseEventHandler } from 'react';
 
-import './productCard.scss';
+import './CartItem.scss';
 
 import Button from '../../molecules/button/Button'
 import ImageSlider from '../../molecules/ImageSlider/ImageSlider';
 import { Heart } from 'react-bootstrap-icons';
+import { ProductModel } from '../../../redux/cart/CartReducer';
 
-type ProductCardProps = {
-    productTitle: string;
-    price: number;
-    discountPercent?: number;
-    imgs: string[];
-    buyNowHandler: MouseEventHandler;
-    addToCartHandler: MouseEventHandler;
-    onClickHandler: MouseEventHandler;
+type CartItemProps = {
+    product: ProductModel,
+    onDeleteClick?: () => void,
+    onAddRemoveItemClick?: () => void,
 }
 
 
 
-const ProductCard = ({productTitle, price, discountPercent = 0, imgs, buyNowHandler, addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
+const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps) :JSX.Element => {
     
-    function displayPrice() {
-        let _price = price;
-        if(discountPercent > 0) {
-            _price = (price * discountPercent) / 100;
-        }
-        return (
-            <span className="priceWrapper">
-                Rs.{_price}
-            </span>
-        );
-    }
+    const { id,name,price,discountPercentage, images, quantity} = product;
     
     function displayDiscountPrice() {
-        if(!discountPercent || discountPercent == 0) {
+        if(!discountPercentage || discountPercentage == 0) {
             return (<></>);
         }
-        const discountedPrice = (price - ((price * discountPercent) / 100));
+        const discountedPrice = (price - ((price * discountPercentage) / 100));
         return (
             <>
                 <span className="discountPriceWrapper">
                     Rs.{discountedPrice}
                 </span>
                 <span className="discountPercentageWrapper">
-                    ({discountPercent}% Off)
+                    ({discountPercentage}% Off)
                 </span>
             </>
         );
     }
 
-    function renderProductImageSlider() {
-        return (
-            <div className="productCardImageCarousel" onClick={(event: any) => onClickHandler(event)}>
-                <ImageSlider id="slider" name="slider" images={imgs} style={{ height: "204px"}}/>
-            </div>
-        )
-    }
 
-    function renderFavoruiteButton() {
+
+    function renderFavoriteButton() {
         return (
             <div className="favouriteButtonWrapper">
                 <Heart/>
@@ -65,37 +46,34 @@ const ProductCard = ({productTitle, price, discountPercent = 0, imgs, buyNowHand
         )
     }
 
-    function renderProductCardText() {
+    function renderCartItemText() {
         return (
-            <div className="productCardText">
+            <div className="CartItemText">
                 <div className="productTitlebar">
-                    {productTitle}
+                    {name}
                 </div>
                 <div className="productPricebar">
-                    { displayPrice() }
                     { displayDiscountPrice() }
                 </div>
             </div>
         )
     }
     
-    function renderProductCardActions() {
+    function renderCartItemActions() {
         return (
-            <div className="productCardActions">
-                <Button label="Buy Now" type="outlined" onClick={(event: any) => buyNowHandler(event)}/>
-                <Button label="Add to Cart" type="outlined" onClick={(event: any) => addToCartHandler(event)}/>
+            <div className="CartItemActions">
+               
             </div>
         )
     }
     
     return (
-        <div className="productCardWrapper">
-            { renderProductImageSlider() }
-            { renderFavoruiteButton() }
-            { renderProductCardText() }
-            { renderProductCardActions() }
+        <div className="CartItemWrapper">
+            { renderFavoriteButton() }
+            { renderCartItemText() }
+            { renderCartItemActions() }
         </div>
     );
 }
 
-export default ProductCard;
+export default CartItem;

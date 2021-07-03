@@ -1,14 +1,14 @@
 @import '../../../App.scss';
 
 .buttonContained {
-    background-color: #000;
+    background-color: $primary;
     display: inline-block;
     border: none;
     width: max-content;
     border-radius: 0.2rem;
     padding: 0.5rem 1.5rem;
     text-decoration: none;
-    color:  #f7bd0b;
+    color:  #fff;
     font-size: 0.8rem;
     cursor: pointer;
     text-align: center;
@@ -23,13 +23,13 @@
     background-color: $primary;
 }
 .buttonContained.button-secondary{
-    background-color: $secondary;
+    background-color: #413c9b;
 }
 .buttonContained.button-primary:hover, .buttonContained.button-primary:focus {
     background-color: $primary-hover;
 }
 .buttonContained.button-secondary:hover, .buttonContained.button-secondary:focus {
-    background-color: $secondary-hover;
+    background-color: #413c9b;
 }
 .buttonContained:active {
     transform: scale(0.9);

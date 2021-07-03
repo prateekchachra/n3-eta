@@ -7,7 +7,7 @@ import JsonProductList from '../../assets/sampleData/Products.json';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import { connect } from 'react-redux'
 
-import { addProductToCart } from '../../redux/actions/CartAction';
+import { addProductToCart } from '../../redux/cart/CartAction';
 
 const Wishlist = () :JSX.Element => {
 

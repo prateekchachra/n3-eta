@@ -5,13 +5,21 @@ import './Header.scss';
 
 import { Bag, Heart, Person } from 'react-bootstrap-icons';
 import Badge from '../../atoms/Badge/Badge';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 const Header = () :JSX.Element => {
     const history = useHistory();
+    const numberOfItemsInCart = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems.length;
     function renderLogo() {
         return(
             <div className="logoWrapper">
-                <a href="/" className="logo">Style Zone</a>
+                <label className="logo" onClick= { (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
+                    event.preventDefault();
+                    history.push("/");
+                }}>
+                    Style Zone
+                </label>
             </div>
         )
     }
@@ -20,10 +28,20 @@ const Header = () :JSX.Element => {
         return(
             <div className="navLinkContainer">
                 <div className="navLinkWrapper">
-                    <a href="/list" className="navLink">Men</a>
+                    <label className="navLink" onClick={ (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
+                        event.preventDefault();
+                        history.push(`/list/${'men'}`);
+                    }}>
+                        Men
+                    </label>
                 </div>
                 <div className="navLinkWrapper">
-                    <a href="/list" className="navLink">Women</a>
+                    <label className="navLink" onClick={ (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
+                        event.preventDefault();
+                        history.push(`/list/${'women'}`);
+                    }}>
+                        Women
+                    </label>
                 </div>
             </div>
         );
@@ -40,7 +58,7 @@ const Header = () :JSX.Element => {
         return (
             <div className="quickActionLinkWrapper">
                 <div className="wishListIcon">
-                    <Heart onClick={(event: any) => {
+                    <Heart onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
                             history.push("/wishlist");
                         }
@@ -48,15 +66,15 @@ const Header = () :JSX.Element => {
                     <Badge value={1} />
                 </div>
                 <div className="cartIcon">
-                    <Bag onClick={(event: any) => {
+                    <Bag onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
                             history.push("/cart");
                         }
                     }  />
-                    <Badge value={1} />
+                    <Badge value={numberOfItemsInCart} />
                 </div>
                 <div className="userAccountIcon">
-                    <Person onClick={(event: any) => {
+                    <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
                             history.push("/profile");
                         }

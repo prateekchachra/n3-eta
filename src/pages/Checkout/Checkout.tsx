@@ -18,7 +18,9 @@ const Checkout = () :JSX.Element => {
                 <span className="checkoutTitle">Billing Info</span>
                 <span className="checkoutDescription">Please Enter The Details</span>
                 <div className="checkoutRow">
-                    <PriceSummary buttonLabel="Buy Now" onButtonClick={() => history.push('payment')} />
+                    <PriceSummary 
+                    
+                    buttonLabel="Buy Now" onButtonClick={() => history.push('payment')} />
                 </div>
             </div>
         </PageTemplate>);

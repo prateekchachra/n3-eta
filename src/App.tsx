@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import './App.scss';
 
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
@@ -55,8 +55,8 @@ function App (): JSX.Element {
                 <Route exact path="/" component={HomePage} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/cart" component={Cart} />
-                <Route path="/list" component={ProductList} />
-                <Route path="/item" component={ProductDetail} />
+                <Route path="/list/:gender" component={ProductList} />
+                <Route path="/item/:productId" component={ProductDetail} />
                 <Route path="/wishlist" component={Wishlist} />
                 <Route path="/orders" component={Orders} />
                 <Route path="/checkout" component={Checkout} />

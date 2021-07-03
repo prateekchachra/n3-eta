@@ -1,21 +1,47 @@
 import React from 'react';
 
 import Button from '../../../components/molecules/button/Button';
+import { ProductModel } from '../../../redux/cart/CartReducer';
+import CartItem from '../CartItem/CartItem';
 import './PriceSummary.scss';
 
 
 export type PriceSummaryProps = {
     buttonLabel: string,
     onButtonClick: () => void,
+    cartItems?: ProductModel[],
+    onDeleteClick?: () => void,
+    onAddRemoveItemClick?: () => void,
+
 }
 
 
-const PriceSummary = ({onButtonClick, buttonLabel} : PriceSummaryProps) : JSX.Element => {
+const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAddRemoveItemClick} : PriceSummaryProps) : JSX.Element => {
 
+    const renderCartItems = (): JSX.Element => {
+        if(cartItems){
+            return (
+                <>
+                {cartItems.map((item,index) => {
+                    return (
+                        <CartItem 
+                        key={item.id.toString()}
+                        product={item}
+                        onDeleteClick={onDeleteClick}
+                        onAddRemoveItemClick={onAddRemoveItemClick}
+                        />
+                    )
+                })}
+                </>
+            )
+        }
+        else return (<></>);
+    }
 
     return (
         <div className="cartContainer">
         <span className="cartLabel">Price Details</span>
+        {renderCartItems()}
         <div className="itemContainer">
             <span className="cartItemLabel">Price (3 items)</span>
             <span className="cartValue">₹210</span>

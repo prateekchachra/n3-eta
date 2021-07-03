@@ -1,4 +1,4 @@
-import React, { ReactNodeArray } from 'react'
+import React, { ReactNodeArray, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import './HomePage.scss';
@@ -6,13 +6,15 @@ import './HomePage.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ImageSlider from '../../components/molecules/ImageSlider/ImageSlider';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
-
+import LoginModal from '../../components/organisms/LoginModal/LoginModal';
 const banners = [
     "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
   ];
 
 const HomePage = () => {
+
     const history = useHistory();
+    const [displayLogin, setDisplayLogin] = useState(true)
 
     function onProductCardClickHandler(event: any) {
         event.preventDefault();
@@ -32,7 +34,7 @@ const HomePage = () => {
         const productListColumnRendererArray: ReactNodeArray = [];
         [1,2,3].forEach(element => {
             productListColumnRendererArray.push(
-                <div className="productListColumnContainer">
+                <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
                         <h4 className="textBannerTitle">Categories to bag</h4>
                         <a href="">
@@ -68,18 +70,28 @@ const HomePage = () => {
         return productListColumnRendererArray;
     }
 
+
+    function renderModal(){
+        return ( <LoginModal
+            show={displayLogin}
+            onHide={() => setDisplayLogin(false)}
+           />)
+    }
     function renderBody() {
         return (
             <div className="bodyComponent">
                 {renderBannerColumn()}
                 {renderProductListColumns()}
+                {renderModal()}
             </div>
         )
     }
 
 
     return (
-            <PageTemplate>{renderBody()}</PageTemplate>
+            <PageTemplate>
+                {renderBody()}
+            </PageTemplate>
     )
 }
 
