@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from '../../api/axios';
 import './ProductList.scss';
-import { useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
@@ -22,6 +21,7 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     const history = useHistory();
     const {gender} = useParams<Record<string, string | undefined>>();
     const dispatch = useDispatch();
+    const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
@@ -82,7 +82,7 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     }
 
     function onAddtoCartButtonClickHandler(product: ProductModel) {
-        if(productList) {
+        if(userState.isLoggedIn && productList) {
             dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
         }
     }

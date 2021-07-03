@@ -10,6 +10,8 @@ import Button from '../../molecules/button/Button';
 import './LoginModal.scss';
 
 import {STATIC_DATA} from '../../../constants/staticData'
+import { markUserAsLoggedIn } from '../../../redux/user/UserActions';
+import { useDispatch } from 'react-redux';
 
 export type LoginModalProps = {
     show: boolean,
@@ -19,7 +21,7 @@ export type LoginModalProps = {
  
 const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
 
-
+    const dispatch = useDispatch();
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [isRequiredPhone, setIsRequiredPhone] = useState(false);
@@ -125,7 +127,8 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
             const user = snap.val();
 
             if (user) {
-              console.log(user)
+              console.log(user);
+              dispatch(markUserAsLoggedIn(user.uid));
             } else {
               const newUser = {
                 uid: authUser.user.uid,

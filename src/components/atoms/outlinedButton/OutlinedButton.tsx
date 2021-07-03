@@ -1,6 +1,6 @@
 import React, { MouseEventHandler }from 'react';
 
-import './OutlinedButton.scss';
+import './outlinedButton.scss';
 
 export type OutlinedButtonProps = {
     label: string,

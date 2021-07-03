@@ -1,15 +1,18 @@
 import wishlistState, { WishlistState } from './redux/wishlist/WishlistReducer';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import cartState, { CartState } from './redux/cart/CartReducer';
+import userState, { UserState } from './redux/user/UserReducers';
 
 export type RootState = {
     cartState: CartState,
     wishlistState: WishlistState
+    userState: UserState
 }
 
 const rootReducer = combineReducers({
     cartState,
-    wishlistState
+    wishlistState,
+    userState
 });
 
 const middlewareEnhancer = applyMiddleware();
