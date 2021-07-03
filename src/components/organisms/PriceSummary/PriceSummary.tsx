@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '../../../components/molecules/button/Button';
 import { ProductModel } from '../../../redux/cart/CartReducer';
 import CartItem from '../CartItem/CartItem';
+import { Table } from 'react-bootstrap';
 import './PriceSummary.scss';
 
 
@@ -21,7 +22,16 @@ const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAd
     const renderCartItems = (): JSX.Element => {
         if(cartItems){
             return (
-                <>
+                <Table bordered className="priceTable">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Prize</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                 {cartItems.map((item,index) => {
                     return (
                         <CartItem 
@@ -32,7 +42,8 @@ const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAd
                         />
                     )
                 })}
-                </>
+                </tbody>
+                </Table>
             )
         }
         else return (<></>);
@@ -43,12 +54,12 @@ const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAd
         <span className="cartLabel">Price Details</span>
         {renderCartItems()}
         <div className="itemContainer">
-            <span className="cartItemLabel">Price (3 items)</span>
+           { <span className="cartItemLabel">Price {cartItems ? `(${cartItems.length} items)` : ''}</span>}
             <span className="cartValue">₹210</span>
         </div>
         <div className="itemContainer">
             <span className="cartItemLabel">Discount</span> 
-            <span className="cartDiscountValue">-₹50</span>
+            <span className="cartDiscountValue">-₹50</span> 
         </div>
         <div className="itemContainer">
             <span className="cartItemLabel">Delivery Charges</span>

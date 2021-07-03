@@ -17,6 +17,7 @@ import HomePage from './pages/Home/HomePage';
 import Profile from './pages/Profile/Profile';
 import Cart from './pages/Cart/Cart';
 import Wishlist from './pages/Wishlist/Wishlist';
+import Payment from './pages/Payment/Payment';
 import Addresses from './pages/Addresses/Addresses';
 import ProductList from './pages/ProductList/ProductList';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
@@ -59,6 +60,7 @@ function App (): JSX.Element {
                 <Route path="/item/:productId" component={ProductDetail} />
                 <Route path="/wishlist" component={Wishlist} />
                 <Route path="/orders" component={Orders} />
+                <Route path="/payment" component={Payment} />
                 <Route path="/checkout" component={Checkout} />
                 <Route path="/addresses" component={Addresses} />
         </Switch>

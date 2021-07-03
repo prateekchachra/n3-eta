@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
-import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
-import axios from '../../api/axios';
 
 import './Cart.scss'
 import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 
-const CART_ITEMS: ProductModel[] = [];
 
 const Cart = () :JSX.Element => {
-    const [cartItems, setCartItems] = useState(CART_ITEMS);
+    const initCartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
+  
+    const [cartItems, setCartItems] = useState(initCartItems);
     const history = useHistory();
 
     const onDeleteClick = () => {
@@ -21,9 +20,7 @@ const Cart = () :JSX.Element => {
     const onAddItemClick = () => {
         console.log('added')
     }
-    const cartState = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState);
-    console.log(cartState);
-
+  
     useEffect( () => {
         /** FETCH ORDER HISTORY **/
         /* const fetchOrderHistory = async () => {

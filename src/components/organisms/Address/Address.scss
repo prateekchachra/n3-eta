@@ -1,0 +1,19 @@
+.addressName{
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-left: 24px;
+}
+
+.addressField{
+    font-size: 20px;
+    margin-bottom: 24px;
+}
+
+.addFieldsWrapper{
+    display: flex;
+    flex-direction: column;
+}
+.addNameWrapper{
+    display: flex;
+    flex-direction: row;
+}
