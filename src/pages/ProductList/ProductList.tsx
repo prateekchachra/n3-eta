@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
-
+import axios from '../../api/axios';
 import './ProductList.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
@@ -9,31 +9,71 @@ import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
 import RadioButton from '../../components/atoms/radioButton/RadioButton';
 
-import JsonProductList from '../../assets/sampleData/Products.json';
-import JsonCategoryList from '../../assets/sampleData/Categories.json';
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 
-const ProductList = () => {
-    const history = useHistory();
-    const dispatch = useDispatch();
+type ProductListProps = {
+    searchQuery?: string
+}
 
-    const productList = [...JSON.parse(JSON.stringify(JsonProductList))];
-    const categoryFilterOptionList: FilterOption[] = [...JSON.parse(JSON.stringify(JsonCategoryList))].map(category => {
-        return {
-            label: category,
-            value: false,
-            number: 10
+const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
+    const history = useHistory();
+    const {gender} = useParams<Record<string, string | undefined>>();
+    const dispatch = useDispatch();
+    const[productList, setProducts] = useState<ProductModel[]>([]);
+    const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
+
+    useEffect( () => {
+        const fetchProducts = async () => {
+            const productsResponse = await axios.get(`/products?gender=${gender}`);
+            const categoriesResponse = await axios.get(`/categories`);
+            setProducts(productsResponse.data);
+            setCategoryFilterOptionList(categoriesResponse.data.map((category: string) => {
+                return {
+                    label: category,
+                    value: false,
+                    number: 10
+                }
+            }));
+            return {productsResponse, categoriesResponse};
         }
-    });
+        fetchProducts();
+    }, [gender]);
+
+    useEffect( () => {
+        fetchFilteredByCategoriesProducts();
+    }, [appliedCategoryFilterOptionList]);
+
+    const searchProductListByTitle = async () => {
+        if(searchQuery) {
+            const queryResponse = await axios.get(`/products?name_like='*${searchQuery}*`);
+            console.log(queryResponse.data);
+        }
+    }
+
+    const fetchFilteredByCategoriesProducts = async () => {
+        if(appliedCategoryFilterOptionList) {
+            /* const queryString = appliedCategoryFilterOptionList.map( (filter, index) => {
+                
+                if(index > 0) {
+
+                }
+            }) */
+            console.log(appliedCategoryFilterOptionList.map(filter => filter.label).toString());
+        }
+    }
+
 
     function onProductCardClickHandler(productId: number) {
         history.push(`/item/${productId}`);
     }
 
     function onAddtoCartButtonClickHandler(productId: number) {
-        const product: ProductModel = productList.find((product: any) => product.id === productId);
-        dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        if(productList) {
+            const product: any = productList.find((product: ProductModel) => product.id === productId);
+            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        }
     }
 
     //TODO: create component for BreadCrums
@@ -71,8 +111,9 @@ const ProductList = () => {
                 <Filters 
                     options={categoryFilterOptionList} 
                     label="Categories" 
-                    onSelect={ (value: FilterOption[]) => {
-                        console.log(value);
+                    onSelect={ (filters: FilterOption[]) => {
+                        console.log(filters);
+                        setAppliedCategoryFilterOptionList(filters.filter(filter => filter.value));
                     }}
                 />  
                 <Filters 
@@ -119,7 +160,6 @@ const ProductList = () => {
     function renderBody() {
         return (
             <div className="bodyComponent">
-                {renderBreadCrumsRow()}
                 {renderPageTitleRow()}
                 <div className="mainBody">
                     {renderFilterColumn()}
