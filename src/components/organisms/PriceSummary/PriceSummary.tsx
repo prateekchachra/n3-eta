@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '../../../components/molecules/button/Button';
 import { ProductModel } from '../../../redux/cart/CartReducer';
 import CartItem from '../CartItem/CartItem';
+import { Table } from 'react-bootstrap';
 import './PriceSummary.scss';
 
 
@@ -21,7 +22,16 @@ const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAd
     const renderCartItems = (): JSX.Element => {
         if(cartItems){
             return (
-                <>
+                <Table bordered className="priceTable">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Prize</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                 {cartItems.map((item,index) => {
                     return (
                         <CartItem 
@@ -32,7 +42,8 @@ const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAd
                         />
                     )
                 })}
-                </>
+                </tbody>
+                </Table>
             )
         }
         else return (<></>);

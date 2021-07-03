@@ -1,0 +1,26 @@
+.cartItemText{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cartDeleteIcon{
+    margin-right: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.cartTotalContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width:max-content;
+}
+.cartImageContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.productImage{
+    height:100px;
+    width:100px;
+}

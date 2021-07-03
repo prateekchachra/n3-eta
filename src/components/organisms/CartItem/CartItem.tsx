@@ -4,7 +4,7 @@ import './CartItem.scss';
 
 import Button from '../../molecules/button/Button'
 import ImageSlider from '../../molecules/ImageSlider/ImageSlider';
-import { Heart } from 'react-bootstrap-icons';
+import { X } from 'react-bootstrap-icons';
 import { ProductModel } from '../../../redux/cart/CartReducer';
 
 type CartItemProps = {
@@ -17,13 +17,14 @@ type CartItemProps = {
 
 const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps) :JSX.Element => {
     
-    const { id,name,price,discountPercentage, images, quantity} = product;
-    
+    const { name,price,images,discountPercentage,quantity} = product;
+    const discountedPrice = (price - ((price * discountPercentage) / 100));
+
     function displayDiscountPrice() {
         if(!discountPercentage || discountPercentage == 0) {
             return (<></>);
         }
-        const discountedPrice = (price - ((price * discountPercentage) / 100));
+     
         return (
             <>
                 <span className="discountPriceWrapper">
@@ -38,17 +39,14 @@ const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps
 
 
 
-    function renderFavoriteButton() {
-        return (
-            <div className="favouriteButtonWrapper">
-                <Heart/>
-            </div>
-        )
-    }
 
-    function renderCartItemText() {
+    function renderCartItemProduct() {
         return (
-            <div className="CartItemText">
+            <div className="cartItemText">
+                <div className="cartImageContainer">
+                    <X onClick={onDeleteClick} color="red" className="cartDeleteIcon" size={16}/>
+                    <img src={images[0]} className="productImage"/>
+                 </div>
                 <div className="productTitlebar">
                     {name}
                 </div>
@@ -59,20 +57,26 @@ const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps
         )
     }
     
-    function renderCartItemActions() {
+    function renderTotal() {
         return (
-            <div className="CartItemActions">
-               
+            <div className="cartTotalContainer">
+                <div className="cartPrice">
+                    {quantity} x {price} = 
+                </div>
+                <div className="cartTotal">
+                    Rs. { quantity * (price - discountedPrice) }
+                </div>
             </div>
         )
     }
     
     return (
-        <div className="CartItemWrapper">
-            { renderFavoriteButton() }
-            { renderCartItemText() }
-            { renderCartItemActions() }
-        </div>
+        <tr className="CartItemWrapper">
+           <td>{ renderCartItemProduct() }</td>
+           <td> { price }</td>
+           <td>{ quantity }</td>
+           <td>{ renderTotal() }</td>
+        </tr>
     );
 }
 

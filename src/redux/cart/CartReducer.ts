@@ -10,7 +10,8 @@ export type ProductModel = {
     price: number,
     discountPercentage: number,
     images: string[],
-    quantity: number
+    quantity: number,
+    category: string,
 }
 
 export type CartState ={
