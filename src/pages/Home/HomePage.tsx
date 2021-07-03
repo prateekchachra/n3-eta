@@ -12,6 +12,7 @@ import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { RootState } from '../../store';
+import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 
 const banners = [
     "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -64,7 +65,7 @@ const HomePage = () => {
 
     const onAddToWishlistHandler = (product: ProductModel) => {
         if(productList){
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            dispatch(addProductToWishlist(Object.assign({}, product)));
         }
         
     }

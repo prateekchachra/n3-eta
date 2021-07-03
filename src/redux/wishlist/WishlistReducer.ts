@@ -24,15 +24,11 @@ const wishlistState = (
             if(index == -1) {
                 return { ...state, wishlistItems: [...state.wishlistItems, action.payload]}
             }
-
-            const currentProduct = state.wishlistItems[index];
-            const updateProduct = Object.assign({}, currentProduct, {quantity: currentProduct.quantity + product.quantity});
-            return { ...state, wishlistItems: [
-                ...state.wishlistItems.slice( 0, index ),
-                updateProduct,
-                ...state.wishlistItems.slice( index + 1 ),
-            ]}
+            const updatedWishlistItems = [...state.wishlistItems];
+            updatedWishlistItems.splice(index, 1)
+            return { ...state, wishlistItems: updatedWishlistItems}
         }
+        
         default:
             return state;
     }
