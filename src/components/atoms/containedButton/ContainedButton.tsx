@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 
-import './ContainedButton.scss';
+import './containedButton.scss';
 
 
 
