@@ -12,12 +12,17 @@ import RadioButton from '../../components/atoms/radioButton/RadioButton';
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 
-const ProductList = () :JSX.Element => {
+type ProductListProps = {
+    searchQuery?: string
+}
+
+const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     const history = useHistory();
     const {gender} = useParams<Record<string, string | undefined>>();
     const dispatch = useDispatch();
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
 
     useEffect( () => {
         const fetchProducts = async () => {
@@ -35,6 +40,29 @@ const ProductList = () :JSX.Element => {
         }
         fetchProducts();
     }, [gender]);
+
+    useEffect( () => {
+        fetchFilteredByCategoriesProducts();
+    }, [appliedCategoryFilterOptionList]);
+
+    const searchProductListByTitle = async () => {
+        if(searchQuery) {
+            const queryResponse = await axios.get(`/products?name_like='*${searchQuery}*`);
+            console.log(queryResponse.data);
+        }
+    }
+
+    const fetchFilteredByCategoriesProducts = async () => {
+        if(appliedCategoryFilterOptionList) {
+            /* const queryString = appliedCategoryFilterOptionList.map( (filter, index) => {
+                
+                if(index > 0) {
+
+                }
+            }) */
+            console.log(appliedCategoryFilterOptionList.map(filter => filter.label).toString());
+        }
+    }
 
 
     function onProductCardClickHandler(productId: number) {
@@ -83,8 +111,9 @@ const ProductList = () :JSX.Element => {
                 <Filters 
                     options={categoryFilterOptionList} 
                     label="Categories" 
-                    onSelect={ (value: FilterOption[]) => {
-                        console.log(value);
+                    onSelect={ (filters: FilterOption[]) => {
+                        console.log(filters);
+                        setAppliedCategoryFilterOptionList(filters.filter(filter => filter.value));
                     }}
                 />  
                 <Filters 
