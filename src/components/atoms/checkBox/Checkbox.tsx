@@ -13,7 +13,9 @@ type checkBoxProps = {
 const Checkbox = ({id, name, value, label, onChange}: checkBoxProps) => {
     return (
         <div className="checkboxWrapper">
-            <input id={id} name={name} onChange={(e) => onChange(e.target.value === 'checked' ? true : false)} type="checkbox" value={value}/>
+            <input id={id} name={name} onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                onChange(e.currentTarget.checked);
+            }} type="checkbox" value={value}/>
             <label>{label}</label>
         </div>
     );
