@@ -7,8 +7,7 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
-import RadioButton from '../../components/atoms/RadioButton/RadioButton';
-import Checkbox from '../../components/atoms/CheckBox/Checkbox';
+import RadioButton from '../../components/atoms/radioButton/RadioButton';
 
 import JsonProductList from '../../assets/sampleData/Products.json';
 import JsonCategoryList from '../../assets/sampleData/Categories.json';
