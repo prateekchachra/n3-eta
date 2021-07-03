@@ -20,9 +20,10 @@ const Payment = () :JSX.Element => {
     const paymentHandler = (e: MouseEvent) => {
         e.preventDefault();
     
+        
         const options = {
-          key_id: process.env.REACT_API_RAZORPAY_TEST_KEY_ID,
-          key_secret: process.env.REACT_API_RAZORPAY_TEST_KEY_SECRET,
+          key: process.env.REACT_API_RAZORPAY_TEST_KEY_ID,
+          //key_secret: process.env.REACT_API_RAZORPAY_TEST_KEY_SECRET,
           amount: parseInt(amount)*100,
           name: 'Payments',
           description: 'Donate yourself some time',

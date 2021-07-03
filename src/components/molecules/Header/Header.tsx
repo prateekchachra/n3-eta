@@ -10,7 +10,9 @@ import { RootState } from '../../../store';
 
 const Header = () :JSX.Element => {
     const history = useHistory();
-    const numberOfItemsInCart = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems.length;
+    const numItemsInCart = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems.length;
+    const numItemsInWishlist = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems.length;
+    
     function renderLogo() {
         return(
             <div className="logoWrapper">
@@ -63,7 +65,7 @@ const Header = () :JSX.Element => {
                             history.push("/wishlist");
                         }
                     }/>
-                    <Badge value={1} />
+                    <Badge value={numItemsInWishlist} />
                 </div>
                 <div className="cartIcon">
                     <Bag onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -71,7 +73,7 @@ const Header = () :JSX.Element => {
                             history.push("/cart");
                         }
                     }  />
-                    <Badge value={numberOfItemsInCart} />
+                    <Badge value={numItemsInCart} />
                 </div>
                 <div className="userAccountIcon">
                     <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {

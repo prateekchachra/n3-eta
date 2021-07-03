@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
-import { RootState } from '../../store';
 
 import './Cart.scss'
 import { useHistory } from 'react-router-dom';
@@ -9,9 +7,7 @@ import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 
 
 const Cart = () :JSX.Element => {
-    const initCartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
-  
-    const [cartItems, setCartItems] = useState(initCartItems);
+
     const history = useHistory();
 
     const onDeleteClick = () => {
@@ -46,7 +42,7 @@ const Cart = () :JSX.Element => {
             <div className="bodyComponent">
                 <span className="cartTitle">My Cart</span>
                 <PriceSummary
-                cartItems={cartItems}
+                toRenderCart
                 onDeleteClick={onDeleteClick}
                 onAddRemoveItemClick={onAddItemClick}
                 buttonLabel="PLACE ORDER" onButtonClick={() => history.push('checkout')} />

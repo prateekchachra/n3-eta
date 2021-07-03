@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import axios from '../../api/axios';
 import './ProductList.scss';
-
+import { useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
@@ -11,6 +11,8 @@ import RadioButton from '../../components/atoms/RadioButton/RadioButton';
 
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
+import { RootState } from '../../store';
+import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 
 type ProductListProps = {
     searchQuery?: string
@@ -23,6 +25,8 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
+
+    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
 
     useEffect( () => {
         const fetchProducts = async () => {
@@ -52,6 +56,14 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
         }
     }
 
+    
+    const onAddToWishlistHandler = (product: ProductModel) => {
+        if(productList){
+            dispatch(addProductToWishlist(Object.assign({}, product)));
+        }
+        
+    }
+
     const fetchFilteredByCategoriesProducts = async () => {
         if(appliedCategoryFilterOptionList) {
             /* const queryString = appliedCategoryFilterOptionList.map( (filter, index) => {
@@ -69,9 +81,8 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
         history.push(`/item/${productId}`);
     }
 
-    function onAddtoCartButtonClickHandler(productId: number) {
+    function onAddtoCartButtonClickHandler(product: ProductModel) {
         if(productList) {
-            const product: any = productList.find((product: ProductModel) => product.id === productId);
             dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
         }
     }
@@ -135,15 +146,18 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
                     {   productList &&
                         productList.map((product: any) => {
 
+                            const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
                             return (<ProductCard key={product.id}
                                 productTitle={product.name} 
                                 price={product.price} 
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
-                                buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
+                                buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}}  
+                                isAddedInWishlist={isAddedInWishlist}
+                                onAddToWishlist={() => onAddToWishlistHandler(product)}
                                 addToCartHandler={(e) => {
                                     console.log("Add to Cart Clicked");
-                                    onAddtoCartButtonClickHandler(product.id);
+                                    onAddtoCartButtonClickHandler(product);
                                 }}
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();

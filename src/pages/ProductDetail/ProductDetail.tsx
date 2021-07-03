@@ -13,6 +13,9 @@ import CustomerReview, { CustomerReviewType } from '../../components/organisms/c
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 
 import { ProductModel } from '../../redux/cart/CartReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 
 const SIZE_SELECTOR_OPTIONS = ['39', '40', '41', '42'];
 const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow'];
@@ -29,7 +32,8 @@ function ProductDetailPage() {
     const {productId} = useParams<Record<string, string | undefined>>();
     const [product, setproduct] = useState<ProductModel | null>(null);
     const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
-
+    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    const dispatch = useDispatch();
     const fetchProductDetails= async () => {
         const response = await axios.get(`/products/${productId}`);
         if(response.data) {
@@ -46,6 +50,12 @@ function ProductDetailPage() {
         return response;
     }
 
+    const onAddToWishlistHandler = (product: ProductModel) => {
+        if(similarProductSuggestions){
+            dispatch(addProductToWishlist(Object.assign({}, product, {quantity: 1})));
+        }
+        
+    }
     useEffect(() => {
         fetchProductDetails();
         fetchSimilarProductSuggestions();
@@ -192,11 +202,14 @@ function ProductDetailPage() {
                     {   similarProductSuggestions &&
                         similarProductSuggestions.map((product: any) => {
 
+                            const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
                             return (<ProductCard key={product.id}
                                 productTitle={product.name} 
                                 price={product.price} 
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
+                                isAddedInWishlist={isAddedInWishlist}
+                                onAddToWishlist={() => onAddToWishlistHandler(product)}
                                 buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
                                 addToCartHandler={(e) => {
                                     console.log("Add to Cart Clicked");

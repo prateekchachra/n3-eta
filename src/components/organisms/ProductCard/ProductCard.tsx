@@ -4,7 +4,7 @@ import './productCard.scss';
 
 import Button from '../../molecules/button/Button'
 import ImageSlider from '../../molecules/ImageSlider/ImageSlider';
-import { Heart } from 'react-bootstrap-icons';
+import { Heart, HeartFill } from 'react-bootstrap-icons';
 
 type ProductCardProps = {
     productTitle: string;
@@ -14,11 +14,15 @@ type ProductCardProps = {
     buyNowHandler: MouseEventHandler;
     addToCartHandler: MouseEventHandler;
     onClickHandler: MouseEventHandler;
+    onAddToWishlist?: MouseEventHandler;
+    isAddedInWishlist?: boolean,
+    withoutWishlistActions?: boolean,
 }
 
 
 
-const ProductCard = ({productTitle, price, discountPercent = 0, imgs, buyNowHandler, addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
+const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
+     withoutWishlistActions, isAddedInWishlist, imgs, buyNowHandler, addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
     
     function displayPrice() {
         let _price = price;
@@ -57,10 +61,10 @@ const ProductCard = ({productTitle, price, discountPercent = 0, imgs, buyNowHand
         )
     }
 
-    function renderFavoruiteButton() {
+    function renderFavoriteButton() {
         return (
             <div className="favouriteButtonWrapper">
-                <Heart/>
+              {isAddedInWishlist ? <HeartFill onClick={onAddToWishlist}/> : <Heart onClick={onAddToWishlist}/>}
             </div>
         )
     }
@@ -91,7 +95,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, imgs, buyNowHand
     return (
         <div className="productCardWrapper">
             { renderProductImageSlider() }
-            { renderFavoruiteButton() }
+            {withoutWishlistActions ? null : renderFavoriteButton()}
             { renderProductCardText() }
             { renderProductCardActions() }
         </div>

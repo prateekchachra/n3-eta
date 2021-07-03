@@ -9,8 +9,9 @@ import ImageSlider from '../../components/molecules/ImageSlider/ImageSlider';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import LoginModal from '../../components/organisms/LoginModal/LoginModal';
 import { ProductModel } from '../../redux/cart/CartReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '../../redux/cart/CartAction';
+import { RootState } from '../../store';
 
 const banners = [
     "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -23,10 +24,18 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const [productList, setProductList] = useState<ProductModel[]>([]);
 
+    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+
     const fetchProductList= async () => {
-        const response = await axios.get("/products?_page=1&_limit=6");
-        if(response.data) {
-            setProductList(response.data);
+
+        try{
+            const response = await axios.get("/products?_page=1&_limit=6");
+            if(response.data) {
+                setProductList(response.data);
+            }
+
+        }catch(err){
+            console.log(err)
         }
     }
 
@@ -53,6 +62,12 @@ const HomePage = () => {
         );
     }
 
+    const onAddToWishlistHandler = (product: ProductModel) => {
+        if(productList){
+            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        }
+        
+    }
     //TODO: add 'listOfProductsByCategoryMap' as an arg, iterator through each item
     function renderProductListColumns() {
         const productListColumnRendererArray: ReactNodeArray = [];
@@ -69,9 +84,12 @@ const HomePage = () => {
                         {   productList &&
                             productList.map((product: any) => {
 
+                                const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
                                 return (<ProductCard key={product.id}
                                     productTitle={product.name} 
                                     price={product.price} 
+                                    isAddedInWishlist={isAddedInWishlist}
+                                     onAddToWishlist={() => onAddToWishlistHandler(product)}
                                     discountPercent={product.discountPercent} 
                                     imgs={product.images} 
                                     buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
