@@ -17,11 +17,11 @@ type CartItemProps = {
 
 const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps) :JSX.Element => {
     
-    const { name,price,images,discountPercentage,quantity} = product;
-    const discountedPrice = (price - ((price * discountPercentage) / 100));
+    const { name,price,images,discountPercent,quantity} = product;
+    const discountedPrice = (price - ((price * discountPercent) / 100));
 
     function displayDiscountPrice() {
-        if(!discountPercentage || discountPercentage == 0) {
+        if(!discountPercent || discountPercent == 0) {
             return (<></>);
         }
      
@@ -31,7 +31,7 @@ const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps
                     Rs.{discountedPrice}
                 </span>
                 <span className="discountPercentageWrapper">
-                    ({discountPercentage}% Off)
+                    ({discountPercent}% Off)
                 </span>
             </>
         );

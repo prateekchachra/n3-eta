@@ -9,6 +9,12 @@ const rootReducer = combineReducers({
     cartState
 });
 
+const middlewareEnhancer = applyMiddleware();
+
+const saveStateToLocalStorage = (state: RootState) => {
+    localStorage.setItem("state", JSON.stringify(state));
+}
+
 const loadStateFromLocalStorage = () => {
     const stateString = localStorage.getItem("state");
     return stateString ? JSON.parse(stateString) : undefined;
@@ -16,8 +22,8 @@ const loadStateFromLocalStorage = () => {
 
 const persistedStore = loadStateFromLocalStorage();
 
-export const store = createStore(rootReducer, persistedStore);
+export const store = createStore(rootReducer, persistedStore, middlewareEnhancer);
 
 store.subscribe( () => {
-    localStorage.setItem("state", JSON.stringify(store.getState()));
+    saveStateToLocalStorage(store.getState());
 })

@@ -54,12 +54,12 @@ const PriceSummary = ({onButtonClick, cartItems, buttonLabel, onDeleteClick,onAd
         <span className="cartLabel">Price Details</span>
         {renderCartItems()}
         <div className="itemContainer">
-            <span className="cartItemLabel">Price (3 items)</span>
+           { <span className="cartItemLabel">Price {cartItems ? `(${cartItems.length} items)` : ''}</span>}
             <span className="cartValue">₹210</span>
         </div>
         <div className="itemContainer">
             <span className="cartItemLabel">Discount</span> 
-            <span className="cartDiscountValue">-₹50</span>
+            <span className="cartDiscountValue">-₹50</span> 
         </div>
         <div className="itemContainer">
             <span className="cartItemLabel">Delivery Charges</span>

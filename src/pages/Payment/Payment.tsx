@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode, useState } from 'react'
+import React, { MouseEvent, ReactNode, useState } from 'react'
 import PageTemplate from '../../components/templates/PageTemplate';
 import { Row,Col } from 'react-bootstrap';
 import './Payment.scss'
@@ -17,7 +17,7 @@ const Payment = () :JSX.Element => {
     const [amount, setAmount] = useState('270');
     const [refundId, setRefundId] = useState('');
 
-    const paymentHandler = (e: ChangeEvent) => {
+    const paymentHandler = (e: MouseEvent) => {
         e.preventDefault();
     
         const options = {
@@ -63,7 +63,7 @@ const Payment = () :JSX.Element => {
         rzp1.open();
       }
     
-      const refundHandler =(e:ChangeEvent) => {
+      const refundHandler =(e:MouseEvent) => {
         e.preventDefault();
         
         const url = process.env.REACT_API_RAZORPAY_URL+'/api/v1/rzp_refunds/'+refundId

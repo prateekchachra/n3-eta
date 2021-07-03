@@ -19,15 +19,16 @@ export type FilterProps = {
 
 const Filters = ({options, label, onSelect} : FilterProps): JSX.Element => {
 
-    const [filterOptions, setFilterOptions] = useState(options);
+    const [filterOptions, setFilterOptions] = useState<FilterOption[]>([]);
 
 
     const onCheckboxChange = (value: boolean, index: number) => {
-        const updatedFilterOptions : FilterOption[] = [...filterOptions]
-        updatedFilterOptions[index] = {...filterOptions[index], value}
-        setFilterOptions(updatedFilterOptions);
+        if(options[index]) {
+            options[index].value = value;
+        }
+        setFilterOptions(options);
         
-        onSelect(updatedFilterOptions);
+        onSelect(options);
     }
     function renderFilterOptions() {
         return (

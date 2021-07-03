@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from '../../api/axios';
 
 import './ProductDetail.scss';
 
@@ -11,7 +12,7 @@ import ContainedButton from '../../components/atoms/containedButton/ContainedBut
 import CustomerReview, { CustomerReviewType } from '../../components/organisms/customerReview/CustomerReview';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 
-import JsonProductList from '../../assets/sampleData/Products.json';
+import { ProductModel } from '../../redux/cart/CartReducer';
 
 const SIZE_SELECTOR_OPTIONS = ['39', '40', '41', '42'];
 const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow'];
@@ -26,17 +27,37 @@ const REVIEW : CustomerReviewType = {
 function ProductDetailPage() {
 
     const {productId} = useParams<Record<string, string | undefined>>();
-    const productList = [...JSON.parse(JSON.stringify(JsonProductList))];
-    const product = productList.find(product => (product.id.toString() === productId));
-    const similarProductList = productList.filter(p => (p.category === product.category));
-    
+    const [product, setproduct] = useState<ProductModel | null>(null);
+    const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
+
+    const fetchProductDetails= async () => {
+        const response = await axios.get(`/products/${productId}`);
+        if(response.data) {
+            setproduct(response.data);
+        }
+        return response;
+    }
+
+    const fetchSimilarProductSuggestions = async () => {
+        const response = await axios.get(`/products?category=${product?.category}`);
+        if(response.data) {
+            setSimilarProductSuggestions(response.data);
+        }
+        return response;
+    }
+
+    useEffect(() => {
+        fetchProductDetails();
+        fetchSimilarProductSuggestions();
+    }, [productId])
 
     function renderBody() {
 
         function displayPrice() {
-            let _price = product.price;
-            if(product.discountPercent > 0) {
-                _price = (product.price * product.discountPercent) / 100;
+            let _price = product?.price;
+            const _discountPercent = product?.discountPercent;
+            if(_price && _discountPercent && _discountPercent > 0) {
+                _price = (_price * _discountPercent) / 100;
             }
             return (
                 <span className="productPriceWrapper">
@@ -46,7 +67,7 @@ function ProductDetailPage() {
         }
         
         function displayDiscountPrice() {
-            if(!product.discountPercent || product.discountPercent == 0) {
+            if(!product?.discountPercent || product?.discountPercent == 0) {
                 return (<></>);
             }
             const discountedPrice = (product.price - ((product.price * product.discountPercent) / 100));
@@ -62,24 +83,23 @@ function ProductDetailPage() {
             );
         }
 
-        console.log(product);
         return (
             <div className="productDetailPage">
                 <div className="productDetailComponent">
                     <div className="productImageSliderContainer">
                         <ImageSlider
-                            id={product.id}
-                            name={product.name}
-                            images={product.images} 
+                            id="productImageSlider"
+                            name="productImageSlider"
+                            images={(product?.images) ? product.images : []} 
                             style={{ height: "504px"}}
                         />
                     </div>
                     <div className="productDetailContainer">
                         <div className="productTitleWrapper">
-                            <h2 className="productTitle">{product.name}</h2>
+                            <h2 className="productTitle">{product?.name}</h2>
                         </div>
                         <div className="productDiscriptionWrapper">
-                            <h4 className="productDiscritpion">{product.name}</h4>
+                            <h4 className="productDiscritpion">{product?.name}</h4>
                         </div>
                         <div className="productDetailPriceWrapper">
                             {displayPrice()}
@@ -92,9 +112,11 @@ function ProductDetailPage() {
                             <SizeSelector
                                 label="select size"
                                 values={SIZE_SELECTOR_OPTIONS}
-                                onSelectedChange={(selected) => {
+                                onSelectedChange={(selected:string) => {
                                     console.log(selected);
-                                    product.size = selected;
+                                    if(product) {
+                                        product.size = +selected;
+                                    }
                                 }}
                             />
                         </div>
@@ -104,7 +126,9 @@ function ProductDetailPage() {
                                 values={COLOR_SELECTOR_OPTIONS}
                                 onSelectedChange={(selected) => {
                                     console.log(selected);
-                                    product.color = selected;
+                                    if(product) {
+                                        product.color = selected;
+                                    }
                                 }}
                             />
                         </div>
@@ -165,8 +189,8 @@ function ProductDetailPage() {
                         similar products
                     </span>
                     <div className="similarProductListWrapper">
-                    {   similarProductList &&
-                        similarProductList.map((product: any) => {
+                    {   similarProductSuggestions &&
+                        similarProductSuggestions.map((product: any) => {
 
                             return (<ProductCard key={product.id}
                                 productTitle={product.name} 
