@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import './Header.scss';
 
 import { Bag, Heart, Person } from 'react-bootstrap-icons';
+import Search from '../../atoms/search/Search';
 import Badge from '../../atoms/Badge/Badge';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -49,9 +50,18 @@ const Header = () :JSX.Element => {
         );
     }
 
+    function onSearchBarEnterPressHandler(searchQuery: string) {
+        if(searchQuery) {
+            history.push(`/searchResult/${searchQuery}`);
+        }
+    }
+
     function renderSearchBar() {
         return (
             <div className="searchBarWrapper">
+                <Search placeholder="Search by Product Name" 
+                    onEnterPress={(query: string) => onSearchBarEnterPressHandler(query)}
+                />
             </div>
         );
     }
