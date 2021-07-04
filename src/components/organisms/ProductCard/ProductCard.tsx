@@ -40,11 +40,10 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
         if(!discountPercent || discountPercent == 0) {
             return (<></>);
         }
-        const discountedPrice = (price - ((price * discountPercent) / 100));
         return (
             <>
                 <span className="discountPriceWrapper">
-                    Rs.{discountedPrice}
+                    Rs.{price}
                 </span>
                 <span className="discountPercentageWrapper">
                     ({discountPercent}% Off)

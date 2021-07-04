@@ -12,6 +12,8 @@ import './LoginModal.scss';
 import {STATIC_DATA} from '../../../constants/staticData'
 import { markUserAsLoggedIn } from '../../../redux/user/UserActions';
 import { useDispatch } from 'react-redux';
+import axios from '../../../api/axios';
+import { UserModel } from '../../../redux/user/UserReducers';
 
 export type LoginModalProps = {
     show: boolean,
@@ -121,32 +123,33 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
     firebase
       .doGoogleSignIn()
       .then((authUser: any) => {
-        firebase.db
-          .ref(`users/${authUser.user.uid}`)
-          .once('value', (snap: any) => {
-            const user = snap.val();
 
-            if (user) {
-              console.log(user);
-              dispatch(markUserAsLoggedIn(user.uid));
-            } else {
-              const newUser = {
-                uid: authUser.user.uid,
+        fetchUser(authUser.user.email)
+          .then ( user => {
+            if (!user) {
+              const newUser: UserModel = {
                 email: authUser.user.email,
                 name: authUser.user.displayName,
                 phone: authUser.user.phoneNumber,
-                image: authUser.user.photoURL,
-                wishlist: [],
+                profileImage: authUser.user.photoURL,
+                wishList: [],
                 orders: [],
                 cartItems: [],
                 addresses: [],
               };
-              firebase.db
-                .ref(`users/${authUser.user.uid}`)
-                .set(newUser)
-                .catch(console.log);
+              addUser(newUser);
+              dispatch(markUserAsLoggedIn(newUser));
+            } else {
+              dispatch(markUserAsLoggedIn(user));
             }
-          });
+            localStorage.setItem("userToken", authUser.user.uid);
+          }).catch ( (error) => console.error(error));
+        // firebase.db
+        // .ref(`users/${authUser.user.uid}`)
+        // .once('value', (snap: any) => {
+        //     const user = snap.val();
+        
+          // });
       })
       .then(() => {
         onHide();
@@ -181,7 +184,17 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
             setPhoneNumber((target as HTMLInputElement).value);
         }
       };
+    
+    const fetchUser = async (userId: string) => {
+      const response = await axios.get(`users/?email=${userId}`);
+      console.log("USER EXISTS",response.data);
+      return response.data;
+    }
 
+    const addUser = async (user: UserModel) => {
+      const response = await axios.post("/users", user);
+      console.log("ADDED NEW USER", response.data);
+    }
     
       
     const renderFooterComponent = () => {

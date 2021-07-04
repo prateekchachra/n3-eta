@@ -6,54 +6,74 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
-import RadioButton from '../../components/atoms/RadioButton/RadioButton';
+import RadioButton from '../../components/atoms/radioButton/RadioButton';
 
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { UserState } from '../../redux/user/UserReducers';
+import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
-type ProductListProps = {
-    searchQuery?: string
-}
-
-const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
+const ProductList = () :JSX.Element => {
     const history = useHistory();
-    const {gender} = useParams<Record<string, string | undefined>>();
     const dispatch = useDispatch();
+    const {gender} = useParams<Record<string, string | undefined>>();
+    const {queryParam} = useParams<Record<string, string | undefined>>();
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
+    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
-    const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const[appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
 
-    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
 
     useEffect( () => {
-        const fetchProducts = async () => {
-            const productsResponse = await axios.get(`/products?gender=${gender}`);
-            const categoriesResponse = await axios.get(`/categories`);
-            setProducts(productsResponse.data);
-            setCategoryFilterOptionList(categoriesResponse.data.map((category: string) => {
-                return {
-                    label: category,
-                    value: false,
-                    number: 10
-                }
-            }));
-            return {productsResponse, categoriesResponse};
+        fetchCategoryList();
+    }, [])
+
+    useEffect( () => {
+        if(gender) {
+            fetchProductLisyByGender();
         }
-        fetchProducts();
     }, [gender]);
+
+    useEffect( () => {
+        if(queryParam) {
+            searchProductListByTitle();
+        }
+    }, [queryParam]);
 
     useEffect( () => {
         fetchFilteredByCategoriesProducts();
     }, [appliedCategoryFilterOptionList]);
 
+    const fetchCategoryList = async() => {
+        const categoriesResponse = await axios.get(`/categories`);
+        setCategoryFilterOptionList(categoriesResponse.data.map((category: string) => {
+            return {
+                label: category,
+                value: false,
+                number: 10
+            }
+        }));
+        return categoriesResponse.data;
+    }
+
+    const fetchProductLisyByGender = async () => {
+        const productsResponse = await axios.get(`/products?gender=${gender}`);
+        setProducts(productsResponse.data);
+        return productsResponse;
+    }
+    
     const searchProductListByTitle = async () => {
-        if(searchQuery) {
-            const queryResponse = await axios.get(`/products?name_like='*${searchQuery}*`);
-            console.log(queryResponse.data);
+        const queryResponse = await axios.get(`/products?name_like='*${queryParam}*`);
+        if(queryResponse.data) {
+            if(productList) {
+                setProducts([]);
+            }
+            setProducts(queryResponse.data);
         }
+        return queryResponse;
     }
 
     
@@ -82,7 +102,13 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
     }
 
     function onAddtoCartButtonClickHandler(product: ProductModel) {
-        if(userState.isLoggedIn && productList) {
+
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(userState.isUserLoggedIn && product) {
             dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
         }
     }
@@ -114,10 +140,6 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
                 <div className="filterTitleContainer">
                     <span className="filterTitle">Filters</span>
                     <a href="" className="clearFilterTitle">Clear All</a>
-                </div>
-                <div className="filterContainer primaryFilterText">
-                    <RadioButton id="men" name="gender" value="men" label="Men" onChange={() => {console.log("")}}/>
-                    <RadioButton id="women" name="gender" value="women" label="Women" onChange={() => {console.log("")}}/>
                 </div>
                 <Filters 
                     options={categoryFilterOptionList} 
@@ -155,10 +177,9 @@ const ProductList = ( { searchQuery}: ProductListProps) :JSX.Element => {
                                 buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}}  
                                 isAddedInWishlist={isAddedInWishlist}
                                 onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                addToCartHandler={(e) => {
-                                    console.log("Add to Cart Clicked");
-                                    onAddtoCartButtonClickHandler(product);
-                                }}
+                                addToCartHandler={ () =>
+                                    onAddtoCartButtonClickHandler(product)
+                                }
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
                                     onProductCardClickHandler(product.id);

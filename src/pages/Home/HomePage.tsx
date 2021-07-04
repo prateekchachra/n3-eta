@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 const banners = [
     "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -21,10 +22,9 @@ const banners = [
 const HomePage = () => {
 
     const history = useHistory();
-    const [displayLogin, setDisplayLogin] = useState(true)
     const dispatch = useDispatch();
     const [productList, setProductList] = useState<ProductModel[]>([]);
-
+    const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
 
     const fetchProductList= async () => {
@@ -48,9 +48,14 @@ const HomePage = () => {
         history.push(`/item/${productId}`);
     }
 
-    function onAddtoCartButtonClickHandler(productId: number) {
-        if(productList) {
-            const product: any = productList.find((product: ProductModel) => product.id === productId);
+    function onAddtoCartButtonClickHandler(product: ProductModel) {
+
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(userState.isUserLoggedIn && product) {
             dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
         }
     }
@@ -64,11 +69,18 @@ const HomePage = () => {
     }
 
     const onAddToWishlistHandler = (product: ProductModel) => {
-        if(productList){
+        
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(userState.isUserLoggedIn && product){
             dispatch(addProductToWishlist(Object.assign({}, product)));
         }
         
     }
+    
     //TODO: add 'listOfProductsByCategoryMap' as an arg, iterator through each item
     function renderProductListColumns() {
         const productListColumnRendererArray: ReactNodeArray = [];
@@ -112,19 +124,11 @@ const HomePage = () => {
         return productListColumnRendererArray;
     }
 
-
-    function renderModal(){
-        return ( <LoginModal
-            show={displayLogin}
-            onHide={() => setDisplayLogin(false)}
-           />)
-    }
     function renderBody() {
         return (
             <div className="bodyComponent">
                 {renderBannerColumn()}
                 {renderProductListColumns()}
-                {renderModal()}
             </div>
         )
     }

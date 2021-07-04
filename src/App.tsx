@@ -23,7 +23,10 @@ import ProductList from './pages/ProductList/ProductList';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Checkout from './pages/Checkout/Checkout';
 import Orders from './pages/Orders/Orders';
-
+import LoginModal from './components/organisms/LoginModal/LoginModal';
+import { RootState } from './store';
+import { useDispatch, useSelector } from 'react-redux';
+import { showLoginModal } from './redux/loginModal/LoginModalActions';
 
 const DROPDOWN_OPTIONS: DropDownOption[] = [{label: 'english', value: 'English'} , {label: 'spanish',
 value: 'Spanish'}, {label: 'russian', value: 'Russian'}];
@@ -48,6 +51,12 @@ const imgs = [
 ];
 
 function App (): JSX.Element {
+  const dispatch = useDispatch();
+  const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
+
+  const hideLoginModalActionHandler = () => {
+    dispatch(showLoginModal(false));
+  }
 
   return (
     <div className="App">
@@ -57,6 +66,7 @@ function App (): JSX.Element {
                 <Route path="/profile" component={Profile} />
                 <Route path="/cart" component={Cart} />
                 <Route path="/list/:gender" component={ProductList} />
+                <Route path="/searchResult/:queryParam" component={ProductList} />
                 <Route path="/item/:productId" component={ProductDetail} />
                 <Route path="/wishlist" component={Wishlist} />
                 <Route path="/orders" component={Orders} />
@@ -64,6 +74,10 @@ function App (): JSX.Element {
                 <Route path="/checkout" component={Checkout} />
                 <Route path="/addresses" component={Addresses} />
         </Switch>
+        <LoginModal
+            show={showLoginModalFlag}
+            onHide={hideLoginModalActionHandler}
+        />
       </BrowserRouter>
       {/* <header className="App-header">
         TEAM N3-ETA

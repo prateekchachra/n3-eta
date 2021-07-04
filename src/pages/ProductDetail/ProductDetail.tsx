@@ -16,6 +16,8 @@ import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import { addProductToCart } from '../../redux/cart/CartAction';
 
 const SIZE_SELECTOR_OPTIONS = ['39', '40', '41', '42'];
 const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow'];
@@ -29,11 +31,13 @@ const REVIEW : CustomerReviewType = {
 
 function ProductDetailPage() {
 
+    const dispatch = useDispatch();
     const {productId} = useParams<Record<string, string | undefined>>();
+    const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const [product, setproduct] = useState<ProductModel | null>(null);
     const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
-    const dispatch = useDispatch();
+    
     const fetchProductDetails= async () => {
         const response = await axios.get(`/products/${productId}`);
         if(response.data) {
@@ -50,16 +54,35 @@ function ProductDetailPage() {
         return response;
     }
 
-    const onAddToWishlistHandler = (product: ProductModel) => {
-        if(similarProductSuggestions){
-            dispatch(addProductToWishlist(Object.assign({}, product, {quantity: 1})));
-        }
-        
-    }
     useEffect(() => {
         fetchProductDetails();
         fetchSimilarProductSuggestions();
     }, [productId])
+
+    const onAddToWishlistHandler = (product: ProductModel) => {
+
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(userState.isUserLoggedIn && product){
+            dispatch(addProductToWishlist(Object.assign({}, product, {quantity: 1})));
+        }
+        
+    }
+
+    function onAddtoCartButtonClickHandler(product: ProductModel | null) {
+
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(userState.isUserLoggedIn && product) {
+            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        }
+    }
 
     function renderBody() {
 
@@ -80,11 +103,10 @@ function ProductDetailPage() {
             if(!product?.discountPercent || product?.discountPercent == 0) {
                 return (<></>);
             }
-            const discountedPrice = (product.price - ((product.price * product.discountPercent) / 100));
             return (
                 <>
                     <span className="productDiscountPriceWrapper">
-                        Rs.{discountedPrice}
+                        Rs.{product?.price}
                     </span>
                     <span className="productDiscountPercentageWrapper">
                         ({product.discountPercent}% Off)
@@ -146,9 +168,7 @@ function ProductDetailPage() {
                             <div className="addToCartButton">
                                 <ContainedButton
                                     label="Add to Cart"
-                                    onClick={() => {
-                                        console.log("Add to Cart");
-                                    }}
+                                    onClick={() => onAddtoCartButtonClickHandler(product)}
                                 />
                             </div>
                             <div className="buyNowButton">
@@ -156,7 +176,7 @@ function ProductDetailPage() {
                                     label="Buy Now"
                                     secondary={true}
                                     onClick={() => {
-                                        console.log("Add to Cart");
+                                        console.log("Buy now");
                                     }}
                                 />
                             </div>
@@ -211,10 +231,7 @@ function ProductDetailPage() {
                                 isAddedInWishlist={isAddedInWishlist}
                                 onAddToWishlist={() => onAddToWishlistHandler(product)}
                                 buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
-                                addToCartHandler={(e) => {
-                                    console.log("Add to Cart Clicked");
-                                    // onAddtoCartButtonClickHandler(product.id);
-                                }}
+                                addToCartHandler={() => onAddtoCartButtonClickHandler(product)}
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
                                     // onProductCardClickHandler(product.id);

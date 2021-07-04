@@ -1,17 +1,20 @@
+import { UserModel } from './UserReducers';
 import { 
     MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT 
 } from './UserTypes';
 
-export type USER_ACTIONS =
-    { type: string, userToken: string}
+ type USER_LOGIN =  { type: string, userSnapShot: UserModel}
+ type USER_LOGOUT = { type: string, userId: string} 
 
+export type USER_ACTIONS = USER_LOGIN
+    | USER_LOGOUT;
 
-export const markUserAsLoggedIn = (userToken: string): USER_ACTIONS => ({
+export const markUserAsLoggedIn = (user: UserModel): USER_ACTIONS => ({
     type: MARK_USER_AS_LOGGED_IN,
-    userToken: userToken
+    userSnapShot: user
 })
 
-export const markUserAsLoggedOut = (userToken: string): USER_ACTIONS => ({
+export const markUserAsLoggedOut = (userId: string): USER_ACTIONS => ({
     type: MARK_USER_AS_LOGGED_OUT,
-    userToken: userToken
+    userId: userId
 })
