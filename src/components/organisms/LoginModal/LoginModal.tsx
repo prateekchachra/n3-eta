@@ -146,6 +146,19 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
                 console.log("inside else");
                 dispatch(markUserAsLoggedIn(user));
               }
+            } else {
+              const newUser: UserModel = {
+                email: authUser.user.email,
+                name: authUser.user.displayName,
+                phone: authUser.user.phoneNumber,
+                profileImage: authUser.user.photoURL,
+                wishList: [],
+                orders: [],
+                cartItems: [],
+                addresses: [],
+              };
+              addUser(newUser);
+              dispatch(markUserAsLoggedIn(newUser));
             }
             localStorage.setItem("userToken", authUser.user.uid);
           }).catch ( (error) => console.error(error));

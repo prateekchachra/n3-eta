@@ -1,6 +1,7 @@
+import { AnyAction } from 'redux';
 import { CART_ACTIONS } from './CartAction';
 import { 
-    ADD_PRODUCT_TO_CART
+    ADD_PRODUCT_TO_CART, RESET_CART
 } from './CartTypes';
 import { getProductIndex } from './utils'
 
@@ -28,7 +29,7 @@ const initialState = {
 
 const cartState = (
     state: CartState = initialState,
-    action: CART_ACTIONS 
+    action: AnyAction 
 ) => {
     switch(action.type) {
 
@@ -48,6 +49,11 @@ const cartState = (
                 ...state.cartItems.slice( index + 1 ),
             ]}
         }
+
+        case RESET_CART: {
+            return initialState;
+        }
+
         default:
             return state;
     }

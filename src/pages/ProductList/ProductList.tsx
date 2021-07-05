@@ -83,7 +83,13 @@ const ProductList = () :JSX.Element => {
 
     
     const onAddToWishlistHandler = (product: ProductModel) => {
-        if(productList){
+
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(userState.isUserLoggedIn && product){
             dispatch(addProductToWishlist(Object.assign({}, product)));
         }
         
@@ -148,6 +154,17 @@ const ProductList = () :JSX.Element => {
         }
     }
 
+    function onBuyNowButtonClickHandler(product: ProductModel | null) {
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+        if(userState.isUserLoggedIn && product) {
+            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            history.push("/checkout");
+        }
+    }
+
     //TODO: create component for BreadCrums
     function renderBreadCrumsRow() {
         return (
@@ -206,12 +223,10 @@ const ProductList = () :JSX.Element => {
                                 price={product.price} 
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
-                                buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}}  
+                                buyNowHandler={() => onBuyNowButtonClickHandler(product)}  
                                 isAddedInWishlist={isAddedInWishlist}
                                 onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                addToCartHandler={ () =>
-                                    onAddtoCartButtonClickHandler(product)
-                                }
+                                addToCartHandler={ () => onAddtoCartButtonClickHandler(product) }
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
                                     onProductCardClickHandler(product.id);
