@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from '../../api/axios';
 
 import './ProductDetail.scss';
@@ -31,6 +31,7 @@ const REVIEW : CustomerReviewType = {
 
 function ProductDetailPage() {
 
+    const history = useHistory();
     const dispatch = useDispatch();
     const {productId} = useParams<Record<string, string | undefined>>();
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
@@ -81,6 +82,17 @@ function ProductDetailPage() {
 
         if(userState.isUserLoggedIn && product) {
             dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        }
+    }
+
+    function onBuyNowButtonClickHandler(product: ProductModel | null) {
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+        if(userState.isUserLoggedIn && product) {
+            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            history.push("/checkout");
         }
     }
 
@@ -175,9 +187,7 @@ function ProductDetailPage() {
                                 <ContainedButton
                                     label="Buy Now"
                                     secondary={true}
-                                    onClick={() => {
-                                        console.log("Buy now");
-                                    }}
+                                    onClick={() => onBuyNowButtonClickHandler(product)}
                                 />
                             </div>
                         </div>
@@ -230,7 +240,7 @@ function ProductDetailPage() {
                                 imgs={product.images} 
                                 isAddedInWishlist={isAddedInWishlist}
                                 onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
+                                buyNowHandler={(e) => onBuyNowButtonClickHandler(product)} 
                                 addToCartHandler={() => onAddtoCartButtonClickHandler(product)}
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();

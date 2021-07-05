@@ -48,6 +48,14 @@ const HomePage = () => {
         history.push(`/item/${productId}`);
     }
 
+    function renderBannerColumn() {
+        return (
+            <div className="bannerColumnContainer">
+                <ImageSlider id="heroBanner" name="heroBanner" images={banners} style={{height: "500px"}}/>
+            </div>
+        );
+    }
+
     function onAddtoCartButtonClickHandler(product: ProductModel) {
 
         if(!userState.isUserLoggedIn) {
@@ -60,16 +68,19 @@ const HomePage = () => {
         }
     }
 
-    function renderBannerColumn() {
-        return (
-            <div className="bannerColumnContainer">
-                <ImageSlider id="heroBanner" name="heroBanner" images={banners} style={{height: "500px"}}/>
-            </div>
-        );
+    function onBuyNowButtonClickHandler(product: ProductModel | null) {
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+        if(userState.isUserLoggedIn && product) {
+            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            history.push("/checkout");
+        }
     }
 
     const onAddToWishlistHandler = (product: ProductModel) => {
-        
+
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
@@ -105,11 +116,8 @@ const HomePage = () => {
                                      onAddToWishlist={() => onAddToWishlistHandler(product)}
                                     discountPercent={product.discountPercent} 
                                     imgs={product.images} 
-                                    buyNowHandler={(e) => {e.preventDefault(); console.log("Buy Now Clicked")}} 
-                                    addToCartHandler={(e) => {
-                                        console.log("Add to Cart Clicked");
-                                        onAddtoCartButtonClickHandler(product.id);
-                                    }}
+                                    buyNowHandler={(e) => onBuyNowButtonClickHandler(product)} 
+                                    addToCartHandler={(e) => onAddtoCartButtonClickHandler(product)}
                                     onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                         event.preventDefault();
                                         onProductCardClickHandler(product.id);

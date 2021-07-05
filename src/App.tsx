@@ -27,6 +27,7 @@ import LoginModal from './components/organisms/LoginModal/LoginModal';
 import { RootState } from './store';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoginModal } from './redux/loginModal/LoginModalActions';
+import { markUserAsLoggedOut } from './redux/user/UserActions';
 
 const DROPDOWN_OPTIONS: DropDownOption[] = [{label: 'english', value: 'English'} , {label: 'spanish',
 value: 'Spanish'}, {label: 'russian', value: 'Russian'}];
@@ -53,6 +54,14 @@ const imgs = [
 function App (): JSX.Element {
   const dispatch = useDispatch();
   const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
+  const userToken = localStorage.getItem("userToken");
+
+    
+  useEffect( () => {
+    if(!userToken) {
+      dispatch(markUserAsLoggedOut());
+    }
+  }, [userToken]);
 
   const hideLoginModalActionHandler = () => {
     dispatch(showLoginModal(false));

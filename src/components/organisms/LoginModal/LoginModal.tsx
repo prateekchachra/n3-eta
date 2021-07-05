@@ -23,16 +23,16 @@ export type LoginModalProps = {
  
 const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isRequiredPhone, setIsRequiredPhone] = useState(false);
+  const [requiredPhoneOTP, setRequiredPhoneOTP] = useState(false);
+  const [displayPhone, setdisplayPhone] = useState(true);
+  
+  const [errorMessage, setErrorMessage] = useState('');
+  const firebase = new Firebase();
 
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [isRequiredPhone, setIsRequiredPhone] = useState(false);
-    const [requiredPhoneOTP, setRequiredPhoneOTP] = useState(false);
-    const [displayPhone, setdisplayPhone] = useState(true);
-    
-    const [errorMessage, setErrorMessage] = useState('');
-    const firebase = new Firebase();
-     
   const handleSendOTP = () => {
     if (phoneNumber) {
       const recaptchaVerifier = firebase.getRecaptcha();
@@ -125,22 +125,27 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
       .then((authUser: any) => {
 
         fetchUser(authUser.user.email)
-          .then ( user => {
-            if (!user) {
-              const newUser: UserModel = {
-                email: authUser.user.email,
-                name: authUser.user.displayName,
-                phone: authUser.user.phoneNumber,
-                profileImage: authUser.user.photoURL,
-                wishList: [],
-                orders: [],
-                cartItems: [],
-                addresses: [],
-              };
-              addUser(newUser);
-              dispatch(markUserAsLoggedIn(newUser));
-            } else {
-              dispatch(markUserAsLoggedIn(user));
+          .then ( response => {
+            if(response.data.length) {
+              const user = response.data[0];
+              if ( !user ) {
+                console.log("inside if");
+                const newUser: UserModel = {
+                  email: authUser.user.email,
+                  name: authUser.user.displayName,
+                  phone: authUser.user.phoneNumber,
+                  profileImage: authUser.user.photoURL,
+                  wishList: [],
+                  orders: [],
+                  cartItems: [],
+                  addresses: [],
+                };
+                addUser(newUser);
+                dispatch(markUserAsLoggedIn(newUser));
+              } else {
+                console.log("inside else");
+                dispatch(markUserAsLoggedIn(user));
+              }
             }
             localStorage.setItem("userToken", authUser.user.uid);
           }).catch ( (error) => console.error(error));
@@ -188,7 +193,7 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
     const fetchUser = async (userId: string) => {
       const response = await axios.get(`users/?email=${userId}`);
       console.log("USER EXISTS",response.data);
-      return response.data;
+      return response;
     }
 
     const addUser = async (user: UserModel) => {

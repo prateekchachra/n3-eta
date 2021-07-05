@@ -42,10 +42,10 @@ const userState = (
         case MARK_USER_AS_LOGGED_IN: {
 
             if(action.userSnapShot) {
-                const userToken = localStorage.getItem("userToken");
+                console.info("User has logged in!");
                 return {
                     user: Object.assign({}, action.userSnapShot),
-                    isUserLoggedIn: (userToken) ? true : false
+                    isUserLoggedIn: true
                 }
             }
             return state;
@@ -54,7 +54,8 @@ const userState = (
         case MARK_USER_AS_LOGGED_OUT: {
 
             if(state) {
-                return { ...state, state: initialState}
+                console.info("User has logged out!");
+                return { state: initialState }
             }
             return state;
         }
