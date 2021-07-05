@@ -14,6 +14,7 @@ import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 import { UserState } from '../../redux/user/UserReducers';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import { fetchProductList } from '../../redux/product/ProductActions';
 
 const ProductList = () :JSX.Element => {
     const history = useHistory();
@@ -24,7 +25,7 @@ const ProductList = () :JSX.Element => {
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
-    const[appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const[appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
 
 
     useEffect( () => {
@@ -44,7 +45,11 @@ const ProductList = () :JSX.Element => {
     }, [queryParam]);
 
     useEffect( () => {
-        fetchFilteredByCategoriesProducts();
+        if(appliedCategoryFilterOptionList) {
+            fetchFilteredByCategoriesProducts();
+        } else {
+            fetchProductLisyByGender();
+        }
     }, [appliedCategoryFilterOptionList]);
 
     const fetchCategoryList = async() => {
@@ -85,17 +90,47 @@ const ProductList = () :JSX.Element => {
     }
 
     const fetchFilteredByCategoriesProducts = async () => {
-        if(appliedCategoryFilterOptionList) {
-            /* const queryString = appliedCategoryFilterOptionList.map( (filter, index) => {
-                
-                if(index > 0) {
+        const appliedCategoryFilterCount = appliedCategoryFilterOptionList.length;
 
+        if(appliedCategoryFilterCount > 0) {
+            const queryString = appliedCategoryFilterOptionList[appliedCategoryFilterOptionList.length - 1];
+            const searchResult = await axios.get(`/products?category=${queryString}&gender=${gender}`);
+
+            if(searchResult.data) {
+                if(appliedCategoryFilterCount == 1) {
+                    setProducts([]);
+                    setProducts([...searchResult.data]);
+                } else {
+                    setProducts(productList.concat(searchResult.data));
                 }
-            }) */
-            console.log(appliedCategoryFilterOptionList.map(filter => filter.label).toString());
+            }
+            return searchResult.data;
         }
+
+        return;
     }
 
+    function onCategoryFilterClickHandler(filters: FilterOption[]) {
+        const excludedFilterOptions: string[] = [];
+        const includedFilterOptions: string[] = [];
+
+        filters.forEach( filter => {
+            if(filter.value) {
+                includedFilterOptions.push(filter.label);
+            } else {
+                excludedFilterOptions.push(filter.label);
+            }
+        })
+
+        if(excludedFilterOptions) {
+            setProducts( productList.filter( (product: ProductModel) => !excludedFilterOptions.includes(product.category)));
+        }
+
+        if(includedFilterOptions.length >= appliedCategoryFilterOptionList.length) {
+            setAppliedCategoryFilterOptionList(appliedCategoryFilterOptionList.concat(includedFilterOptions.filter(filter => !appliedCategoryFilterOptionList.includes(filter))));
+            console.log(appliedCategoryFilterOptionList);
+        }
+    }
 
     function onProductCardClickHandler(productId: number) {
         history.push(`/item/${productId}`);
@@ -144,10 +179,7 @@ const ProductList = () :JSX.Element => {
                 <Filters 
                     options={categoryFilterOptionList} 
                     label="Categories" 
-                    onSelect={ (filters: FilterOption[]) => {
-                        console.log(filters);
-                        setAppliedCategoryFilterOptionList(filters.filter(filter => filter.value));
-                    }}
+                    onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
                 />  
                 <Filters 
                     options={categoryFilterOptionList} 
