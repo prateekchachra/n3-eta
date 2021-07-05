@@ -6,14 +6,20 @@ import './Header.scss';
 import { Bag, Heart, Person } from 'react-bootstrap-icons';
 import Search from '../../atoms/search/Search';
 import Badge from '../../atoms/Badge/Badge';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { UserState } from '../../../redux/user/UserReducers';
+import Button from '../button/Button';
+import { showLoginModal } from '../../../redux/loginModal/LoginModalActions';
+import { markUserAsLoggedOut } from '../../../redux/user/UserActions';
 
 const Header = () :JSX.Element => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const numItemsInCart = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems.length;
     const numItemsInWishlist = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems.length;
-    
+    const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
+
     function renderLogo() {
         return(
             <div className="logoWrapper">
@@ -85,17 +91,47 @@ const Header = () :JSX.Element => {
                     }  />
                     <Badge value={numItemsInCart} />
                 </div>
-                <div className="userAccountIcon">
-                    <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
-                            event.preventDefault();
-                            history.push("/profile");
-                        }
-                    }/>
+                { userState.isUserLoggedIn && 
+                    (<div className="userAccountIcon">
+                        <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
+                                event.preventDefault();
+                                history.push("/profile");
+                            }
+                        }/>
+                    </div>)
+                }
+                <div>
+                    {renderAuthenticationButton()}
                 </div>
             </div>
         );
     }
 
+    function renderAuthenticationButton() {
+        if(!userState.isUserLoggedIn) {
+            return (
+                <Button
+                    label="Login"
+                    type="contained"
+                    onClick={() => dispatch(showLoginModal(true))}
+                />
+            )
+        }
+
+        return (
+            <Button
+                label="Log out"
+                type="contained"
+                onClick={() => onLogOutClickHandler()}
+            />
+        )
+
+    }
+
+    function onLogOutClickHandler() {
+        localStorage.clear();
+        dispatch(markUserAsLoggedOut());
+    }
 
     return (
         <header className="headerContainer">

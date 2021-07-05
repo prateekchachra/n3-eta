@@ -58,7 +58,9 @@
 
 .searchBarWrapper {
     width: 54%;
-    display: inline;
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
     float: right;
 }
 
@@ -67,7 +69,7 @@
 }
 
 .quickActionLinkWrapper {
-    width: 12%;
+    width: 16%;
     display: flex;
     flex-direction: row;
     font-size: $titleTextSize;
