@@ -12,12 +12,16 @@ import { UserState } from '../../../redux/user/UserReducers';
 import Button from '../button/Button';
 import { showLoginModal } from '../../../redux/loginModal/LoginModalActions';
 import { markUserAsLoggedOut } from '../../../redux/user/UserActions';
+import { resetCart } from '../../../redux/cart/CartAction';
+import { resetWishList } from '../../../redux/wishlist/WishlistActions';
 
 const Header = () :JSX.Element => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const numItemsInCart = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems.length;
-    const numItemsInWishlist = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems.length;
+    const cartState = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState);
+    const wishlistState = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState);
+    const numItemsInCart = (cartState.cartItems) ? cartState.cartItems.length : 0;
+    const numItemsInWishlist = (wishlistState.wishlistItems) ? wishlistState.wishlistItems.length : 0;
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
 
     function renderLogo() {
@@ -130,6 +134,8 @@ const Header = () :JSX.Element => {
 
     function onLogOutClickHandler() {
         localStorage.clear();
+        dispatch(resetCart(userState.user.email));
+        dispatch(resetWishList(userState.user.email));
         dispatch(markUserAsLoggedOut());
     }
 

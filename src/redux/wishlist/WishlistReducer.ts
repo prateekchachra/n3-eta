@@ -1,4 +1,4 @@
-import { ADD_PRODUCT_TO_WISHLIST } from './WishlistTypes';
+import { ADD_PRODUCT_TO_WISHLIST, RESET_WISHLIST } from './WishlistTypes';
 import { getProductIndex } from '../cart/utils'
 import { ProductModel } from '../cart/CartReducer';
 import { WISHLIST_ACTIONS } from './WishlistActions';
@@ -27,6 +27,10 @@ const wishlistState = (
             const updatedWishlistItems = [...state.wishlistItems];
             updatedWishlistItems.splice(index, 1)
             return { ...state, wishlistItems: updatedWishlistItems}
+        }
+
+        case RESET_WISHLIST: {
+            return initialState;
         }
         
         default:
