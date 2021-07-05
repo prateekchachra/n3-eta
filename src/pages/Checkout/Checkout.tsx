@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import Button from '../../components/molecules/button/Button';
 import Address from '../../components/organisms/Address/Address';
+import AddAddressModal from '../../components/organisms/AddAddressModal/AddAddressModal';
 
 const USER_ADDRESSES = [
     {
@@ -37,6 +38,7 @@ const Checkout = () :JSX.Element => {
 
     const onAddAddressClick = () => setShowAddAddress(true);
 
+    const onHideAddressModal = () => setShowAddAddress(false);
 
     const renderAddresses = ():JSX.Element => {
         if(!USER_ADDRESSES.length){
@@ -56,6 +58,10 @@ const Checkout = () :JSX.Element => {
     return (
         <PageTemplate>
             <div className="bodyComponent">
+            <AddAddressModal
+            show={showAddAddress}
+            onHide={onHideAddressModal}
+            />
             <Row>
                 <Col sm={6} className="addressColumn">
                     {renderAddresses()}

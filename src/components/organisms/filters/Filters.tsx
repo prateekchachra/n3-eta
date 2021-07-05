@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import './filters.scss';
-import Checkbox from '../../atoms/checkBox/Checkbox';
+import Checkbox from '../../atoms/CheckBox/Checkbox';
 
 
 export type FilterOption = {

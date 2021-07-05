@@ -1,0 +1,22 @@
+@import '../../../App.scss';
+
+.selectorItem {
+    height: 40px;
+    width: max-content;
+    cursor: pointer;
+    background-color: #fff0d5;
+    border-radius: 4px;
+    border: $border-color solid 1px;
+    font-size: 16px;
+    padding: 4px;
+}
+.selectorContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 24px;
+}
+
+.selectorContainer .selected{
+    background-color: #fea13b;
+}

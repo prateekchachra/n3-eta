@@ -6,7 +6,7 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
-import RadioButton from '../../components/atoms/radioButton/RadioButton';
+import RadioButton from '../../components/atoms/RadioButton/RadioButton';
 
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';

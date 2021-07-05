@@ -7,7 +7,6 @@ import './HomePage.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ImageSlider from '../../components/molecules/ImageSlider/ImageSlider';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
-import LoginModal from '../../components/organisms/LoginModal/LoginModal';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '../../redux/cart/CartAction';
