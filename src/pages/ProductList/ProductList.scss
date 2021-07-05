@@ -34,15 +34,18 @@
 
 .filterColumnContainer {
     width: 12%;
-    padding: 12px 0 0 0;
+    padding: 24px 0 0 0;
     display: -webkit-flex;
     flex-direction: column;
+
 }
 
 .filterTitleContainer {
     display: -webkit-flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
 .filterTitle {
@@ -56,10 +59,9 @@
     text-align: end;
     text-transform: uppercase;
     font-weight: 600;
-    align-self: flex-end;
+    font-size: 10px;
     cursor: pointer;
     color: $error;
-    font-size: $bodyTextSize;
 }
 
 .filterContainer {
