@@ -49,6 +49,7 @@ const Checkout = () :JSX.Element => {
             {USER_ADDRESSES.map((item,index) =>
              (<Address 
             key={item.name} 
+            showSelect
             address={item} 
             onRemoveClick={() => console.log('remove')}
             />))}

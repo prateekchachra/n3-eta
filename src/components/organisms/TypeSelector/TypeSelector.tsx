@@ -17,7 +17,7 @@ const TypeSelector = ({label, values, onSelectedChange} : TypeSelectorProps) : J
         <span className="typeItem">{item}</span>
     )
     return (
-    <Selector containerClass="selectorContainer" itemClass="selectorItem" label={label} values={values} customItemStyle
+    <Selector containerClass="typeSelectorContainer" itemClass="typeSelectorItem" label={label} values={values} customItemStyle
     onSelectedChange={onSelectedChange} renderItem={renderType}/>
     )
 }

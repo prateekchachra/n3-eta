@@ -28,6 +28,7 @@ const Payment = () :JSX.Element => {
           //key_secret: process.env.REACT_API_RAZORPAY_TEST_KEY_SECRET,
           amount: parseInt(amount)*100,
           name: 'Payments',
+          order_id: '1234',
           description: 'Donate yourself some time',
           image: '',
           handler: function(response:any) {

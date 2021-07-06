@@ -8,7 +8,6 @@ import Search from '../../atoms/search/Search';
 import Badge from '../../atoms/Badge/Badge';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { UserState } from '../../../redux/user/UserReducers';
 import Button from '../button/Button';
 import { showLoginModal } from '../../../redux/loginModal/LoginModalActions';
 import { markUserAsLoggedOut } from '../../../redux/user/UserActions';
@@ -23,6 +22,8 @@ const Header = () :JSX.Element => {
     const numItemsInCart = (cartState.cartItems) ? cartState.cartItems.length : 0;
     const numItemsInWishlist = (wishlistState.wishlistItems) ? wishlistState.wishlistItems.length : 0;
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
+    const {user} = userState;
+
 
     function renderLogo() {
         return(
@@ -82,6 +83,7 @@ const Header = () :JSX.Element => {
                 <div className="wishListIcon">
                     <Heart onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
+                                    
                             history.push("/wishlist");
                         }
                     }/>
@@ -90,7 +92,14 @@ const Header = () :JSX.Element => {
                 <div className="cartIcon">
                     <Bag onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
-                            history.push("/cart");
+                            if(userState.isUserLoggedIn){
+                                history.push("/cart");    
+                            }
+                            else {
+                                history.push('/')
+                                dispatch(showLoginModal(true));       
+                            }
+                            
                         }
                     }  />
                     <Badge value={numItemsInCart} />

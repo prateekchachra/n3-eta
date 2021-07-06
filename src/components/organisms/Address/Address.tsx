@@ -11,27 +11,38 @@ export type AddressType = {
     locality: string
     city: string,
     state: string,
-    typeOfAddress: string
+    typeOfAddress: string,
+    default?: boolean,
 }
 export type AddressProps = {
     address: AddressType,
-    onRemoveClick: () => void,
+    onRemoveClick?: () => void,
+    showSelect?: boolean,
+    showSetDefault?: boolean,
+    onDefaultRadioClick?: () => void,
 }
 
 
 
-const Address = ({address, onRemoveClick} : AddressProps) :JSX.Element => {
+const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')}, showSelect, showSetDefault} : AddressProps) :JSX.Element => {
     
   
     const{name, typeOfAddress,  pin, addressDetail, locality, city, state}=address;
     
+    const onDefaultRadioChange = () => {
+        if(onDefaultRadioClick){
+            onDefaultRadioClick();
+        }
+          
+    }
     return (
         <OptionWrapper>
+            <>
             <Row className="addressRow">
                 <Col>
                     <div className="addFieldsWrapper">
-                        <div className="addNameWrapper">
-                            <Form.Check type="radio" aria-label="radio 1" />
+                        <div className="addFieldWrapper">
+                          {showSelect && <Form.Check type="radio" aria-label="radio 1" />}
                             <span className="addressField addressName">{name}</span>
                         </div>
                         <span className="addressField addressDetail">{addressDetail}, {locality}, {city}, ({state})</span>
@@ -41,9 +52,16 @@ const Address = ({address, onRemoveClick} : AddressProps) :JSX.Element => {
                 <Col>
                     <span className="addressField addressType">{typeOfAddress}</span>
                 </Col>
-               
+                
             </Row>
-            
+            {showSetDefault &&
+             (<Row>
+                 <div className="addFieldWrapper">
+                    <Form.Check type="radio" aria-label="Default Setter Radio" onChange={onDefaultRadioChange}/>
+                    <span className="addressField addressDefault">Set As Default</span>
+                </div>
+            </Row>)}
+            </>
         </OptionWrapper>
     );
 }

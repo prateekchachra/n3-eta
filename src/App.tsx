@@ -18,11 +18,9 @@ import Profile from './pages/Profile/Profile';
 import Cart from './pages/Cart/Cart';
 import Wishlist from './pages/Wishlist/Wishlist';
 import Payment from './pages/Payment/Payment';
-import Addresses from './pages/Addresses/Addresses';
 import ProductList from './pages/ProductList/ProductList';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Checkout from './pages/Checkout/Checkout';
-import Orders from './pages/Orders/Orders';
 import LoginModal from './components/organisms/LoginModal/LoginModal';
 import { RootState } from './store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -78,10 +76,8 @@ function App (): JSX.Element {
                 <Route path="/searchResult/:queryParam" component={ProductList} />
                 <Route path="/item/:productId" component={ProductDetail} />
                 <Route path="/wishlist" component={Wishlist} />
-                <Route path="/orders" component={Orders} />
                 <Route path="/payment" component={Payment} />
                 <Route path="/checkout" component={Checkout} />
-                <Route path="/addresses" component={Addresses} />
         </Switch>
         <LoginModal
             show={showLoginModalFlag}

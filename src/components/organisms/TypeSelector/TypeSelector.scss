@@ -1,6 +1,6 @@
 @import '../../../App.scss';
 
-.selectorItem {
+.typeSelectorItem {
     height: 40px;
     width: max-content;
     cursor: pointer;
@@ -10,13 +10,13 @@
     font-size: 16px;
     padding: 4px;
 }
-.selectorContainer{
+.typeSelectorContainer{
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-left: 24px;
 }
 
-.selectorContainer .selected{
+.typeSelectorContainer .selected{
     background-color: #fea13b;
 }
