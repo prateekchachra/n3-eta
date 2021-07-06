@@ -1,5 +1,11 @@
-.paymentRow{
+.paymentRowMain{
     margin-top: 24px;
+}
+.paymentRowOptions{
+    align-items: center;
+}
+.paymentCardForm input{ 
+    margin-bottom: 16px;
 }
 .paymentOption{
     font-size: 20px;

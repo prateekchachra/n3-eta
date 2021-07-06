@@ -1,0 +1,25 @@
+@import '../../../App.scss';
+
+.typeSelectorItem {
+    height: 40px;
+    width: max-content;
+    cursor: pointer;
+    background-color: #fff0d5;
+    border-radius: 4px;
+    border: $border-color solid 1px;
+    font-size: 16px;
+    padding: 4px;
+}
+.typeSelectorContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 24px;
+}
+
+.typeSelectorContainer .selected{
+    background-color: #fea13b;
+}
+.typeItem{
+    margin-left: 24px;
+}

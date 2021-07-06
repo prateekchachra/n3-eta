@@ -16,9 +16,8 @@ const Wishlist = () :JSX.Element => {
     const history = useHistory();
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
 
-    function onProductCardClickHandler(event: any) {
-        event.preventDefault();
-        history.push("/item");
+    function onProductCardClickHandler(productId: number) {
+        history.push(`/item/${productId}`);
     }
     function onAddtoCartButtonClickHandler(product: ProductModel) {
         addProductToCart(product);
@@ -40,7 +39,10 @@ const Wishlist = () :JSX.Element => {
                                     console.log("Add to Cart Clicked");
                                     onAddtoCartButtonClickHandler(product.id);
                                 }}
-                                onClickHandler={onProductCardClickHandler}
+                                onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
+                                    event.preventDefault();
+                                    onProductCardClickHandler(product.id);
+                                }}
                             />)
                         })
                     : <span>No Items in Wishlist. Please Add Some!</span>}

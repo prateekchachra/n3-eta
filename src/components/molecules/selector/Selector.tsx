@@ -7,11 +7,14 @@ export type SelectorProps = {
     label: string,
     values: string[],
     onSelectedChange: (selected: string) => void,
+    customItemStyle?: boolean,
+    containerClass?: string,
+    itemClass?: string,
     renderItem: (item: string, selected: string) => JSX.Element  
 }
 
 
-const Selector = ({label, values, onSelectedChange, renderItem} : SelectorProps) : JSX.Element => {
+const Selector = ({label, values, containerClass = '', itemClass='', onSelectedChange, renderItem, customItemStyle} : SelectorProps) : JSX.Element => {
 
     const [selected, setSelected] = useState('');
 
@@ -22,9 +25,9 @@ const Selector = ({label, values, onSelectedChange, renderItem} : SelectorProps)
         }
     }
     const renderValues = () => (
-        <div className="selectorList">
+        <div className={customItemStyle ? containerClass :  "selectorList"}>
         {values.map(item => (
-            <div key={item} onClick={() => onItemClick(item)} className={`selectorItem ${selected === item ? 'selected' : ''}`}>
+            <div key={item} onClick={() => onItemClick(item)} className={`${customItemStyle ? itemClass : 'selectorItem'} ${selected === item ? 'selected' : ''}`}>
                 {renderItem(item, selected)}
             </div>
             ))}

@@ -4,6 +4,8 @@ import PageTemplate from '../../components/templates/PageTemplate';
 import './Cart.scss'
 import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 
 const Cart = () :JSX.Element => {
@@ -17,6 +19,8 @@ const Cart = () :JSX.Element => {
         console.log('added')
     }
   
+    const cartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
+
     useEffect( () => {
         /** FETCH ORDER HISTORY **/
         /* const fetchOrderHistory = async () => {
@@ -41,11 +45,13 @@ const Cart = () :JSX.Element => {
         <PageTemplate>
             <div className="bodyComponent">
                 <span className="cartTitle">My Cart</span>
-                <PriceSummary
+              {cartItems && cartItems.length > 0 ?   
+              <PriceSummary
                 toRenderCart
                 onDeleteClick={onDeleteClick}
                 onAddRemoveItemClick={onAddItemClick}
-                buttonLabel="PLACE ORDER" onButtonClick={() => history.push('checkout')} />
+                buttonLabel="PLACE ORDER" onButtonClick={() => history.push('checkout')} />:
+                (<span>No Items in Cart. Explore and add some from our catalogue!</span>)}
             </div>
         </PageTemplate>);
 }
