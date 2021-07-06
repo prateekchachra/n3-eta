@@ -15,8 +15,10 @@ import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
+import { heroBanner } from '../../assets/images';
+
 const banners = [
-    "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+    heroBanner
   ];
 
 const HomePage = () => {
