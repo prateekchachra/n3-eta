@@ -14,7 +14,9 @@ export type SizeSelectorProps = {
 const SizeSelector = ({label, values, onSelectedChange} : SizeSelectorProps) : JSX.Element => {
 
     const renderColor = (item: string) => (
-        <span className="sizeItem">{item}</span>
+        <div className="sizeItemContainer">
+            <span className="sizeItem">{item}</span>
+        </div>
     )
     return (
     <Selector label={label} values={values} 

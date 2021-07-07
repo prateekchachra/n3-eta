@@ -27,7 +27,7 @@ const CustomerReview = ({review} : CustomerReviewProps) : JSX.Element => {
             count={5}
             value={score}
             edit={false}
-            size={24} />,
+            size={24} />
     </div>
     )
 }

@@ -5,17 +5,18 @@
     flex-direction: column;
     width: 228px;
     height: 308px;
-    border: 3px #9e9b9b;
     border-radius: 16px;
     position: relative;
     margin: 1% 1%;
     padding: 8px;
-    box-shadow: 0 1px 1px 1px #a7a7a7;
+    box-shadow: 0 2px 2px 2px #a7a7a7;
+    transition: 0.4s;
 }
 
 .productCardWrapper:hover {
     box-shadow: 0 2px 16px 4px #E5E5E5;
     cursor: pointer;
+    transition: 1s;
 }
 
 .productCardImageCarousel {
