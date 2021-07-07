@@ -28,7 +28,7 @@ const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps
         return (
             <>
                 <span className="discountPriceWrapper">
-                    Rs.{price}
+                    ₹{price}
                 </span>
                 <span className="discountPercentageWrapper">
                     ({discountPercent}% Off)
@@ -64,7 +64,7 @@ const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps
                     {quantity} x {discountedPrice} = 
                 </div>
                 <div className="cartTotal">
-                    Rs. { quantity * discountedPrice }
+                    ₹ { quantity * discountedPrice }
                 </div>
             </div>
         )

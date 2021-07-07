@@ -15,7 +15,7 @@ const Checkbox = ({id, name, value, label, onChange}: checkBoxProps) => {
         <div className="checkboxWrapper">
             <input id={id} name={name} onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
                 onChange(e.currentTarget.checked);
-            }} type="checkbox" value={value}/>
+            }} type="checkbox" value={value} checked={(value === 'checked') ? true : false}/>
             <label>{label}</label>
         </div>
     );
