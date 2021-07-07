@@ -59,7 +59,7 @@
     text-align: end;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 12px;
     cursor: pointer;
     color: $error;
 }
@@ -77,12 +77,11 @@
 }
 
 .secondaryFilterTitleText {
-    text-transform: uppercase;
+    text-transform: capitalize;
     text-align: start;
     width: 100%;
     font-size: $bodyTextSize;
     padding-left: 0;
-    font-weight: 600;
 }
 
 .secondaryFilterText {

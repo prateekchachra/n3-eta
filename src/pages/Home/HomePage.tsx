@@ -16,9 +16,7 @@ import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 import { heroBanner } from '../../assets/images';
 
-const banners = [
-    heroBanner
-  ];
+
 
 const HomePage = () => {
 
@@ -27,7 +25,10 @@ const HomePage = () => {
     const [productList, setProductList] = useState<ProductModel[]>([]);
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
-
+    const banners = [
+        heroBanner
+      ];
+    const specialCategories = ["Knockout Deals", "Festive Special Deals", "Deals of the Day"];
     const fetchProductList= async () => {
 
         try{
@@ -44,6 +45,10 @@ const HomePage = () => {
     useEffect( () => {
         fetchProductList();
     }, []);
+
+    function onViewAllClickHandler() {
+        history.push('/offers/list');
+    }
 
     function onProductCardClickHandler(productId: number) {
         history.push(`/item/${productId}`);
@@ -96,14 +101,17 @@ const HomePage = () => {
     //TODO: add 'listOfProductsByCategoryMap' as an arg, iterator through each item
     function renderProductListColumns() {
         const productListColumnRendererArray: ReactNodeArray = [];
-        [1,2,3].forEach(element => {
+        specialCategories.forEach(element => {
             productListColumnRendererArray.push(
                 <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
-                        <h4 className="textBannerTitle">Categories to bag</h4>
-                        <a href="">
-                            <h4 className="textBannerTitleLink">View All</h4>
-                        </a>
+                        <h4 className="textBannerTitle">{element}</h4>
+                        <h4 
+                            className="textBannerTitleLink"
+                            onClick={() => onViewAllClickHandler()}
+                        >
+                            View All
+                        </h4>
                     </div>
                     <div className="productListContainer">
                         {   productList &&

@@ -39,6 +39,7 @@ function App (): JSX.Element {
       <BrowserRouter>
         <Switch>
                 <Route exact path="/" component={HomePage} />
+                <Route path="/offers/list" component={ProductList} />
                 <Route path="/list/:gender" component={ProductList} />
                 <Route path="/searchResult/:queryParam" component={ProductList} />
                 <Route path="/wishlist" component={Wishlist} />

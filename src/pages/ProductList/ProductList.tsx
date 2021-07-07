@@ -11,9 +11,7 @@ import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
-import { UserState } from '../../redux/user/UserReducers';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
-import { fetchProductList } from '../../redux/product/ProductActions';
 
 const ProductList = () :JSX.Element => {
     const history = useHistory();
@@ -24,16 +22,22 @@ const ProductList = () :JSX.Element => {
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const[productList, setProducts] = useState<ProductModel[]>([]);
     const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [priceFilterOptionList, setPriceFilterOptionList] = useState<FilterOption[]>([]);
     const[appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
-
+    const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
 
     useEffect( () => {
-        fetchCategoryList();
-    }, [])
+        if(applyClearAllFilter) {
+            fetchCategoryFilterList();
+            fetchPriceFilterList();
+        }
+    }, [applyClearAllFilter])
 
     useEffect( () => {
         if(gender) {
-            fetchProductLisyByGender();
+            fetchProductListByGender();
+        } else {
+            fetchProductList();
         }
     }, [gender]);
 
@@ -44,26 +48,40 @@ const ProductList = () :JSX.Element => {
     }, [queryParam]);
 
     useEffect( () => {
-        if(appliedCategoryFilterOptionList) {
+        if(appliedCategoryFilterOptionList.length) {
             fetchFilteredByCategoriesProducts();
-        } else {
-            fetchProductLisyByGender();
         }
     }, [appliedCategoryFilterOptionList]);
 
-    const fetchCategoryList = async() => {
-        const categoriesResponse = await axios.get(`/categories`);
-        setCategoryFilterOptionList(categoriesResponse.data.map((category: string) => {
+    const fetchCategoryFilterList = async() => {
+        const categoriesFilterResponse = await axios.get("/filters")
+        setCategoryFilterOptionList(categoriesFilterResponse.data.categories.map((category: string) => {
             return {
                 label: category,
                 value: false,
                 number: 10
             }
         }));
-        return categoriesResponse.data;
     }
 
-    const fetchProductLisyByGender = async () => {
+    const fetchPriceFilterList = async () => {
+        const priceFilterResponse = await axios.get("/filters");
+        setPriceFilterOptionList(priceFilterResponse.data.price.map((price: any) => {
+            return {
+                label: `₹ ${price.min} to ₹ ${price.max}`,
+                value: false,
+                number: 10
+            }
+        }));
+    }
+
+    const fetchProductList = async () => {
+        const productsResponse = await axios.get("/products");
+        setProducts(productsResponse.data);
+        return productsResponse;
+    }
+
+    const fetchProductListByGender = async () => {
         const productsResponse = await axios.get(`/products?gender=${gender}`);
         setProducts(productsResponse.data);
         return productsResponse;
@@ -80,7 +98,69 @@ const ProductList = () :JSX.Element => {
         return queryResponse;
     }
 
-    
+    const fetchFilteredByCategoriesProducts = async () => {
+
+        if(appliedCategoryFilterOptionList) {
+            const searchQueries = appliedCategoryFilterOptionList.map( queryString => {
+                if(!gender) {
+                    return axios.get(`/products?category=${queryString}`)    
+                }
+                return axios.get(`/products?category=${queryString}&gender=${gender}`)
+            });
+
+            const results = await Promise.all(searchQueries)
+                .then( response => {
+                    const searcuResults = response.filter( result => result.data)
+                        .flatMap( result => result.data);
+                    if(searcuResults) {
+                        return searcuResults;
+                    }
+                    return [];
+                })
+                .catch( error => {
+                    console.log(error);
+                });
+            if(results) {
+                setProducts(results);
+            }
+        } else {
+            console.log("From else");
+        }
+
+        return;
+    }
+
+    function onCategoryFilterClickHandler(filters: FilterOption[]) {
+        const includedFilterOptions: string[] = filters.filter( filter => filter.value)
+            .map( filter => filter.label);
+        if(!includedFilterOptions.length) {
+            if(gender) {
+                fetchProductListByGender();
+            } else {
+                fetchProductList();
+            }
+        } else {
+            setApplyClearAllFilter(false);
+            setAppliedCategoryFilterOptionList(includedFilterOptions);
+        }
+    }
+
+    function onClearAllClickHandler() {
+        if(appliedCategoryFilterOptionList) {
+            setAppliedCategoryFilterOptionList([]);
+            if(gender) {
+                fetchProductListByGender();
+            } else {
+                fetchProductList();
+            }
+        }
+        setApplyClearAllFilter(true);
+    }
+
+    function onProductCardClickHandler(productId: number) {
+        history.push(`/item/${productId}`);
+    }
+
     const onAddToWishlistHandler = (product: ProductModel) => {
 
         if(!userState.isUserLoggedIn) {
@@ -92,53 +172,6 @@ const ProductList = () :JSX.Element => {
             dispatch(addProductToWishlist(Object.assign({}, product)));
         }
         
-    }
-
-    const fetchFilteredByCategoriesProducts = async () => {
-        const appliedCategoryFilterCount = appliedCategoryFilterOptionList.length;
-
-        if(appliedCategoryFilterCount > 0) {
-            const queryString = appliedCategoryFilterOptionList[appliedCategoryFilterOptionList.length - 1];
-            const searchResult = await axios.get(`/products?category=${queryString}&gender=${gender}`);
-
-            if(searchResult.data) {
-                if(appliedCategoryFilterCount == 1) {
-                    setProducts([]);
-                    setProducts([...searchResult.data]);
-                } else {
-                    setProducts(productList.concat(searchResult.data));
-                }
-            }
-            return searchResult.data;
-        }
-
-        return;
-    }
-
-    function onCategoryFilterClickHandler(filters: FilterOption[]) {
-        const excludedFilterOptions: string[] = [];
-        const includedFilterOptions: string[] = [];
-
-        filters.forEach( filter => {
-            if(filter.value) {
-                includedFilterOptions.push(filter.label);
-            } else {
-                excludedFilterOptions.push(filter.label);
-            }
-        })
-
-        if(excludedFilterOptions) {
-            setProducts( productList.filter( (product: ProductModel) => !excludedFilterOptions.includes(product.category)));
-        }
-
-        if(includedFilterOptions.length >= appliedCategoryFilterOptionList.length) {
-            setAppliedCategoryFilterOptionList(appliedCategoryFilterOptionList.concat(includedFilterOptions.filter(filter => !appliedCategoryFilterOptionList.includes(filter))));
-            console.log(appliedCategoryFilterOptionList);
-        }
-    }
-
-    function onProductCardClickHandler(productId: number) {
-        history.push(`/item/${productId}`);
     }
 
     function onAddtoCartButtonClickHandler(product: ProductModel) {
@@ -179,7 +212,8 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="pageTitleContainer">
                 <div className="pageTitle">
-                    MEN COLLECTIONS
+                    {gender && <p>{gender}&apos;s COLLECTION</p>}
+                    {!gender && <p> Special Deal Collection</p>}
                 </div>
             </div>
         )
@@ -190,20 +224,27 @@ const ProductList = () :JSX.Element => {
             <div className="filterColumnContainer">
                 <div className="filterTitleContainer">
                     <span className="filterTitle">Filters</span>
-                    <a href="" className="clearFilterTitle">Clear All</a>
+                    <span 
+                        className="clearFilterTitle"
+                        onClick={() => onClearAllClickHandler()}
+                    >
+                        Clear All
+                    </span>
                 </div>
-                <Filters 
-                    options={categoryFilterOptionList} 
-                    label="Categories" 
-                    onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
-                />  
-                <Filters 
-                    options={categoryFilterOptionList} 
-                    label="Categories" 
+                <div className="secondaryFilterTitleText">
+                    <Filters
+                        options={categoryFilterOptionList} 
+                        label="Categories" 
+                        onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
+                    />  
+                </div>
+                {/* <Filters 
+                    options={priceFilterOptionList} 
+                    label="Price" 
                     onSelect={ (value: FilterOption[]) => {
                         console.log(value);
                     }}
-                />
+                /> */}
                 
             </div>
         );
@@ -214,7 +255,7 @@ const ProductList = () :JSX.Element => {
             <div className="productSearchListColumnContainer">
                 <div className="productListContainer">
                     {   productList &&
-                        productList.map((product: any) => {
+                        productList.map((product: ProductModel) => {
 
                             const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
                             return (<ProductCard key={product.id}

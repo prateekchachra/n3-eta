@@ -43,8 +43,10 @@
 }
 
 .textBannerTitleLink {
-    font-size: $productCardDiscountPriceTextSize;
+    font-size: $bodyTextSize;
     font-weight: 500;
     text-align: start;
     margin: 2% 0;
+    cursor: pointer;
+    color: $primary;
 }
