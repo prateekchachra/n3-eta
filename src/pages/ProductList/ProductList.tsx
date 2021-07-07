@@ -224,12 +224,12 @@ const ProductList = () :JSX.Element => {
             <div className="filterColumnContainer">
                 <div className="filterTitleContainer">
                     <span className="filterTitle">Filters</span>
-                    <span 
+                    { (appliedCategoryFilterOptionList.length > 0) && <span 
                         className="clearFilterTitle"
                         onClick={() => onClearAllClickHandler()}
                     >
                         Clear All
-                    </span>
+                    </span>}
                 </div>
                 <div className="secondaryFilterTitleText">
                     <Filters
