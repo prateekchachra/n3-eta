@@ -6,15 +6,12 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
-import RadioButton from '../../components/atoms/RadioButton/RadioButton';
 
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
-import { UserState } from '../../redux/user/UserReducers';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
-import { fetchProductList } from '../../redux/product/ProductActions';
 
 const ProductList = () :JSX.Element => {
     const history = useHistory();
