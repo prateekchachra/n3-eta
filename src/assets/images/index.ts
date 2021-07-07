@@ -7,6 +7,6 @@ import avatar from './avatar.jpg';
 export {
     google_login_btn,
     facebook_login_btn,
-    heroBanner
+    heroBanner,
     avatar
 }
