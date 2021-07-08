@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
 import { RootState } from '../../store';
 import { avatar } from '../../assets/images';
+import {FormattedMessage, useIntl} from 'react-intl'
 import Order, { OrderItem, OrderType } from '../../components/organisms/Order/Order';
 import './Profile.scss'
 import { Col, Row, Table } from 'react-bootstrap';
@@ -99,7 +100,7 @@ const Profile = () :JSX.Element => {
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
 
     const {user} = userState;
-
+    const {formatMessage} = useIntl();
     const onSetAddressDefault = (item: AddressType) => {
             console.log(item + 'made default')
         }
@@ -109,13 +110,13 @@ const Profile = () :JSX.Element => {
     const renderOrders = () => {
         return(
             <div className="profileFieldWrapper">
-                <span className="profileLabel">My Orders</span>
+                <span className="profileLabel"><FormattedMessage id="my_orders"/></span>
                 <Table bordered className="profileOrderTable">
                     <thead>
                         <tr>
-                            <th>S.No.</th>
-                            <th>Items</th>
-                            <th>Total</th>
+                            <th><FormattedMessage id="s_no"/></th>
+                            <th><FormattedMessage id="items"/></th>
+                            <th><FormattedMessage id="total"/></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,7 +133,7 @@ const Profile = () :JSX.Element => {
     const renderAddresses = () => {
         return(
             <div className="profileFieldWrapper">
-                <span className="profileLabel">Saved Addresses</span>
+                <span className="profileLabel"><FormattedMessage id="saved_add"/></span>
                 <div className="profileAddRow">
                     {ADDRESSES.map((item, index) => {
                         return (<Address key={index.toString()}
@@ -148,7 +149,7 @@ const Profile = () :JSX.Element => {
     const renderSavedPaymentMethods = () => {
         return(
             <div className="profileFieldWrapper">
-                <span className="profileLabel">Payment Methods</span>
+                <span className="profileLabel"><FormattedMessage id="pay_methods"/></span>
                 <div className="profileAddRow">
                     {CARDS.map((item, index) => {
                         return (<Card key={index.toString()}
@@ -169,10 +170,10 @@ const Profile = () :JSX.Element => {
                 </div>
                 <Row className="profileDetailsRow">
                     <Col sm={6}>
-                        <span className="profileText">Email:- {user.email ? user.email : 'Not Provided'}</span>
+                        <span className="profileText"><FormattedMessage id="email"/>:- {user.email ? user.email : formatMessage({id: 'not_provided'})}</span>
                     </Col>
                     <Col sm={6}>
-                        <span className="profileText">Phone:- {user.phone ? user.phone : 'Not Provided'}</span>
+                        <span className="profileText"><FormattedMessage id="phone"/>:- {user.phone ? user.phone : formatMessage({id: 'not_provided'})}</span>
                     </Col>
                 </Row>
                 {renderOrders()}

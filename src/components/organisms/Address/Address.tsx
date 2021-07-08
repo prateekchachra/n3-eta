@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
 import './Address.scss';   
 import OptionWrapper from '../../molecules/OptionWrapper/OptionWrapper';
+import { FormattedMessage } from 'react-intl';
 
 export type AddressType = {
     name: string,
@@ -58,7 +59,7 @@ const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')},
              (<Row>
                  <div className="addFieldWrapper">
                     <Form.Check type="radio" aria-label="Default Setter Radio" onChange={onDefaultRadioChange}/>
-                    <span className="addressField addressDefault">Set As Default</span>
+                    <span className="addressField addressDefault"><FormattedMessage id='set_default_add'/></span>
                 </div>
             </Row>)}
             </>
