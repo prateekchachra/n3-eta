@@ -6,6 +6,7 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
+import InputRange, { Range } from 'react-input-range';
 
 import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
@@ -14,22 +15,24 @@ import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 const ProductList = () :JSX.Element => {
+    const MIN_PRICE_RANGE = 199;
+    const MAX_PRICE_RANGE = 1999;
     const history = useHistory();
     const dispatch = useDispatch();
     const {gender} = useParams<Record<string, string | undefined>>();
     const {queryParam} = useParams<Record<string, string | undefined>>();
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
-    const[productList, setProducts] = useState<ProductModel[]>([]);
-    const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
-    const [priceFilterOptionList, setPriceFilterOptionList] = useState<FilterOption[]>([]);
-    const[appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
+    const [productList, setProducts] = useState<ProductModel[]>([]);
+    const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [priceFilter, setPriceFilter] = useState<Range>({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE})
+    const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
 
     useEffect( () => {
         if(applyClearAllFilter) {
             fetchCategoryFilterList();
-            fetchPriceFilterList();
+            setPriceFilter({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE});
         }
     }, [applyClearAllFilter])
 
@@ -58,17 +61,6 @@ const ProductList = () :JSX.Element => {
         setCategoryFilterOptionList(categoriesFilterResponse.data.categories.map((category: string) => {
             return {
                 label: category,
-                value: false,
-                number: 10
-            }
-        }));
-    }
-
-    const fetchPriceFilterList = async () => {
-        const priceFilterResponse = await axios.get("/filters");
-        setPriceFilterOptionList(priceFilterResponse.data.price.map((price: any) => {
-            return {
-                label: `₹ ${price.min} to ₹ ${price.max}`,
                 value: false,
                 number: 10
             }
@@ -130,6 +122,17 @@ const ProductList = () :JSX.Element => {
         return;
     }
 
+    const fetchProductListByPriceRange = async (value: Range) => {
+
+        const url = `/products?discountedPrice_gte=${value.min}&discountedPrice_lte=${value.max}` + 
+            ((gender) ? `gender=${gender}&` : '');
+        const searchResult = await axios.get(url);
+        if(searchResult.data) {
+            setProducts(searchResult.data);
+        }
+
+    }
+
     function onCategoryFilterClickHandler(filters: FilterOption[]) {
         const includedFilterOptions: string[] = filters.filter( filter => filter.value)
             .map( filter => filter.label);
@@ -142,6 +145,19 @@ const ProductList = () :JSX.Element => {
         } else {
             setApplyClearAllFilter(false);
             setAppliedCategoryFilterOptionList(includedFilterOptions);
+        }
+    }
+
+    function onPriceRangeFilterChangeHandler(value: Range) {
+        if(value.min > MIN_PRICE_RANGE || value.max < MAX_PRICE_RANGE) {
+            setApplyClearAllFilter(false);
+            fetchProductListByPriceRange(value);
+        } else {
+            if(gender) {
+                fetchProductListByGender();
+            } else {
+                fetchProductList();
+            }
         }
     }
 
@@ -224,7 +240,7 @@ const ProductList = () :JSX.Element => {
             <div className="filterColumnContainer">
                 <div className="filterTitleContainer">
                     <span className="filterTitle">Filters</span>
-                    { (appliedCategoryFilterOptionList.length > 0) && <span 
+                    { !applyClearAllFilter && <span 
                         className="clearFilterTitle"
                         onClick={() => onClearAllClickHandler()}
                     >
@@ -238,14 +254,20 @@ const ProductList = () :JSX.Element => {
                         onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
                     />  
                 </div>
-                {/* <Filters 
-                    options={priceFilterOptionList} 
-                    label="Price" 
-                    onSelect={ (value: FilterOption[]) => {
-                        console.log(value);
-                    }}
-                /> */}
-                
+                <div className="priceRangeFilterWrapper">
+                    <div className="priceRangeFilterTitleText">Price</div>
+                    <InputRange
+                        maxValue={1999}
+                        minValue={199}
+                        value={priceFilter}
+                        draggableTrack={true}
+                        onChange={(value) => {
+                            setPriceFilter(value as Range);
+                            console.log();
+                        }}
+                        onChangeComplete={(value) => onPriceRangeFilterChangeHandler(value as Range)}
+                    />
+                </div>
             </div>
         );
     }

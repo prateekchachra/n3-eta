@@ -27,7 +27,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     function displayPrice() {
         let _price = price;
         if(discountPercent > 0) {
-            _price = (price * discountPercent) / 100;
+            _price = price - (price * discountPercent) / 100;
         }
         return (
             <span className="priceWrapper">
