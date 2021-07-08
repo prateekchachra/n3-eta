@@ -70,6 +70,7 @@ const ProductList = () :JSX.Element => {
     const fetchProductList = async () => {
         const productsResponse = await axios.get("/products");
         setProducts(productsResponse.data);
+        
         return productsResponse;
     }
 
@@ -125,7 +126,7 @@ const ProductList = () :JSX.Element => {
     const fetchProductListByPriceRange = async (value: Range) => {
 
         const url = `/products?discountedPrice_gte=${value.min}&discountedPrice_lte=${value.max}` + 
-            ((gender) ? `gender=${gender}&` : '');
+            ((gender) ? `&gender=${gender}` : '');
         const searchResult = await axios.get(url);
         if(searchResult.data) {
             setProducts(searchResult.data);
@@ -137,6 +138,7 @@ const ProductList = () :JSX.Element => {
         const includedFilterOptions: string[] = filters.filter( filter => filter.value)
             .map( filter => filter.label);
         if(!includedFilterOptions.length) {
+            setApplyClearAllFilter(true);
             if(gender) {
                 fetchProductListByGender();
             } else {
