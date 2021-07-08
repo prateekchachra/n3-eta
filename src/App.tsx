@@ -20,13 +20,13 @@ import PrivateRoute from './components/hocs/PrivateRoute';
 
 function App (): JSX.Element {
   const dispatch = useDispatch();
-  const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
   const userToken = localStorage.getItem("userToken");
-
+  const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
+  const userState = useSelector<RootState, RootState["userState"]>((state) => state.userState);
     
   useEffect( () => {
-    if(!userToken) {
-      dispatch(markUserAsLoggedOut());
+    if(!userToken && userState.isUserLoggedIn) {
+      dispatch(markUserAsLoggedOut(userState.user));
     }
   }, [userToken]);
 

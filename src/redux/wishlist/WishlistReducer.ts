@@ -3,16 +3,16 @@ import { getProductIndex } from '../cart/utils'
 import { ProductModel } from '../cart/CartReducer';
 import { WISHLIST_ACTIONS } from './WishlistActions';
 
-
-const initialState = {
-    wishlistItems: []
-};
-export type WishlistState ={
+export type WishlistState = {
     wishlistItems: ProductModel[],
 }
 
+export const wishlistInitialState = {
+    wishlistItems: []
+};
+
 const wishlistState = (
-    state: WishlistState = initialState,
+    state: WishlistState = wishlistInitialState,
     action: WISHLIST_ACTIONS 
 ) => {
     switch(action.type) {
@@ -30,7 +30,7 @@ const wishlistState = (
         }
 
         case RESET_WISHLIST: {
-            return initialState;
+            return wishlistInitialState;
         }
         
         default:

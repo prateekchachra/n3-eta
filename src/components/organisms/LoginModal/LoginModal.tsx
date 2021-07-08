@@ -14,6 +14,8 @@ import { markUserAsLoggedIn } from '../../../redux/user/UserActions';
 import { useDispatch } from 'react-redux';
 import axios from '../../../api/axios';
 import { UserModel } from '../../../redux/user/UserReducers';
+import { wishlistInitialState } from '../../../redux/wishlist/WishlistReducer';
+import { cartInitialState } from '../../../redux/cart/CartReducer';
 
 export type LoginModalProps = {
     show: boolean,
@@ -131,13 +133,14 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
               if ( !user ) {
                 console.log("inside if");
                 const newUser: UserModel = {
+                  id: authUser.user.id,
                   email: authUser.user.email,
                   name: authUser.user.displayName,
                   phone: authUser.user.phoneNumber,
                   profileImage: authUser.user.photoURL,
-                  wishList: [],
+                  wishList: wishlistInitialState,
                   orders: [],
-                  cartItems: [],
+                  cart: cartInitialState,
                   addresses: [],
                 };
                 addUser(newUser);
@@ -148,13 +151,14 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
               }
             } else {
               const newUser: UserModel = {
+                id: authUser.user.uid,
                 email: authUser.user.email,
                 name: authUser.user.displayName,
                 phone: authUser.user.phoneNumber,
                 profileImage: authUser.user.photoURL,
-                wishList: [],
+                wishList: wishlistInitialState,
                 orders: [],
-                cartItems: [],
+                cart: cartInitialState,
                 addresses: [],
               };
               addUser(newUser);

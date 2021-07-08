@@ -1,15 +1,21 @@
+import { ADD_PRODUCT_TO_WISHLIST } from './../wishlist/WishlistTypes';
+import { addProductToCart } from './../cart/CartAction';
+import { ADD_PRODUCT_TO_CART } from './../cart/CartTypes';
 import { AnyAction } from 'redux';
-import { ProductModel } from './../cart/CartReducer';
+import cartState, { cartInitialState, CartState, ProductModel } from './../cart/CartReducer';
 import { USER_ACTIONS } from './UserActions';
 import { MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT } from './UserTypes';
+import wishlistState, { wishlistInitialState, WishlistState } from '../wishlist/WishlistReducer';
+import { addProductToWishlist } from '../wishlist/WishlistActions';
 
 export type UserModel = {
+    id?: number,
     email: string,
     name: string,
     profileImage: string,
     phone: number,
-    wishList: ProductModel[],
-    cartItems: ProductModel[],
+    wishList: WishlistState,
+    cart: CartState,
     orders: ProductModel[],
     addresses: []
 }
@@ -19,14 +25,14 @@ export type UserState = {
     isUserLoggedIn: boolean
 }
 
-const initialState: UserState = {
+export const initialUserState: UserState = {
     user: {
         email: '',
         name: '',
         profileImage: '',
         phone: -1,
-        wishList: [],
-        cartItems: [],
+        wishList: wishlistInitialState,
+        cart: cartInitialState,
         orders: [],
         addresses: []
     },
@@ -34,7 +40,7 @@ const initialState: UserState = {
 }
 
 const userState = (
-    state: UserState = initialState,
+    state: UserState = initialUserState,
     action: AnyAction
 ) => {
     switch(action.type) {
@@ -43,6 +49,7 @@ const userState = (
 
             if(action.userSnapShot) {
                 console.info("User has logged in!");
+                console.log("User Snap Shot", action.userSnapShot);
                 return {
                     user: Object.assign({}, action.userSnapShot),
                     isUserLoggedIn: true
@@ -55,8 +62,38 @@ const userState = (
 
             if(state) {
                 console.info("User has logged out!");
-                return { state: initialState }
+                return { state: initialUserState }
             }
+            return state;
+        }
+
+        case ADD_PRODUCT_TO_CART: {
+
+            if(action.payload) {
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        cart: cartState(state.user.cart, addProductToCart(action.payload))
+                    }
+                }
+            }
+
+            return state;
+        }
+
+        case ADD_PRODUCT_TO_WISHLIST: {
+
+            if(action.payload) {
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        wishList: wishlistState(state.user.wishList, addProductToWishlist(action.payload))
+                    }
+                }
+            }
+
             return state;
         }
 

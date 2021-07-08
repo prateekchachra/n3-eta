@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import { connect } from 'react-redux'
 
-import { addProductToCart } from '../../redux/cart/CartAction';
 import { RootState } from '../../store';
 import { ProductModel } from '../../redux/cart/CartReducer';
+import { addProductinToCart } from '../../redux/user/UserActions';
 
 const Wishlist = () :JSX.Element => {
 
@@ -20,7 +20,7 @@ const Wishlist = () :JSX.Element => {
         history.push(`/item/${productId}`);
     }
     function onAddtoCartButtonClickHandler(product: ProductModel) {
-        addProductToCart(product);
+        addProductinToCart(product);
     }
     function renderProductListColumn() {
         return (
@@ -63,4 +63,4 @@ const mapStateToProps = (state: any) => ({
     cartState: state.cartState
 })
   
-export default connect(mapStateToProps, {addProductToCart})(Wishlist);
+export default connect(mapStateToProps, {addProductinToCart})(Wishlist);
