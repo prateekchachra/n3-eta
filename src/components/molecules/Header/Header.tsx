@@ -27,6 +27,7 @@ const Header = () :JSX.Element => {
     const numItemsInCart = (cartState.cartItems) ? cartState.cartItems.length : 0;
     const numItemsInWishlist = (wishlistState.wishlistItems) ? wishlistState.wishlistItems.length : 0;
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
+    const {selectedLocale} = userState;
 
     const onLanguageSelect = (event: SyntheticEvent) => {
         const {target} = event;
@@ -114,7 +115,7 @@ const Header = () :JSX.Element => {
                     <Badge value={numItemsInCart} />
                 </div>
                 <div className="cartIcon">
-                    <DropDown onSelect={onLanguageSelect} options={LANGUAGES_OPTIONS}/>
+                    <DropDown onSelect={onLanguageSelect} selected={selectedLocale} options={LANGUAGES_OPTIONS}/>
                 </div>
                 { userState.isUserLoggedIn && 
                     (<div className="userAccountIcon">
