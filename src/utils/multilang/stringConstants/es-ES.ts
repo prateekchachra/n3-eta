@@ -63,5 +63,16 @@ export default {
     card: 'Tarjeta',
     cod: 'Contra reembolso',
     razorpay: 'RazorPay',
+
+    // Profile
+    my_orders: 'Mis ordenes',
+    s_no: 'Nom.',
+    pay_methods: 'Métodos de pago',
+    saved_add: 'Direcciones guardadas',
+    email: 'Email',
+    set_default_add: 'Establecer por defecto',
+    size: 'Talla',
+    color: 'Color',
+    not_provided: 'No Provisto',
   },
 };

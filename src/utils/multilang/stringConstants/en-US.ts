@@ -63,5 +63,16 @@ export default {
      card: 'Card',
      cod: 'Cash On Delivery',
      razorpay: 'RazorPay',
+
+     // Profile
+     my_orders: 'My Orders',
+     s_no: 'Nom.',
+     pay_methods: 'Payment Methods',
+     saved_add: 'Saved Addresses',
+     email: 'Email',
+     set_default_add: 'Set As Default',
+     size: 'Size',
+     color: 'Color',
+     not_provided: 'Not Provided',
   },
 };
