@@ -1,9 +1,15 @@
 @import '../../../App.scss';
 
 .sizeItem {
+  
+    font-size: 16px;
+}
+.sizeItemContainer{
     height: 40px;
     width: 40px;
     border-radius: 20px;
     border: $border-color solid 1px;
-    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
