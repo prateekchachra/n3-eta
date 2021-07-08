@@ -12,18 +12,27 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Checkout from './pages/Checkout/Checkout';
 import LoginModal from './components/organisms/LoginModal/LoginModal';
 import { RootState } from './store';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { showLoginModal } from './redux/loginModal/LoginModalActions';
 import { markUserAsLoggedOut } from './redux/user/UserActions';
 import PrivateRoute from './components/hocs/PrivateRoute';
+import { I18nProvider, LANGUAGES } from './utils/multilang';
+import { useState } from 'react';
 
-
-function App (): JSX.Element {
+function App ({userState } : any): JSX.Element {
   const dispatch = useDispatch();
   const userToken = localStorage.getItem("userToken");
   const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
-  const userState = useSelector<RootState, RootState["userState"]>((state) => state.userState);
-    
+  
+  const selectedLocale = userState ? userState.selectedLocale : LANGUAGES.ENGLISH;
+  const [locale, setLocale] = useState(selectedLocale);
+
+
+  useEffect(() => {
+    console.log(userState)
+    setLocale(userState.selectedLocale);
+  }, [userState]);
+
   useEffect( () => {
     if(!userToken && userState.isUserLoggedIn) {
       dispatch(markUserAsLoggedOut(userState.user));
@@ -36,34 +45,37 @@ function App (): JSX.Element {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Switch>
-                <Route exact path="/" component={HomePage} />
+       <I18nProvider locale={locale}>
+        <BrowserRouter>
+          <Switch>
+
+              <Route exact path="/" component={HomePage} />
+              <Route path="/list/:gender" component={ProductList} />
+              <Route path="/searchResult/:queryParam" component={ProductList} />
+              <Route path="/wishlist" component={Wishlist} />
+              <Route path="/item/:productId" component={ProductDetail} />
                 <Route path="/offers/list" component={ProductList} />
-                <Route path="/list/:gender" component={ProductList} />
-                <Route path="/searchResult/:queryParam" component={ProductList} />
-                <Route path="/wishlist" component={Wishlist} />
-                <Route path="/item/:productId" component={ProductDetail} />
+                  <Route path="/cart" component={Cart} />
+                  <Route path="/profile" component={Profile} />
+                  <Route path="/payment" component={Payment} />
+                  <Route path="/checkout" component={Checkout} />
+                  {/* <PrivateRoute path="/cart" component={Cart} />
+                  <PrivateRoute path="/profile" component={Profile} />
+                  <PrivateRoute path="/payment" component={Payment} />
+                  <PrivateRoute path="/checkout" component={Checkout} /> */}
 
-                <Route path="/cart" component={Cart} />
-                <Route path="/profile" component={Profile} />
-                <Route path="/payment" component={Payment} />
-                <Route path="/checkout" component={Checkout} />
-                {/* <PrivateRoute path="/cart" component={Cart} />
-                <PrivateRoute path="/profile" component={Profile} />
-                <PrivateRoute path="/payment" component={Payment} />
-                <PrivateRoute path="/checkout" component={Checkout} /> */}
-
-                
-        </Switch>
-        <LoginModal
-            show={showLoginModalFlag}
-            onHide={hideLoginModalActionHandler}
-        />
-      </BrowserRouter>
-   
+                  
+          </Switch>
+          <LoginModal
+              show={showLoginModalFlag}
+              onHide={hideLoginModalActionHandler}
+          />
+        </BrowserRouter>
+      </I18nProvider>
     </div>
   );
 }
-
-export default App;
+const mapStateToProps = (state: any) => ({
+  userState: state.userState,
+})
+export default connect(mapStateToProps, {})(App);

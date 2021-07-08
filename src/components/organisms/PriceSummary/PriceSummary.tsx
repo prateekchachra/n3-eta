@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { Table } from 'react-bootstrap';
 import './PriceSummary.scss';
 import { RootState } from '../../../store';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 
 export type PriceSummaryProps = {
@@ -23,7 +24,7 @@ const PriceSummary = ({onButtonClick, toRenderCart, buttonLabel, onDeleteClick,o
 
     const cartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
     const calculateDiscountedPrice = (price: number, discountPercent: number) => (price - ((price * discountPercent) / 100));
-
+    const {formatMessage} = useIntl();
     let sumTotal = 0;
     let sumDiscount = 0;
 
@@ -43,10 +44,10 @@ const PriceSummary = ({onButtonClick, toRenderCart, buttonLabel, onDeleteClick,o
                 <Table bordered className="priceTable">
                     <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
+                            <th><FormattedMessage id="product" /></th>
+                            <th><FormattedMessage id="price" /></th>
+                            <th><FormattedMessage id="quantity" /></th>
+                            <th><FormattedMessage id="total" /></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,22 +70,22 @@ const PriceSummary = ({onButtonClick, toRenderCart, buttonLabel, onDeleteClick,o
 
     return (
         <div className="cartContainer">
-        <span className="cartLabel">Price Details</span>
+        <span className="cartLabel"><FormattedMessage id="price_summary" /></span>
         {toRenderCart ? renderCartItems() : null}
         <div className="itemContainer">
-           { <span className="cartItemLabel">Price {cartItems ? `(${cartItems.length} items)` : ''}</span>}
+           { <span className="cartItemLabel"><FormattedMessage id="price" /> {cartItems ? `(${cartItems.length + ' ' + formatMessage({id: 'items'})})` : ''}</span>}
             <span className="cartValue">₹{sumTotal}</span>
         </div>
         <div className="itemContainer">
-            <span className="cartItemLabel">Discount</span> 
+            <span className="cartItemLabel"><FormattedMessage id="discount" /></span> 
             <span className="cartDiscountValue">-₹{sumDiscount}</span> 
         </div>
         <div className="itemContainer">
-            <span className="cartItemLabel">Delivery Charges</span>
-            <span className="cartDiscountValue">Free</span>
+            <span className="cartItemLabel"><FormattedMessage id="delivery_charges" /></span>
+            <span className="cartDiscountValue"><FormattedMessage id="free" /></span>
         </div>
         <div className="itemContainer totalContainer">
-            <span className="cartItemLabel cartTotalLabel">Total</span>
+            <span className="cartItemLabel cartTotalLabel"><FormattedMessage id="total" /></span>
             <span className="cartTotalValue">₹{sumTotal - sumDiscount}</span>
         </div>
 

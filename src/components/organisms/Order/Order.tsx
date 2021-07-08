@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from 'react';
 
 import './Order.scss';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 export type OrderItem = {
     productName: string,
@@ -30,7 +31,7 @@ const Order = ({order, orderNumber} : OrderProps) :JSX.Element => {
 
     function renderItem(item: OrderItem){
         const {productName, productId, size, color, quantity} = item;
-        return (<Link to={`/item/${productId}`}><span className="orderItem">{productName} (Size: {size}, Color: {color}) X {quantity}</span></Link>)
+        return (<Link to={`/item/${productId}`}><span className="orderItem">{productName} (<FormattedMessage id='size'/>: {size}, <FormattedMessage id='color'/>: {color}) X {quantity}</span></Link>)
     }   
     function renderItems() {
         return (

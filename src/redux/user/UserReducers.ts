@@ -4,9 +4,10 @@ import { ADD_PRODUCT_TO_CART } from './../cart/CartTypes';
 import { AnyAction } from 'redux';
 import cartState, { cartInitialState, CartState, ProductModel } from './../cart/CartReducer';
 import { USER_ACTIONS } from './UserActions';
-import { MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT } from './UserTypes';
 import wishlistState, { wishlistInitialState, WishlistState } from '../wishlist/WishlistReducer';
 import { addProductToWishlist } from '../wishlist/WishlistActions';
+import { LANGUAGES } from './../../utils/multilang/languages';
+import { MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT, SET_CURRENT_LOCALE } from './UserTypes';
 
 export type UserModel = {
     id?: number,
@@ -22,7 +23,8 @@ export type UserModel = {
 
 export type UserState = {
     user: UserModel,
-    isUserLoggedIn: boolean
+    isUserLoggedIn: boolean,
+    selectedLocale: string,
 }
 
 export const initialUserState: UserState = {
@@ -36,7 +38,8 @@ export const initialUserState: UserState = {
         orders: [],
         addresses: []
     },
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    selectedLocale: LANGUAGES.ENGLISH
 }
 
 const userState = (
@@ -52,7 +55,19 @@ const userState = (
                 console.log("User Snap Shot", action.userSnapShot);
                 return {
                     user: Object.assign({}, action.userSnapShot),
-                    isUserLoggedIn: true
+                    isUserLoggedIn: true,
+                    selectedLocale: state.selectedLocale
+                    
+                }
+            }
+            return state;
+        }
+        case SET_CURRENT_LOCALE: {
+            if(action.locale) {
+                return {
+                   user: state.user,
+                   isUserLoggedIn: state.isUserLoggedIn,
+                   selectedLocale: action.locale,
                 }
             }
             return state;

@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import './Card.scss';   
 import {Form} from 'react-bootstrap';
 import OptionWrapper from '../../molecules/OptionWrapper/OptionWrapper';
+import { FormattedMessage } from 'react-intl';
 
 export type CardType = {
     cardNumber: string,
@@ -34,8 +35,8 @@ const Card = ({card, onDefaultRadioClick = () => {console.log('clicked')}, showS
         <OptionWrapper>
               <>
                 <div className="cardRowWrapper cardFieldWrapper">
-                    <span className="cardField cardName">Name: {name}</span>
-                    <span className="cardField">Card Number: XXXX XXXX XXXX {cardNumber.slice(13,16)}</span>
+                    <span className="cardField cardName"><FormattedMessage id='name'/>: {name}</span>
+                    <span className="cardField"><FormattedMessage id='card_no'/>: XXXX XXXX XXXX {cardNumber.slice(13,16)}</span>
                     <span className="cardField">CVV: {Math.floor(cvv/100)}XX</span>
                 </div>
                 
@@ -43,7 +44,7 @@ const Card = ({card, onDefaultRadioClick = () => {console.log('clicked')}, showS
                 (
                     <div className="cardRowWrapper">
                     <Form.Check type="radio" aria-label="Default Card Setter Radio" onChange={onDefaultRadioChange}/>
-                    <span className="cardField">Set As Default</span>
+                    <span className="cardField"><FormattedMessage id='set_default_add'/></span>
                 </div>)}
             </>
         </OptionWrapper>

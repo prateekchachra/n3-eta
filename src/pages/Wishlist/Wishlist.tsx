@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import PageTemplate from '../../components/templates/PageTemplate';
 import { useHistory } from 'react-router-dom';
-
+import { FormattedMessage } from 'react-intl';
 import './Wishlist.scss'
 import { useSelector } from 'react-redux';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
@@ -45,7 +45,7 @@ const Wishlist = () :JSX.Element => {
                                 }}
                             />)
                         })
-                    : <span>No Items in Wishlist. Please Add Some!</span>}
+                    : <span><FormattedMessage id="no_items_wishlist"/></span>}
                 </div>
             </div>
         )
@@ -53,7 +53,7 @@ const Wishlist = () :JSX.Element => {
     return (
         <PageTemplate>
             <div className="bodyComponent">
-                <span className="wishlistTitle">My Wishlish ({wishlistItems.length} Items)</span>
+                <span className="wishlistTitle"><FormattedMessage id="my_wishlist" /> ({wishlistItems.length} <FormattedMessage id="items" />)</span>
             { renderProductListColumn()}</div>
          
         </PageTemplate>);

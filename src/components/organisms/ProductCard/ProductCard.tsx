@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from 'react';
-
+import { useIntl } from 'react-intl';
 import './productCard.scss';
 
 import Button from '../../molecules/button/Button'
@@ -23,7 +23,7 @@ type ProductCardProps = {
 
 const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
      withoutWishlistActions, isAddedInWishlist, imgs, buyNowHandler, addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
-    
+    const {formatMessage} = useIntl();
     function displayPrice() {
         let _price = price;
         if(discountPercent > 0) {
@@ -85,8 +85,8 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     function renderProductCardActions() {
         return (
             <div className="productCardActions">
-                <Button label="Buy Now" type="outlined" onClick={(event: any) => buyNowHandler(event)}/>
-                <Button label="Add to Cart" type="outlined" onClick={(event: any) => addToCartHandler(event)}/>
+                <Button label={formatMessage({id: 'buy_now'})} type="outlined" onClick={(event: any) => buyNowHandler(event)}/>
+                <Button label={formatMessage({id: 'add_to_cart'})} type="outlined" onClick={(event: any) => addToCartHandler(event)}/>
             </div>
         )
     }

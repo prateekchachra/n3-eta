@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import './Header.scss';
@@ -6,13 +6,16 @@ import './Header.scss';
 import { Bag, Heart, Person } from 'react-bootstrap-icons';
 import Search from '../../atoms/search/Search';
 import Badge from '../../atoms/Badge/Badge';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import Button from '../button/Button';
 import { showLoginModal } from '../../../redux/loginModal/LoginModalActions';
-import { markUserAsLoggedOut } from '../../../redux/user/UserActions';
+import { markUserAsLoggedOut, setCurrentLocale } from '../../../redux/user/UserActions';
 import { resetCart } from '../../../redux/cart/CartAction';
 import { resetWishList } from '../../../redux/wishlist/WishlistActions';
+import DropDown from '../dropdown/DropDown';
+import { LANGUAGES_OPTIONS } from '../../../utils/multilang/languages';
 
 const Header = () :JSX.Element => {
     const history = useHistory();
@@ -20,7 +23,15 @@ const Header = () :JSX.Element => {
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
     const numItemsInCart = (userState.user && userState.user.cart) ? userState.user.cart.cartItems.length : 0;
     const numItemsInWishlist = (userState.user && userState.user.wishList) ? userState.user.wishList.wishlistItems.length : 0;
+    const {formatMessage} = useIntl();
+    const {selectedLocale} = userState;
 
+    const onLanguageSelect = (event: SyntheticEvent) => {
+        const {target} = event;
+        if(target){
+            dispatch(setCurrentLocale((target as HTMLSelectElement).value))
+        }
+    }
     function renderLogo() {
         return(
             <div className="logoWrapper">
@@ -42,7 +53,7 @@ const Header = () :JSX.Element => {
                         event.preventDefault();
                         history.push(`/list/${'men'}`);
                     }}>
-                        Men
+                        <FormattedMessage id="men" />
                     </label>
                 </div>
                 <div className="navLinkWrapper">
@@ -50,7 +61,7 @@ const Header = () :JSX.Element => {
                         event.preventDefault();
                         history.push(`/list/${'women'}`);
                     }}>
-                        Women
+                        <FormattedMessage id="women" />
                     </label>
                 </div>
             </div>
@@ -66,14 +77,14 @@ const Header = () :JSX.Element => {
     function renderSearchBar() {
         return (
             <div className="searchBarWrapper">
-                <Search placeholder="Search by Product Name" 
+                <Search placeholder={formatMessage({id: 'search_placeholder'})} 
                     onEnterPress={(query: string) => onSearchBarEnterPressHandler(query)}
                 />
             </div>
         );
     }
 
-    function renderQuickQctionLinks() {
+    function renderQuickActionLinks() {
         return (
             <div className="quickActionLinkWrapper">
                 <div className="wishListIcon">
@@ -100,6 +111,9 @@ const Header = () :JSX.Element => {
                     }  />
                     <Badge value={numItemsInCart} />
                 </div>
+                <div className="cartIcon">
+                    <DropDown onSelect={onLanguageSelect} selected={selectedLocale} options={LANGUAGES_OPTIONS}/>
+                </div>
                 { userState.isUserLoggedIn && 
                     (<div className="userAccountIcon">
                         <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -120,7 +134,7 @@ const Header = () :JSX.Element => {
         if(!userState.isUserLoggedIn) {
             return (
                 <Button
-                    label="Login"
+                    label={formatMessage({id: "login"})}
                     type="contained"
                     onClick={() => dispatch(showLoginModal(true))}
                 />
@@ -129,7 +143,7 @@ const Header = () :JSX.Element => {
 
         return (
             <Button
-                label="Log out"
+                label={formatMessage({id: "logout"})}
                 type="contained"
                 onClick={() => onLogOutClickHandler()}
             />
@@ -149,7 +163,7 @@ const Header = () :JSX.Element => {
             {renderLogo()}
             {renderNavLinks()}
             {renderSearchBar()}
-            {renderQuickQctionLinks()}
+            {renderQuickActionLinks()}
         </header>
     )
 }
