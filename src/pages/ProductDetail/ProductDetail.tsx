@@ -44,7 +44,6 @@ function ProductDetailPage() {
         if(response.data) {
             setproduct(response.data);
         }
-        return response;
     }
 
     const fetchSimilarProductSuggestions = async () => {
@@ -52,13 +51,15 @@ function ProductDetailPage() {
         if(response.data) {
             setSimilarProductSuggestions(response.data);
         }
-        return response;
     }
 
     useEffect(() => {
         fetchProductDetails();
+    }, [productId]);
+
+    useEffect( () => {
         fetchSimilarProductSuggestions();
-    }, [productId])
+    }, [product]);
 
     const onAddToWishlistHandler = (product: ProductModel) => {
 
@@ -106,7 +107,7 @@ function ProductDetailPage() {
             }
             return (
                 <span className="productPriceWrapper">
-                    Rs.{_price}
+                    ₹{_price}
                 </span>
             );
         }
@@ -118,7 +119,7 @@ function ProductDetailPage() {
             return (
                 <>
                     <span className="productDiscountPriceWrapper">
-                        Rs.{product?.price}
+                        ₹{product?.price}
                     </span>
                     <span className="productDiscountPercentageWrapper">
                         ({product.discountPercent}% Off)

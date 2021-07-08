@@ -31,7 +31,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
         }
         return (
             <span className="priceWrapper">
-                Rs.{_price}
+                ₹{_price}
             </span>
         );
     }
@@ -43,7 +43,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
         return (
             <>
                 <span className="discountPriceWrapper">
-                    Rs.{price}
+                    ₹{price}
                 </span>
                 <span className="discountPercentageWrapper">
                     ({discountPercent}% Off)
@@ -53,7 +53,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     }
 
     function renderProductImageSlider() {
-        return (
+        return imgs && (
             <div className="productCardImageCarousel" onClick={(event: any) => onClickHandler(event)}>
                 <ImageSlider id="slider" name="slider" images={imgs} style={{ height: "204px"}}/>
             </div>

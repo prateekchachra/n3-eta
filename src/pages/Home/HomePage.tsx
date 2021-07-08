@@ -14,9 +14,9 @@ import { RootState } from '../../store';
 import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
-const banners = [
-    "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-  ];
+import { heroBanner } from '../../assets/images';
+
+
 
 const HomePage = () => {
 
@@ -25,7 +25,10 @@ const HomePage = () => {
     const [productList, setProductList] = useState<ProductModel[]>([]);
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
-
+    const banners = [
+        heroBanner
+      ];
+    const specialCategories = ["Knockout Deals", "Festive Special Deals", "Deals of the Day"];
     const fetchProductList= async () => {
 
         try{
@@ -42,6 +45,10 @@ const HomePage = () => {
     useEffect( () => {
         fetchProductList();
     }, []);
+
+    function onViewAllClickHandler() {
+        history.push('/offers/list');
+    }
 
     function onProductCardClickHandler(productId: number) {
         history.push(`/item/${productId}`);
@@ -94,14 +101,21 @@ const HomePage = () => {
     //TODO: add 'listOfProductsByCategoryMap' as an arg, iterator through each item
     function renderProductListColumns() {
         const productListColumnRendererArray: ReactNodeArray = [];
-        [1,2,3].forEach(element => {
+        specialCategories.forEach(element => {
             productListColumnRendererArray.push(
                 <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
                         <h4 className="textBannerTitle"><FormattedMessage id="categories_text" /></h4>
                         <a href="">
-                            <h4 className="textBannerTitleLink"><FormattedMessage id="view_all" /></h4>
+                            <h4 className="textBannerTitleLink"></h4>
                         </a>
+                        <h4 className="textBannerTitle">{element}</h4>
+                        <h4 
+                            className="textBannerTitleLink"
+                            onClick={() => onViewAllClickHandler()}
+                        >
+                            <FormattedMessage id="view_all" />
+                        </h4>
                     </div>
                     <div className="productListContainer">
                         {   productList &&

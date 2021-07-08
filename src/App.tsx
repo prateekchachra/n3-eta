@@ -47,12 +47,13 @@ function App ({userState } : any): JSX.Element {
        <I18nProvider locale={locale}>
         <BrowserRouter>
           <Switch>
-                  <Route exact path="/" component={HomePage} />
-                  <Route path="/list/:gender" component={ProductList} />
-                  <Route path="/searchResult/:queryParam" component={ProductList} />
-                  <Route path="/wishlist" component={Wishlist} />
-                  <Route path="/item/:productId" component={ProductDetail} />
 
+              <Route exact path="/" component={HomePage} />
+              <Route path="/list/:gender" component={ProductList} />
+              <Route path="/searchResult/:queryParam" component={ProductList} />
+              <Route path="/wishlist" component={Wishlist} />
+              <Route path="/item/:productId" component={ProductDetail} />
+                <Route path="/offers/list" component={ProductList} />
                   <Route path="/cart" component={Cart} />
                   <Route path="/profile" component={Profile} />
                   <Route path="/payment" component={Payment} />

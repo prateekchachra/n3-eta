@@ -44,7 +44,7 @@ const Order = ({order, orderNumber} : OrderProps) :JSX.Element => {
         return (
             <div className="orderFieldWrapper">
                 <div className="orderTotal">
-                    Rs. { total }
+                    ₹ { total }
                 </div>
             </div>
         )
