@@ -155,6 +155,7 @@ const ProductList = () :JSX.Element => {
             setApplyClearAllFilter(false);
             fetchProductListByPriceRange(value);
         } else {
+            setApplyClearAllFilter(true);
             if(gender) {
                 fetchProductListByGender();
             } else {
