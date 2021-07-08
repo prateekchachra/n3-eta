@@ -16,7 +16,7 @@ const DropDown = ({options, onSelect} : DropDownProps): JSX.Element => {
 
     return (
         <div>
-            <select onSelect={onSelect}>
+            <select onChange={onSelect}>
                 {options.map((item : DropDownOption) => <option value={item.value} key={item.value}>{item.label}</option>)}
             </select>
         </div>

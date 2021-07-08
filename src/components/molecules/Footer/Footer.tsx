@@ -1,12 +1,13 @@
 import React from 'react'
 import './Footer.scss';
+import { FormattedMessage } from "react-intl";
 
 const Header = () :JSX.Element => {
 
     return (
         <footer className="footerContainer">
-            <span>Policies: Return Policy/Terms Of Use</span>
-            <span>Visit the Help Center or Contact Us</span>
+            <span><FormattedMessage id="policies_description"/></span>
+            <span><FormattedMessage id="visit_us"/></span>
         </footer>
     )
 }

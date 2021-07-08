@@ -1,7 +1,7 @@
 import React, { ReactNodeArray, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from '../../api/axios';
-
+import { FormattedMessage } from "react-intl";
 import './HomePage.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
@@ -98,9 +98,9 @@ const HomePage = () => {
             productListColumnRendererArray.push(
                 <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
-                        <h4 className="textBannerTitle">Categories to bag</h4>
+                        <h4 className="textBannerTitle"><FormattedMessage id="categories_text" /></h4>
                         <a href="">
-                            <h4 className="textBannerTitleLink">View All</h4>
+                            <h4 className="textBannerTitleLink"><FormattedMessage id="view_all" /></h4>
                         </a>
                     </div>
                     <div className="productListContainer">
