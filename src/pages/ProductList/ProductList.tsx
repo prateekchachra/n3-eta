@@ -20,16 +20,14 @@ const ProductList = () :JSX.Element => {
     const {queryParam} = useParams<Record<string, string | undefined>>();
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
-    const[productList, setProducts] = useState<ProductModel[]>([]);
-    const[categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
-    const [priceFilterOptionList, setPriceFilterOptionList] = useState<FilterOption[]>([]);
-    const[appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
+    const [productList, setProducts] = useState<ProductModel[]>([]);
+    const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
 
     useEffect( () => {
         if(applyClearAllFilter) {
             fetchCategoryFilterList();
-            fetchPriceFilterList();
         }
     }, [applyClearAllFilter])
 
@@ -58,17 +56,6 @@ const ProductList = () :JSX.Element => {
         setCategoryFilterOptionList(categoriesFilterResponse.data.categories.map((category: string) => {
             return {
                 label: category,
-                value: false,
-                number: 10
-            }
-        }));
-    }
-
-    const fetchPriceFilterList = async () => {
-        const priceFilterResponse = await axios.get("/filters");
-        setPriceFilterOptionList(priceFilterResponse.data.price.map((price: any) => {
-            return {
-                label: `₹ ${price.min} to ₹ ${price.max}`,
                 value: false,
                 number: 10
             }
@@ -238,14 +225,6 @@ const ProductList = () :JSX.Element => {
                         onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
                     />  
                 </div>
-                {/* <Filters 
-                    options={priceFilterOptionList} 
-                    label="Price" 
-                    onSelect={ (value: FilterOption[]) => {
-                        console.log(value);
-                    }}
-                /> */}
-                
             </div>
         );
     }
