@@ -4,6 +4,7 @@ import './AddAddressModal.scss';
 import Modal from '../../molecules/modal/Modal';
 import Button from '../../molecules/button/Button';
 import TypeSelector from '../TypeSelector/TypeSelector';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 
 export type AddAddressModalProps = {
@@ -15,51 +16,52 @@ const ADDRESS_TYPES = ["Home", "Office", "Others"]
 
 const AddAddressModal = ({show, onHide} : AddAddressModalProps) :JSX.Element => {
     
+  const {formatMessage} = useIntl();
+
   const renderFooterComponent = () => {
-      return(  <Button type="contained" secondary label="Close" onClick={onHide} />)
+      return(  <Button type="contained" secondary label={formatMessage({id: 'close'})} onClick={onHide} />)
   }
     
-  
     
     return (
         <Modal 
-            title="Add Address"
+            title={formatMessage({id: 'add_address'})}
             show={show}
             footer={renderFooterComponent()}
             onHide={onHide}>
                 <Form className="formContainer">
         <Form.Group controlId="form.Name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Name" />
+            <Form.Label><FormattedMessage id="name"/></Form.Label>
+            <Form.Control type="text" placeholder={formatMessage({id: 'name'})} />
         </Form.Group>
         <Form.Group controlId="form.Mobile">
-            <Form.Label>Mobile Number</Form.Label>
-            <Form.Control type="number" placeholder="Mobile no." />
+            <Form.Label><FormattedMessage id="mobile"/></Form.Label>
+            <Form.Control type="number" placeholder={formatMessage({id: 'mobile_placeholder'})} />
         </Form.Group>
         
         <Form.Group controlId="form.Address">
-            <Form.Label>Address</Form.Label>
-            <Form.Control type="number" placeholder="Pin Code*" />
-            <Form.Control type="text" placeholder="Address (House no., Building, Street Area)" />
-            <Form.Control type="text" placeholder="Locality/Town" />
+            <Form.Label><FormattedMessage id="address"/></Form.Label>
+            <Form.Control type="number" placeholder={formatMessage({id: 'pin_placeholder'})} />
+            <Form.Control type="text" placeholder={formatMessage({id: 'add_main_placeholder'})} />
+            <Form.Control type="text" placeholder={formatMessage({id: 'locality_placeholder'})} />
             <Row>
                 <Col>
-                <Form.Control type="text" placeholder="City" />
+                <Form.Control type="text" placeholder={formatMessage({id: 'city_placeholder'})} />
                 </Col>
                 <Col>
-                <Form.Control type="text" placeholder="State*" />
+                <Form.Control type="text" placeholder={formatMessage({id: 'state_placeholder'})} />
                 </Col>
             </Row>
 
         </Form.Group>
         <Form.Group controlId="form.SaveAs">
-            <Form.Label>Save Address As</Form.Label>
+            <Form.Label><FormattedMessage id="save_address"/></Form.Label>
             <TypeSelector label="" values={ADDRESS_TYPES} onSelectedChange={() => {console.log('')}} />
         </Form.Group>
         <Form.Group controlId="form.Submit">
           
         </Form.Group>
-        <Button type="contained" secondary label="Submit Address" onClick={() => {onHide()}} />
+        <Button type="contained" secondary label={formatMessage({id: 'submit_address'})} onClick={() => {onHide()}} />
           
       </Form>
       

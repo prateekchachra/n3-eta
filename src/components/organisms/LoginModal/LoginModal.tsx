@@ -8,7 +8,7 @@ import {
 import Firebase from '../../../constants/firebaseConfig';
 import Button from '../../molecules/button/Button';
 import './LoginModal.scss';
-
+import { FormattedMessage, useIntl } from 'react-intl';
 import {STATIC_DATA} from '../../../constants/staticData'
 import { markUserAsLoggedIn } from '../../../redux/user/UserActions';
 import { useDispatch } from 'react-redux';
@@ -24,7 +24,7 @@ export type LoginModalProps = {
 const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
 
   const dispatch = useDispatch();
-  
+  const {formatMessage} = useIntl();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isRequiredPhone, setIsRequiredPhone] = useState(false);
   const [requiredPhoneOTP, setRequiredPhoneOTP] = useState(false);
@@ -217,25 +217,23 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
       
     const renderFooterComponent = () => {
         return(<>
-            <Button type="contained" secondary label="Close" onClick={onHide} />
+            <Button type="contained" secondary label={formatMessage({id: 'close'})} onClick={onHide} />
           </>)
     }
     return (
     <Modal 
-        title="Login"
+        title={formatMessage({id: 'login'})}
         show={show}
         footer={renderFooterComponent()}
         onHide={onHide}>
             <div className="login-container">
-              <input value={phoneNumber} onChange={handlePhoneChange} className="form-control phoneInput" placeholder="Phone"/>
+              <input value={phoneNumber} onChange={handlePhoneChange} className="form-control phoneInput" placeholder={formatMessage({id: 'phone'})}/>
 
-              <Button type="contained" secondary label="Send OTP" onClick={onHide} />
+              <Button type="contained" secondary label={formatMessage({id: 'send_otp'})} onClick={onHide} />
 
             <div className="social-signup">
-                <span className="divider-or">OR</span>
-                <p>
-                Sign in with social account
-                </p>
+                <span className="divider-or"><FormattedMessage id="or"/></span>
+                <p><FormattedMessage id="signin_text"/></p>
                 <Row>
                 <Col xs={6}>
                 <img

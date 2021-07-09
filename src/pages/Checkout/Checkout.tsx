@@ -8,6 +8,7 @@ import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import Button from '../../components/molecules/button/Button';
 import Address from '../../components/organisms/Address/Address';
 import AddAddressModal from '../../components/organisms/AddAddressModal/AddAddressModal';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const USER_ADDRESSES = [
     {
@@ -39,10 +40,10 @@ const Checkout = () :JSX.Element => {
     const onAddAddressClick = () => setShowAddAddress(true);
 
     const onHideAddressModal = () => setShowAddAddress(false);
-
+    const {formatMessage} = useIntl();
     const renderAddresses = ():JSX.Element => {
         if(!USER_ADDRESSES.length){
-            return(<span className="">No Addresses Found. Please Create One!</span>)
+            return(<span className=""><FormattedMessage id='no_addresses'/></span>)
         }
         else{
             return (<>
@@ -66,17 +67,17 @@ const Checkout = () :JSX.Element => {
             <Row>
                 <Col sm={6} className="addressColumn">
                     {renderAddresses()}
-                <Button type="contained" primary label="Add Address"
+                <Button type="contained" primary label={formatMessage({id: 'add_address'})}
                  onClick={onAddAddressClick} />
                 </Col>
                 <Col sm={6}>
                    
                     <div className="checkoutRow">
-                    <span className="checkoutTitle">Billing Info</span>
-                    <span className="checkoutDescription">Please Enter The Details</span>
+                    <span className="checkoutTitle"><FormattedMessage id='bill_info'/></span>
+                    <span className="checkoutDescription"><FormattedMessage id='enter_details'/></span>
                         <PriceSummary 
                         
-                        buttonLabel="Buy Now" onButtonClick={() => history.push('payment')} />
+                        buttonLabel={formatMessage({id: 'buy_now'})} onButtonClick={() => history.push('payment')} />
                     </div>
                 </Col>
                 </Row>

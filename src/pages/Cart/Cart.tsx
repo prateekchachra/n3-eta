@@ -6,12 +6,13 @@ import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 
 const Cart = () :JSX.Element => {
 
     const history = useHistory();
-
+    const {formatMessage} = useIntl();
     const onDeleteClick = () => {
         console.log('deleted')
     }
@@ -44,14 +45,14 @@ const Cart = () :JSX.Element => {
     return (
         <PageTemplate>
             <div className="bodyComponent">
-                <span className="cartTitle">My Cart</span>
+                <span className="cartTitle"><FormattedMessage id="my_cart"/></span>
               {cartItems && cartItems.length > 0 ?   
               <PriceSummary
                 toRenderCart
                 onDeleteClick={onDeleteClick}
                 onAddRemoveItemClick={onAddItemClick}
-                buttonLabel="PLACE ORDER" onButtonClick={() => history.push('checkout')} />:
-                (<span>No Items in Cart. Explore and add some from our catalogue!</span>)}
+                buttonLabel={formatMessage({id: 'place_order'})} onButtonClick={() => history.push('checkout')} />:
+                (<span><FormattedMessage id="no_items_cart"/></span>)}
             </div>
         </PageTemplate>);
 }

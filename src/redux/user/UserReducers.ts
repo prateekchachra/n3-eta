@@ -1,7 +1,7 @@
+import { LANGUAGES } from './../../utils/multilang/languages';
 import { AnyAction } from 'redux';
 import { ProductModel } from './../cart/CartReducer';
-import { USER_ACTIONS } from './UserActions';
-import { MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT } from './UserTypes';
+import { MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT, SET_CURRENT_LOCALE } from './UserTypes';
 
 export type UserModel = {
     email: string,
@@ -16,7 +16,8 @@ export type UserModel = {
 
 export type UserState = {
     user: UserModel,
-    isUserLoggedIn: boolean
+    isUserLoggedIn: boolean,
+    selectedLocale: string,
 }
 
 const initialState: UserState = {
@@ -30,7 +31,8 @@ const initialState: UserState = {
         orders: [],
         addresses: []
     },
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    selectedLocale: LANGUAGES.ENGLISH
 }
 
 const userState = (
@@ -45,7 +47,19 @@ const userState = (
                 console.info("User has logged in!");
                 return {
                     user: Object.assign({}, action.userSnapShot),
-                    isUserLoggedIn: true
+                    isUserLoggedIn: true,
+                    selectedLocale: state.selectedLocale
+                    
+                }
+            }
+            return state;
+        }
+        case SET_CURRENT_LOCALE: {
+            if(action.locale) {
+                return {
+                   user: state.user,
+                   isUserLoggedIn: state.isUserLoggedIn,
+                   selectedLocale: action.locale,
                 }
             }
             return state;
@@ -55,7 +69,7 @@ const userState = (
 
             if(state) {
                 console.info("User has logged out!");
-                return { state: initialState }
+                return { ...initialState }
             }
             return state;
         }

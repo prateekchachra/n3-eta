@@ -7,6 +7,7 @@ import './Payment.scss'
 import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import OptionWrapper from '../../components/molecules/OptionWrapper/OptionWrapper';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 
 
@@ -18,7 +19,7 @@ const Payment = () :JSX.Element => {
     const [amount, setAmount] = useState('100');
     const [refundId, setRefundId] = useState('');
 
-    
+    const {formatMessage} = useIntl();
     const paymentHandler = (e: MouseEvent) => {
         e.preventDefault();
     
@@ -94,16 +95,16 @@ const Payment = () :JSX.Element => {
         switch(paymentOption){
           case 'Cash':
             return (
-              <span className='descriptionText'>Our delivery Executive will collect the cash at your doorstep.</span>
+              <span className='descriptionText'><FormattedMessage id='cod_description' /></span>
             );
             case 'Card': 
               return (
                 <Form className="paymentCardForm">
                   <Form.Group controlId="form.CardNumber">
-                    <Form.Control type="number" placeholder="Card Number" />
+                    <Form.Control type="number" placeholder={formatMessage({id: 'card_no'})} />
                 </Form.Group>
                 <Form.Group controlId="form.Name">
-                    <Form.Control type="text" placeholder="Name" />
+                    <Form.Control type="text" placeholder={formatMessage({id: 'name'})} />
                 </Form.Group>
                 <Row>
                   <Col>
@@ -115,7 +116,7 @@ const Payment = () :JSX.Element => {
                </Row>
                 </Form>
               );
-              default: return (<span className='descriptionText'>Please Select an option to pay</span>)
+              default: return (<span className='descriptionText'><FormattedMessage id='no_method_description' /></span>)
         }
       }
     return (
@@ -127,13 +128,13 @@ const Payment = () :JSX.Element => {
                             <Row className="paymentRowOptions">
                                 <Col sm={6}>
                                     <OptionWrapper clickable onOptionClick={() => setPaymentOption('Card')}>
-                                        <span className="paymentOption">Card</span>
+                                        <span className="paymentOption"><FormattedMessage id='card' /></span>
                                     </OptionWrapper>
                                     <OptionWrapper clickable onOptionClick={() => setPaymentOption('Cash')}>
-                                        <span className="paymentOption">Cash On Delivery</span>
+                                        <span className="paymentOption"><FormattedMessage id='cod' /></span>
                                     </OptionWrapper>
                                     <OptionWrapper clickable onOptionClick={paymentHandler}>
-                                        <span className="paymentOption" >RazorPay</span>
+                                        <span className="paymentOption" ><FormattedMessage id='razorpay' /></span>
                                     </OptionWrapper>
                                 </Col>
                                 <Col sm={6}>
@@ -146,7 +147,7 @@ const Payment = () :JSX.Element => {
                     <Col sm={6}>
                         <div className="paymentRowMain">
                             <PriceSummary 
-                            buttonLabel="Buy Now" onButtonClick={() => console.log('payment modal')} />
+                            buttonLabel={formatMessage({id: 'buy_now'})} onButtonClick={() => console.log('payment modal')} />
                         </div>
                     </Col>
                 </Row>
