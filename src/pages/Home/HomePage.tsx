@@ -87,10 +87,6 @@ const HomePage = () => {
             productListColumnRendererArray.push(
                 <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
-                        <h4 className="textBannerTitle"><FormattedMessage id="categories_text" /></h4>
-                        <a href="">
-                            <h4 className="textBannerTitleLink"></h4>
-                        </a>
                         <h4 className="textBannerTitle">{element}</h4>
                         <h4 
                             className="textBannerTitleLink"
