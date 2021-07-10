@@ -20,13 +20,10 @@ import { LANGUAGES_OPTIONS } from '../../../utils/multilang/languages';
 const Header = () :JSX.Element => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const {formatMessage} = useIntl();
-
-    const cartState = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState);
-    const wishlistState = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState);
-    const numItemsInCart = (cartState.cartItems) ? cartState.cartItems.length : 0;
-    const numItemsInWishlist = (wishlistState.wishlistItems) ? wishlistState.wishlistItems.length : 0;
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
+    const numItemsInCart = (userState.user && userState.user.cart) ? userState.user.cart.cartItems.length : 0;
+    const numItemsInWishlist = (userState.user && userState.user.wishList) ? userState.user.wishList.wishlistItems.length : 0;
+    const {formatMessage} = useIntl();
     const {selectedLocale} = userState;
 
     const onLanguageSelect = (event: SyntheticEvent) => {
@@ -158,7 +155,7 @@ const Header = () :JSX.Element => {
         localStorage.clear();
         dispatch(resetCart(userState.user.email));
         dispatch(resetWishList(userState.user.email));
-        dispatch(markUserAsLoggedOut());
+        dispatch(markUserAsLoggedOut(userState.user));
     }
 
     return (

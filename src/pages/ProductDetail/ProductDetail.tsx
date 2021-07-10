@@ -15,9 +15,8 @@ import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
-import { addProductToCart } from '../../redux/cart/CartAction';
 
 const SIZE_SELECTOR_OPTIONS = ['39', '40', '41', '42'];
 const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow'];
@@ -62,28 +61,11 @@ function ProductDetailPage() {
     }, [product]);
 
     const onAddToWishlistHandler = (product: ProductModel) => {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product){
-            dispatch(addProductToWishlist(Object.assign({}, product, {quantity: 1})));
-        }
-        
+        dispatch(addProductinToWishlist(product));
     }
 
     function onAddtoCartButtonClickHandler(product: ProductModel | null) {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-        }
+        dispatch(addProductinToCart(product as ProductModel));
     }
 
     function onBuyNowButtonClickHandler(product: ProductModel | null) {
@@ -92,7 +74,7 @@ function ProductDetailPage() {
             return;
         }
         if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            dispatch(addProductinToCart(Object.assign({}, product, {quantity: 1})));
             history.push("/checkout");
         }
     }
