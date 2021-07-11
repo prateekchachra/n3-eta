@@ -10,14 +10,19 @@ import Payment from './pages/Payment/Payment';
 import ProductList from './pages/ProductList/ProductList';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Checkout from './pages/Checkout/Checkout';
-import LoginModal from './components/organisms/LoginModal/LoginModal';
+import LoginModal from './components/organisms/modals/LoginModal/LoginModal';
 import { RootState } from './store';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { showLoginModal } from './redux/loginModal/LoginModalActions';
 import { markUserAsLoggedOut } from './redux/user/UserActions';
 import PrivateRoute from './components/hocs/PrivateRoute';
+import { ToastContainer } from 'react-toastify';
+
 import { I18nProvider, LANGUAGES } from './utils/multilang';
 import { useState } from 'react';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App ({userState } : any): JSX.Element {
   const dispatch = useDispatch();
@@ -29,7 +34,6 @@ function App ({userState } : any): JSX.Element {
 
 
   useEffect(() => {
-    console.log(userState)
     setLocale(userState.selectedLocale);
   }, [userState]);
 
@@ -47,6 +51,9 @@ function App ({userState } : any): JSX.Element {
     <div className="App">
        <I18nProvider locale={locale}>
         <BrowserRouter>
+        <ToastContainer
+            autoClose={3000}
+          />
           <Switch>
 
               <Route exact path="/" component={HomePage} />

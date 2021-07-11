@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import Button from '../../components/molecules/button/Button';
 import Address from '../../components/organisms/Address/Address';
-import AddAddressModal from '../../components/organisms/AddAddressModal/AddAddressModal';
+import AddAddressModal from '../../components/organisms/modals/AddAddressModal/AddAddressModal';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 const USER_ADDRESSES = [

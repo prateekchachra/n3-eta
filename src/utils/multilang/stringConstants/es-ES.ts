@@ -18,7 +18,27 @@ export default {
     close: 'Cerrar',
     signin_text: 'Iniciar sesión con cualquier cuenta social',
     add_to_cart: 'Carrito',
+    knockout_deals: 'Ofertas Eliminatorias',
+    festive_deals: 'Ofertas especiales festivas',
+    deals_of_day: 'Ofertas del día',
     
+    //List Page
+    filters: 'filtros',
+    categories: 'Categorias',
+    special_collection: 'Colección de ofertas especiales',
+    men_collection: 'colección de hombres',
+    women_collection: 'colección de mujeres',
+   
+    //Details Page
+    inclusive_taxes: 'incluyendo todos los impuestos',
+    select_size: 'selecciona el tamaño',
+    select_colour: 'seleccionar el color',
+    product_details: 'Detalles de producto',
+    size_fit: 'tamaño y ajuste',
+    customer_reviews: 'Opiniones de los usuarios',
+    similar_products: 'productos similares',
+
+
     //Wishlist Page
     my_wishlist: 'Mi lista de deseos',
     items: 'Articulos',
