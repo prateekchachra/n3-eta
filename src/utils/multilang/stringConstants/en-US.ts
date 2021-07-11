@@ -18,6 +18,27 @@ export default {
     close: 'Close',
     buy_now: 'Buy Now',
     add_to_cart: 'Add To Cart',
+    knockout_deals: 'Knockout Deals',
+    festive_deals: 'Festive Special Deals',
+    deals_of_day: 'Deals of the Day',
+       
+    //List Page
+    filters: 'filters',
+    clear_all: 'Clear All',
+    categories: 'Categories',
+    special_collection: 'Special Deal Collection',
+    men_collection: "Men's Collection",
+    women_collection: "Women's Collection",
+
+    //Details Page
+    inclusive_taxes: 'inclusive of all taxes',
+    select_size: 'select size',
+    select_colour: 'select colour',
+    product_details: 'product details',
+    size_fit: 'size and fit',
+    customer_reviews: 'customer reviews',
+    similar_products: 'similar products',
+    
 
     // Wishlist Page
     my_wishlist: 'My Wishlist',
@@ -63,6 +84,8 @@ export default {
      card: 'Card',
      cod: 'Cash On Delivery',
      razorpay: 'RazorPay',
+     buy_confirmation: 'Are you sure you want to buy this item?',
+     buy_button_label: 'Yes, Please Confirm',
 
      // Profile
      my_orders: 'My Orders',

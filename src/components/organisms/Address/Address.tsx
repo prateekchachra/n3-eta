@@ -21,11 +21,12 @@ export type AddressProps = {
     showSelect?: boolean,
     showSetDefault?: boolean,
     onDefaultRadioClick?: () => void,
+    onDeleteClick?: () => void,
 }
 
 
 
-const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')}, showSelect, showSetDefault} : AddressProps) :JSX.Element => {
+const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')}, showSelect,onDeleteClick, showSetDefault} : AddressProps) :JSX.Element => {
     
   
     const{name, typeOfAddress,  pin, addressDetail, locality, city, state}=address;
@@ -39,6 +40,7 @@ const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')},
     return (
         <OptionWrapper>
             <>
+            {onDeleteClick ? <span className="deleteButton" onClick={onDeleteClick}>x</span> : null}
             <Row className="addressRow">
                 <Col>
                     <div className="addFieldsWrapper">

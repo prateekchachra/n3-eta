@@ -13,22 +13,36 @@ import { RootState } from '../../store';
 import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
+import BuyNowModal from '../../components/organisms/modals/BuyNowModal/BuyNowModal';
+import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
+
+
 
 const ProductList = () :JSX.Element => {
     const MIN_PRICE_RANGE = 199;
     const MAX_PRICE_RANGE = 1999;
     const history = useHistory();
     const dispatch = useDispatch();
+
     const {gender} = useParams<Record<string, string | undefined>>();
     const {queryParam} = useParams<Record<string, string | undefined>>();
+
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    
     const [productList, setProducts] = useState<ProductModel[]>([]);
     const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
     const [priceFilter, setPriceFilter] = useState<Range>({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE})
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
     const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [showBuyNow, setShowBuyNow] = useState<boolean>(false);
+    const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
+    const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
+    
+    const {formatMessage} = useIntl();
 
     useEffect( () => {
         if(applyClearAllFilter) {
@@ -186,24 +200,53 @@ const ProductList = () :JSX.Element => {
         history.push(`/item/${productId}`);
     }
 
-    const onAddToWishlistHandler = (product: ProductModel) => {
-        dispatch(addProductinToWishlist(product));
+    function onBuyNowHandler(product: ProductModel){
+        setSelectedProduct(product);
+        setShowBuyNow(true);        
     }
 
-    function onAddtoCartButtonClickHandler(product: ProductModel) {
-        dispatch(addProductinToCart(product));
+    function onAddToCartHandler(product: ProductModel){
+        setSelectedProduct(product);
+        setShowAddToCart(true);
     }
 
-    function onBuyNowButtonClickHandler(product: ProductModel | null) {
+    function onAddtoCartClickHandler(size: string, color: string) {
+        dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
+            {quantity: 1, size, color})));
+        
+        toast('Item added to cart!', {
+            type: 'success'
+        })
+        setShowAddToCart(false);
+    }
+
+    function onBuyNowClickHandler(size: string, color: string) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductinToCart(Object.assign({}, product, {quantity: 1})));
-            history.push("/checkout");
+        if(userState.isUserLoggedIn && selectedProduct) {
+            dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
+                {quantity: 1, size, color})));
+            history.push("/cart");
         }
     }
+
+
+    const onAddToWishlistHandler = (product: ProductModel) => {
+        
+        dispatch(addProductinToWishlist(product));
+    }
+
+    const onBuyNowHide = () => {
+        setShowBuyNow(false)
+        setSelectedProduct(null);
+    };
+    const onAddToCartHide = () => {
+        setShowAddToCart(false);
+        setSelectedProduct(null);
+    }
+    
 
     //TODO: create component for BreadCrums
     function renderBreadCrumsRow() {
@@ -220,8 +263,8 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="pageTitleContainer">
                 <div className="pageTitle">
-                    {gender && <p>{gender}&apos;s COLLECTION</p>}
-                    {!gender && <p> Special Deal Collection</p>}
+                    {gender && <p><FormattedMessage id={`${gender}_collection`}/></p>}
+                    {!gender && <p> <FormattedMessage id="special_collection"/></p>}
                 </div>
             </div>
         )
@@ -231,23 +274,23 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="filterColumnContainer">
                 <div className="filterTitleContainer">
-                    <span className="filterTitle">Filters</span>
+                    <span className="filterTitle"><FormattedMessage id="filters" /></span>
                     { !applyClearAllFilter && <span 
                         className="clearFilterTitle"
                         onClick={() => onClearAllClickHandler()}
                     >
-                        Clear All
+                        <FormattedMessage id="clear_all" />
                     </span>}
                 </div>
                 <div className="secondaryFilterTitleText">
                     <Filters
                         options={categoryFilterOptionList} 
-                        label="Categories" 
+                        label={formatMessage({id: 'categories'})}
                         onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
                     />  
                 </div>
                 <div className="priceRangeFilterWrapper">
-                    <div className="priceRangeFilterTitleText">Price</div>
+                    <div className="priceRangeFilterTitleText"><FormattedMessage id="price" /></div>
                     <InputRange
                         maxValue={1999}
                         minValue={199}
@@ -277,10 +320,10 @@ const ProductList = () :JSX.Element => {
                                 price={product.price} 
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
-                                buyNowHandler={() => onBuyNowButtonClickHandler(product)}  
+                                buyNowHandler={() => onBuyNowHandler(product)}  
                                 isAddedInWishlist={isAddedInWishlist}
                                 onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                addToCartHandler={ () => onAddtoCartButtonClickHandler(product) }
+                                addToCartHandler={ () => onAddToCartHandler(product) }
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
                                     onProductCardClickHandler(product.id);
@@ -304,6 +347,16 @@ const ProductList = () :JSX.Element => {
                     {renderFilterColumn()}
                     {renderProductListColumn()}
                 </div>
+            <BuyNowModal 
+                show={showBuyNow}
+                onHide={onBuyNowHide}
+                onBuyClick={onBuyNowClickHandler}
+            />
+            <AddToCartModal 
+                show={showAddToCart}
+                onHide={onAddToCartHide}
+                onAddClick={onAddtoCartClickHandler}
+                />
             </div>
         );
     }

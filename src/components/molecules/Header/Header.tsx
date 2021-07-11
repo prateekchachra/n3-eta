@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react'
+import React, { SyntheticEvent, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import './Header.scss';
@@ -25,6 +25,22 @@ const Header = () :JSX.Element => {
     const numItemsInWishlist = (userState.user && userState.user.wishList) ? userState.user.wishList.wishlistItems.length : 0;
     const {formatMessage} = useIntl();
     const {selectedLocale} = userState;
+
+    const [windowDimension, setWindowDimension] = useState<number | null>(null);
+
+    useEffect(() => {
+        setWindowDimension(window.innerWidth);
+    }, []);
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimension(window.innerWidth);
+        }
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+        });
+    
+    const isMobile = windowDimension && windowDimension <= 640;
 
     const onLanguageSelect = (event: SyntheticEvent) => {
         const {target} = event;
@@ -84,9 +100,10 @@ const Header = () :JSX.Element => {
         );
     }
 
-    function renderQuickActionLinks() {
+    function renderQuickActionLinks(displayLocaleSelect: boolean) {
         return (
             <div className="quickActionLinkWrapper">
+                 {displayLocaleSelect ?  renderLanguageSelect() : null}
                 <div className="wishListIcon">
                     <Heart onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
@@ -111,9 +128,7 @@ const Header = () :JSX.Element => {
                     }  />
                     <Badge value={numItemsInCart} />
                 </div>
-                <div className="cartIcon">
-                    <DropDown onSelect={onLanguageSelect} selected={selectedLocale} options={LANGUAGES_OPTIONS}/>
-                </div>
+               
                 { userState.isUserLoggedIn && 
                     (<div className="userAccountIcon">
                         <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -128,6 +143,12 @@ const Header = () :JSX.Element => {
                 </div>
             </div>
         );
+    }
+
+    function renderLanguageSelect(){
+        return (<div className="languageWrapper">
+        <DropDown onSelect={onLanguageSelect} selected={selectedLocale} options={LANGUAGES_OPTIONS}/>
+    </div>)
     }
 
     function renderAuthenticationButton() {
@@ -158,12 +179,25 @@ const Header = () :JSX.Element => {
         dispatch(markUserAsLoggedOut(userState.user));
     }
 
-    return (
+    return isMobile ? (
+        <header className="headerMobileContainer">
+           <div className="headerMobileRow">
+              {renderLogo()} 
+              {renderQuickActionLinks(false)}
+           </div>
+           <div className="headerMobileRow">
+                {renderSearchBar()}
+                {renderLanguageSelect()}
+           </div>
+          
+        </header>
+    ) : (
         <header className="headerContainer">
             {renderLogo()}
             {renderNavLinks()}
             {renderSearchBar()}
-            {renderQuickActionLinks()}
+            {renderQuickActionLinks(true)}
+          
         </header>
     )
 }

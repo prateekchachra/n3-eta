@@ -15,8 +15,21 @@
     z-index: 10;
 }
 
+.headerMobileContainer{
+    width: 100%;
+    height: 160px;
+    box-shadow: 0 4px 12px 0 #282c340f;
+}
+.headerMobileRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px;
+}
+
 .logoWrapper {
-    width: 18%;
+    width: max-content;
     margin-left: 2%;
 }
 
@@ -41,7 +54,6 @@
 
 .navLinkWrapper {
     display: inline;
-    line-height: 80px;
 }
 
 .navLink {
@@ -69,7 +81,7 @@
 }
 
 .quickActionLinkWrapper {
-    width: 16%;
+    width: max-content;
     display: flex;
     flex-direction: row;
     font-size: $titleTextSize;
@@ -81,15 +93,18 @@
     color: $text-color;
     position: relative;
     cursor: pointer;
+    margin-right: 2px;
 }
 
 .cartIcon {
     color: $text-color;
     position: relative;
     cursor: pointer;
+    margin-right: 2px;
 }
 
 .userAccountIcon {
     color: $text-color;
     cursor: pointer;
+    margin-right: 2px;
 }

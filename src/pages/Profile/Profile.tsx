@@ -9,6 +9,7 @@ import './Profile.scss'
 import { Col, Row, Table } from 'react-bootstrap';
 import Address, {  AddressType } from '../../components/organisms/Address/Address';
 import Card, { CardType } from '../../components/organisms/Card/Card';
+import { toast } from 'react-toastify';
 
 const CARDS: CardType[] = [
     {
@@ -102,10 +103,28 @@ const Profile = () :JSX.Element => {
     const {user} = userState;
     const {formatMessage} = useIntl();
     const onSetAddressDefault = (item: AddressType) => {
-            console.log(item + 'made default')
+            //API CALL
+            toast('Address has been set to default',{
+                type: 'success'
+            })
         }
     const onSetCardDefault = (item: CardType) => {
-            console.log(item + 'made default')
+            //API CALL
+            toast('Card has been set to default',{
+                type: 'success'
+            })
+        }
+    const onAddressDelete = (item: AddressType) => {
+            //API CALL
+            toast('Address deleted successfully',{
+                type: 'success'
+            })
+        }
+    const onCardDelete = (item: CardType) => {
+            //API CALL
+            toast('Card deleted successfully',{
+                type: 'success'
+            })
         }
     const renderOrders = () => {
         return(
@@ -139,6 +158,7 @@ const Profile = () :JSX.Element => {
                         return (<Address key={index.toString()}
                         showSetDefault={!item.default}
                         onDefaultRadioClick={() => onSetAddressDefault(item)}
+                        onDeleteClick={() => onAddressDelete(item)}
                         address={item}/>)
                     })}
                 </div>
@@ -155,6 +175,7 @@ const Profile = () :JSX.Element => {
                         return (<Card key={index.toString()}
                         showSetDefault={!item.default}
                         onDefaultRadioClick={() => onSetCardDefault(item)}
+                        onDeleteClick={() => onCardDelete(item)}
                         card={item}/>)
                     })}
                 </div>
