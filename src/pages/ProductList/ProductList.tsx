@@ -11,6 +11,7 @@ import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import Loader from "react-loader-spinner";
 
 const ProductList = () :JSX.Element => {
     const history = useHistory();
@@ -23,6 +24,7 @@ const ProductList = () :JSX.Element => {
     const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
+    const [showLoader, setShowLoader] = useState<boolean>(false);
 
     useEffect( () => {
         if(applyClearAllFilter) {
@@ -68,8 +70,10 @@ const ProductList = () :JSX.Element => {
     }
 
     const fetchProductListByGender = async () => {
+        setShowLoader(true);
         const productsResponse = await axios.get(`/products?gender=${gender}`);
         setProducts(productsResponse.data);
+        setShowLoader(false);
         return productsResponse;
     }
     
@@ -234,6 +238,15 @@ const ProductList = () :JSX.Element => {
                                 }}
                             />)
                         })
+                    }
+                    { showLoader && 
+                        <Loader
+                        type="Puff"
+                        color="#00BFFF"
+                        height={100}
+                        width={100}
+                        timeout={3000} //3 secs
+                      />
                     }
                 </div>
             </div>
