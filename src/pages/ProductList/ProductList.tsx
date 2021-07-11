@@ -52,18 +52,16 @@ const ProductList = () :JSX.Element => {
     }, [applyClearAllFilter])
 
     useEffect( () => {
-        if(gender) {
+        if(gender && queryParam) {
+            searchProductListByTitle();
+        } else if(gender && !queryParam) {
             fetchProductListByGender();
+        } else if(!gender && queryParam) {
+            searchProductListByTitle();
         } else {
             fetchProductList();
         }
-    }, [gender]);
-
-    useEffect( () => {
-        if(queryParam) {
-            searchProductListByTitle();
-        }
-    }, [queryParam]);
+    }, [gender, queryParam]);
 
     useEffect( () => {
         if(appliedCategoryFilterOptionList.length) {
@@ -100,7 +98,9 @@ const ProductList = () :JSX.Element => {
     
     const searchProductListByTitle = async () => {
         setShowLoader(true);
-        const queryResponse = await axios.get(`/products?name_like='*${queryParam}*`);
+        const url = (gender) ? `/products?gender=${gender}&name_like='*${queryParam}*`
+            : `/products?name_like='*${queryParam}*`;
+        const queryResponse = await axios.get(url);
         if(queryResponse.data) {
             if(productList) {
                 setProducts([]);
@@ -263,8 +263,9 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="pageTitleContainer">
                 <div className="pageTitle">
-                    {gender && <p><FormattedMessage id={`${gender}_collection`}/></p>}
-                    {!gender && <p> <FormattedMessage id="special_collection"/></p>}
+                    {(gender && !queryParam) && <p><FormattedMessage id={`${gender}_collection`}/></p>}
+                    {(!gender && queryParam) && <p><FormattedMessage id="search_results"/></p>}
+                    {(!gender && !queryParam) && <p> <FormattedMessage id="special_collection"/></p>}
                 </div>
             </div>
         )
