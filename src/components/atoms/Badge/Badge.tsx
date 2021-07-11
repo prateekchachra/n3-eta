@@ -6,10 +6,10 @@ type BadgeProps = {
     value: number
 }
 
-function Badge( { value }: BadgeProps) :JSX.Element {
+function Badge( { value = 0 }: BadgeProps) :JSX.Element {
     return (
         <>
-            <span className="quantityBadge">{ value }</span>
+            <span data-test="badge" id="quantityBadge" className="quantityBadge">{ value }</span>
         </>
     )
 }

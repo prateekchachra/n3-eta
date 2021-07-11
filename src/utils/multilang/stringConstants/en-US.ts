@@ -24,6 +24,7 @@ export default {
        
     //List Page
     filters: 'filters',
+    clear_all: 'Clear All',
     categories: 'Categories',
     special_collection: 'Special Deal Collection',
     men_collection: "Men's Collection",
@@ -83,6 +84,8 @@ export default {
      card: 'Card',
      cod: 'Cash On Delivery',
      razorpay: 'RazorPay',
+     buy_confirmation: 'Are you sure you want to buy this item?',
+     buy_button_label: 'Yes, Please Confirm',
 
      // Profile
      my_orders: 'My Orders',

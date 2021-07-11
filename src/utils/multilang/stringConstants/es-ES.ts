@@ -24,6 +24,7 @@ export default {
     
     //List Page
     filters: 'filtros',
+    clear_all: 'Limpiar Todo',
     categories: 'Categorias',
     special_collection: 'Colección de ofertas especiales',
     men_collection: 'colección de hombres',
@@ -83,6 +84,8 @@ export default {
     card: 'Tarjeta',
     cod: 'Contra reembolso',
     razorpay: 'RazorPay',
+    buy_confirmation: '¿Estás segura de que quieres comprar este artículo?',
+    buy_button_label: 'Si, por favor confirme',
 
     // Profile
     my_orders: 'Mis ordenes',
