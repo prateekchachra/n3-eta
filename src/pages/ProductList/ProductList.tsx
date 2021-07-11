@@ -6,6 +6,7 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
+import InputRange, { Range } from 'react-input-range';
 
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
@@ -13,6 +14,8 @@ import { addProductinToCart, addProductinToWishlist } from '../../redux/user/Use
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 const ProductList = () :JSX.Element => {
+    const MIN_PRICE_RANGE = 199;
+    const MAX_PRICE_RANGE = 1999;
     const history = useHistory();
     const dispatch = useDispatch();
     const {gender} = useParams<Record<string, string | undefined>>();
@@ -21,12 +24,14 @@ const ProductList = () :JSX.Element => {
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const [productList, setProducts] = useState<ProductModel[]>([]);
     const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [priceFilter, setPriceFilter] = useState<Range>({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE})
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
 
     useEffect( () => {
         if(applyClearAllFilter) {
             fetchCategoryFilterList();
+            setPriceFilter({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE});
         }
     }, [applyClearAllFilter])
 
@@ -64,6 +69,7 @@ const ProductList = () :JSX.Element => {
     const fetchProductList = async () => {
         const productsResponse = await axios.get("/products");
         setProducts(productsResponse.data);
+        
         return productsResponse;
     }
 
@@ -116,10 +122,22 @@ const ProductList = () :JSX.Element => {
         return;
     }
 
+    const fetchProductListByPriceRange = async (value: Range) => {
+
+        const url = `/products?discountedPrice_gte=${value.min}&discountedPrice_lte=${value.max}` + 
+            ((gender) ? `&gender=${gender}` : '');
+        const searchResult = await axios.get(url);
+        if(searchResult.data) {
+            setProducts(searchResult.data);
+        }
+
+    }
+
     function onCategoryFilterClickHandler(filters: FilterOption[]) {
         const includedFilterOptions: string[] = filters.filter( filter => filter.value)
             .map( filter => filter.label);
         if(!includedFilterOptions.length) {
+            setApplyClearAllFilter(true);
             if(gender) {
                 fetchProductListByGender();
             } else {
@@ -128,6 +146,20 @@ const ProductList = () :JSX.Element => {
         } else {
             setApplyClearAllFilter(false);
             setAppliedCategoryFilterOptionList(includedFilterOptions);
+        }
+    }
+
+    function onPriceRangeFilterChangeHandler(value: Range) {
+        if(value.min > MIN_PRICE_RANGE || value.max < MAX_PRICE_RANGE) {
+            setApplyClearAllFilter(false);
+            fetchProductListByPriceRange(value);
+        } else {
+            setApplyClearAllFilter(true);
+            if(gender) {
+                fetchProductListByGender();
+            } else {
+                fetchProductList();
+            }
         }
     }
 
@@ -193,7 +225,7 @@ const ProductList = () :JSX.Element => {
             <div className="filterColumnContainer">
                 <div className="filterTitleContainer">
                     <span className="filterTitle">Filters</span>
-                    { (appliedCategoryFilterOptionList.length > 0) && <span 
+                    { !applyClearAllFilter && <span 
                         className="clearFilterTitle"
                         onClick={() => onClearAllClickHandler()}
                     >
@@ -206,6 +238,20 @@ const ProductList = () :JSX.Element => {
                         label="Categories" 
                         onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
                     />  
+                </div>
+                <div className="priceRangeFilterWrapper">
+                    <div className="priceRangeFilterTitleText">Price</div>
+                    <InputRange
+                        maxValue={1999}
+                        minValue={199}
+                        value={priceFilter}
+                        draggableTrack={true}
+                        onChange={(value) => {
+                            setPriceFilter(value as Range);
+                            console.log();
+                        }}
+                        onChangeComplete={(value) => onPriceRangeFilterChangeHandler(value as Range)}
+                    />
                 </div>
             </div>
         );
