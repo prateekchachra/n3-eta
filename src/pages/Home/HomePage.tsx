@@ -9,12 +9,11 @@ import ImageSlider from '../../components/molecules/ImageSlider/ImageSlider';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProductToCart } from '../../redux/cart/CartAction';
+import { addProductinToCart, addProductinToWishlist, buyProduct } from '../../redux/user/UserActions';
 import { RootState } from '../../store';
-import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
-import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 import { heroBanner } from '../../assets/images';
+import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 
 
@@ -63,39 +62,22 @@ const HomePage = () => {
     }
 
     function onAddtoCartButtonClickHandler(product: ProductModel) {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-        }
+        dispatch(addProductinToCart(product));
     }
 
-    function onBuyNowButtonClickHandler(product: ProductModel | null) {
+    function onBuyNowButtonClickHandler(product: ProductModel) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
         if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            dispatch(addProductinToCart(Object.assign({}, product, {quantity: 1})));
             history.push("/checkout");
         }
     }
 
     const onAddToWishlistHandler = (product: ProductModel) => {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product){
-            dispatch(addProductToWishlist(Object.assign({}, product)));
-        }
-        
+        dispatch(addProductinToWishlist(product));
     }
     
     //TODO: add 'listOfProductsByCategoryMap' as an arg, iterator through each item
@@ -105,10 +87,6 @@ const HomePage = () => {
             productListColumnRendererArray.push(
                 <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
-                        <h4 className="textBannerTitle"><FormattedMessage id="categories_text" /></h4>
-                        <a href="">
-                            <h4 className="textBannerTitleLink"></h4>
-                        </a>
                         <h4 className="textBannerTitle">{element}</h4>
                         <h4 
                             className="textBannerTitleLink"

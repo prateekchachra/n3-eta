@@ -8,10 +8,9 @@ import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
 import InputRange, { Range } from 'react-input-range';
 
-import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
-import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 const ProductList = () :JSX.Element => {
@@ -181,28 +180,11 @@ const ProductList = () :JSX.Element => {
     }
 
     const onAddToWishlistHandler = (product: ProductModel) => {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product){
-            dispatch(addProductToWishlist(Object.assign({}, product)));
-        }
-        
+        dispatch(addProductinToWishlist(product));
     }
 
     function onAddtoCartButtonClickHandler(product: ProductModel) {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-        }
+        dispatch(addProductinToCart(product));
     }
 
     function onBuyNowButtonClickHandler(product: ProductModel | null) {
@@ -211,7 +193,7 @@ const ProductList = () :JSX.Element => {
             return;
         }
         if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+            dispatch(addProductinToCart(Object.assign({}, product, {quantity: 1})));
             history.push("/checkout");
         }
     }

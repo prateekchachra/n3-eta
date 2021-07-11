@@ -22,13 +22,13 @@ export type CartState ={
     isBuyItemActive: boolean
 }
 
-const initialState = {
+export const cartInitialState = {
     cartItems: [],
     isBuyItemActive: false
 };
 
 const cartState = (
-    state: CartState = initialState,
+    state: CartState = cartInitialState,
     action: AnyAction 
 ) => {
     switch(action.type) {
@@ -51,7 +51,7 @@ const cartState = (
         }
 
         case RESET_CART: {
-            return initialState;
+            return cartInitialState;
         }
 
         default:

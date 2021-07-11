@@ -21,8 +21,9 @@ import { useState } from 'react';
 
 function App ({userState } : any): JSX.Element {
   const dispatch = useDispatch();
-  const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
   const userToken = localStorage.getItem("userToken");
+  const showLoginModalFlag =  useSelector<RootState, RootState["loginModalState"]>((state) => state.loginModalState).showLoginModal;
+  
   const selectedLocale = userState ? userState.selectedLocale : LANGUAGES.ENGLISH;
   const [locale, setLocale] = useState(selectedLocale);
 
@@ -33,8 +34,8 @@ function App ({userState } : any): JSX.Element {
   }, [userState]);
 
   useEffect( () => {
-    if(!userToken) {
-      dispatch(markUserAsLoggedOut());
+    if(!userToken && userState.isUserLoggedIn) {
+      dispatch(markUserAsLoggedOut(userState.user));
     }
   }, [userToken]);
 
