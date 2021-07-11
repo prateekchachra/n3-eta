@@ -12,7 +12,7 @@ import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
-import Loader from "react-loader-spinner";
+import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
 
 const ProductList = () :JSX.Element => {
     const MIN_PRICE_RANGE = 199;
@@ -69,9 +69,10 @@ const ProductList = () :JSX.Element => {
     }
 
     const fetchProductList = async () => {
+        setShowLoader(true);
         const productsResponse = await axios.get("/products");
         setProducts(productsResponse.data);
-        
+        setShowLoader(false);
         return productsResponse;
     }
 
@@ -84,6 +85,7 @@ const ProductList = () :JSX.Element => {
     }
     
     const searchProductListByTitle = async () => {
+        setShowLoader(true);
         const queryResponse = await axios.get(`/products?name_like='*${queryParam}*`);
         if(queryResponse.data) {
             if(productList) {
@@ -91,6 +93,7 @@ const ProductList = () :JSX.Element => {
             }
             setProducts(queryResponse.data);
         }
+        setShowLoader(false);
         return queryResponse;
     }
 
@@ -265,7 +268,7 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="productSearchListColumnContainer">
                 <div className="productListContainer">
-                    {   productList &&
+                    {   !showLoader && productList &&
                         productList.map((product: ProductModel) => {
 
                             const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
@@ -286,13 +289,7 @@ const ProductList = () :JSX.Element => {
                         })
                     }
                     { showLoader && 
-                        <Loader
-                        type="Puff"
-                        color="#00BFFF"
-                        height={100}
-                        width={100}
-                        timeout={3000} //3 secs
-                      />
+                        <FullPageLoader/>
                     }
                 </div>
             </div>
