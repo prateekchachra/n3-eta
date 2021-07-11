@@ -16,11 +16,12 @@ export type CardProps = {
     onRemoveClick?: () => void,
     showSetDefault?: boolean,
     onDefaultRadioClick?: () => void,
+    onDeleteClick?: () => void,
 }
 
 
 
-const Card = ({card, onDefaultRadioClick = () => {console.log('clicked')}, showSetDefault} : CardProps) :JSX.Element => {
+const Card = ({card, onDefaultRadioClick = () => {console.log('clicked')},onDeleteClick, showSetDefault} : CardProps) :JSX.Element => {
     
   
     const{name, cardNumber, cvv}=card;
@@ -34,6 +35,7 @@ const Card = ({card, onDefaultRadioClick = () => {console.log('clicked')}, showS
     return (
         <OptionWrapper>
               <>
+              {onDeleteClick ? <span className="deleteButton" onClick={onDeleteClick}>x</span> : null}
                 <div className="cardRowWrapper cardFieldWrapper">
                     <span className="cardField cardName"><FormattedMessage id='name'/>: {name}</span>
                     <span className="cardField"><FormattedMessage id='card_no'/>: XXXX XXXX XXXX {cardNumber.slice(13,16)}</span>

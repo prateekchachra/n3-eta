@@ -3,11 +3,12 @@ import PageTemplate from '../../components/templates/PageTemplate';
 import { Row,Col, Form } from 'react-bootstrap';
 import './Payment.scss'
 
-
+import ConfirmationModal from '../../components/organisms/modals/ConfirmationModal/ConfirmationModal';
 import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import OptionWrapper from '../../components/molecules/OptionWrapper/OptionWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
 
 
 
@@ -17,6 +18,7 @@ const Payment = () :JSX.Element => {
 
     const [paymentOption, setPaymentOption] = useState('');
     const [amount, setAmount] = useState('100');
+    const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
     const [refundId, setRefundId] = useState('');
 
     const {formatMessage} = useIntl();
@@ -66,6 +68,14 @@ const Payment = () :JSX.Element => {
         const rzp1 = new (window as any).Razorpay(options);
     
         rzp1.open();
+      }
+
+      const onConfirmHide = () => setShowConfirmModal(false);
+      const onConfirmClick = () => {
+        toast('Order confirmed! It will reach you in 2-3 business days',{
+          type: 'success'
+        });
+        history.push('/')
       }
     
       const refundHandler =(e:MouseEvent) => {
@@ -119,9 +129,18 @@ const Payment = () :JSX.Element => {
               default: return (<span className='descriptionText'><FormattedMessage id='no_method_description' /></span>)
         }
       }
+      
     return (
         <PageTemplate>
             <div className="bodyComponent">
+              <ConfirmationModal 
+                 show={showConfirmModal}
+                 onHide={onConfirmHide}
+                 descriptionText={formatMessage({id: 'buy_confirmation'})}
+                 label={formatMessage({id: 'buy_button_label'})}
+                 onPressConfirm={onConfirmClick}
+              
+              />
                 <Row>
                     <Col sm={6}>
                         <OptionWrapper>
@@ -147,7 +166,7 @@ const Payment = () :JSX.Element => {
                     <Col sm={6}>
                         <div className="paymentRowMain">
                             <PriceSummary 
-                            buttonLabel={formatMessage({id: 'buy_now'})} onButtonClick={() => console.log('payment modal')} />
+                            buttonLabel={formatMessage({id: 'buy_now'})} onButtonClick={() => setShowConfirmModal(true)} />
                         </div>
                     </Col>
                 </Row>

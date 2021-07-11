@@ -13,6 +13,7 @@ import { CART_ACTIONS } from '../cart/CartAction';
 import { WISHLIST_ACTIONS } from '../wishlist/WishlistActions';
 import { ADD_PRODUCT_TO_WISHLIST } from '../wishlist/WishlistTypes';
 import { showLoginModal } from '../loginModal/LoginModalActions';
+import { toast } from 'react-toastify';
 
  type USER_LOGIN =  { type: string, userSnapShot: UserModel}
  type USER_LOGOUT = { type: string } 

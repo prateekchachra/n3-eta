@@ -4,8 +4,19 @@
     box-shadow: 0 4px 12px 0 #fea13b;
     margin: 24px;
     padding:24px;
+    position: relative;
 }
 .optionClickable{
     cursor: pointer;
 }
 
+
+.deleteButton{
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    z-index: 10;
+}

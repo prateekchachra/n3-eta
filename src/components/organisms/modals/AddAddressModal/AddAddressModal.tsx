@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
 import './AddAddressModal.scss';   
-import Modal from '../../molecules/modal/Modal';
-import Button from '../../molecules/button/Button';
-import TypeSelector from '../TypeSelector/TypeSelector';
+import Modal from '../../../molecules/modal/Modal';
+import Button from '../../../molecules/button/Button';
+import TypeSelector from '../../TypeSelector/TypeSelector';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 
