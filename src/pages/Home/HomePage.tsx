@@ -15,6 +15,7 @@ import { RootState } from '../../store';
 
 import { heroBanner } from '../../assets/images';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
 import BuyNowModal from '../../components/organisms/modals/BuyNowModal/BuyNowModal';
 import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 
@@ -32,6 +33,7 @@ const HomePage = () => {
 
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    const [showLoader, setShowLoader] = useState<boolean>(false);
     const banners = [
         heroBanner
       ];
@@ -39,11 +41,12 @@ const HomePage = () => {
     const fetchProductList= async () => {
 
         try{
+            setShowLoader(true);
             const response = await axios.get("/products?_page=1&_limit=6");
             if(response.data) {
                 setProductList(response.data);
             }
-
+            setShowLoader(false);
         }catch(err){
             console.log(err)
         }
@@ -132,7 +135,7 @@ const HomePage = () => {
                         </h4>
                     </div>
                     <div className="productListContainer">
-                        {   productList &&
+                        {   !showLoader && productList &&
                             productList.map((product: any) => {
 
                                 const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
@@ -151,6 +154,9 @@ const HomePage = () => {
                                     }}
                                 />)
                             })
+                        }
+                        { showLoader &&
+                            <FullPageLoader/>
                         }
                     </div>
                 </div>

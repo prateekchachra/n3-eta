@@ -12,6 +12,7 @@ import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
 import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import BuyNowModal from '../../components/organisms/modals/BuyNowModal/BuyNowModal';
@@ -36,6 +37,7 @@ const ProductList = () :JSX.Element => {
     const [priceFilter, setPriceFilter] = useState<Range>({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE})
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
+    const [showLoader, setShowLoader] = useState<boolean>(false);
     const [showBuyNow, setShowBuyNow] = useState<boolean>(false);
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
@@ -50,18 +52,16 @@ const ProductList = () :JSX.Element => {
     }, [applyClearAllFilter])
 
     useEffect( () => {
-        if(gender) {
+        if(gender && queryParam) {
+            searchProductListByTitle();
+        } else if(gender && !queryParam) {
             fetchProductListByGender();
+        } else if(!gender && queryParam) {
+            searchProductListByTitle();
         } else {
             fetchProductList();
         }
-    }, [gender]);
-
-    useEffect( () => {
-        if(queryParam) {
-            searchProductListByTitle();
-        }
-    }, [queryParam]);
+    }, [gender, queryParam]);
 
     useEffect( () => {
         if(appliedCategoryFilterOptionList.length) {
@@ -81,26 +81,33 @@ const ProductList = () :JSX.Element => {
     }
 
     const fetchProductList = async () => {
+        setShowLoader(true);
         const productsResponse = await axios.get("/products");
         setProducts(productsResponse.data);
-        
+        setShowLoader(false);
         return productsResponse;
     }
 
     const fetchProductListByGender = async () => {
+        setShowLoader(true);
         const productsResponse = await axios.get(`/products?gender=${gender}`);
         setProducts(productsResponse.data);
+        setShowLoader(false);
         return productsResponse;
     }
     
     const searchProductListByTitle = async () => {
-        const queryResponse = await axios.get(`/products?name_like='*${queryParam}*`);
+        setShowLoader(true);
+        const url = (gender) ? `/products?gender=${gender}&name_like='*${queryParam}*`
+            : `/products?name_like='*${queryParam}*`;
+        const queryResponse = await axios.get(url);
         if(queryResponse.data) {
             if(productList) {
                 setProducts([]);
             }
             setProducts(queryResponse.data);
         }
+        setShowLoader(false);
         return queryResponse;
     }
 
@@ -256,8 +263,9 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="pageTitleContainer">
                 <div className="pageTitle">
-                    {gender && <p><FormattedMessage id={`${gender}_collection`}/></p>}
-                    {!gender && <p> <FormattedMessage id="special_collection"/></p>}
+                    {(gender && !queryParam) && <p><FormattedMessage id={`${gender}_collection`}/></p>}
+                    {(!gender && queryParam) && <p><FormattedMessage id="search_results"/></p>}
+                    {(!gender && !queryParam) && <p> <FormattedMessage id="special_collection"/></p>}
                 </div>
             </div>
         )
@@ -304,7 +312,7 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="productSearchListColumnContainer">
                 <div className="productListContainer">
-                    {   productList &&
+                    {   !showLoader && productList &&
                         productList.map((product: ProductModel) => {
 
                             const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
@@ -323,6 +331,9 @@ const ProductList = () :JSX.Element => {
                                 }}
                             />)
                         })
+                    }
+                    { showLoader && 
+                        <FullPageLoader/>
                     }
                 </div>
             </div>

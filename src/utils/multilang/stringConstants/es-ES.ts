@@ -29,6 +29,7 @@ export default {
     special_collection: 'Colección de ofertas especiales',
     men_collection: 'colección de hombres',
     women_collection: 'colección de mujeres',
+    search_results: 'Resultados de la búsqueda',
    
     //Details Page
     inclusive_taxes: 'incluyendo todos los impuestos',
