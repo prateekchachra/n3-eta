@@ -14,7 +14,7 @@ export type PriceSummaryProps = {
     buttonLabel: string,
     onButtonClick: () => void,
     toRenderCart?: boolean,
-    onDeleteClick?: () => void,
+    onDeleteClick?: (productId: number) => void,
     onAddRemoveItemClick?: () => void,
 
 }
@@ -29,15 +29,16 @@ const PriceSummary = ({onButtonClick, toRenderCart, buttonLabel, onDeleteClick,o
     let sumDiscount = 0;
 
     const cartItemsWithDiscount = cartItems.map((item, index) => {
-        const {price, discountPercent} = item;
+        const {price, discountPercent, quantity} = item;
         const discountedPrice =  calculateDiscountedPrice(price, discountPercent);
-        sumTotal += price;
-        sumDiscount += (price - discountedPrice);
-        return {...item, discountedPrice}
+        sumTotal += price * quantity;
+        sumDiscount += (price - discountedPrice)* quantity;
+        return {...item, discountedPrice: discountedPrice * quantity}
         }
     )
 
-
+    const onDeleteButtonClick = (productId: number) => onDeleteClick ? onDeleteClick(productId) : console.log('deleted');
+    
     const renderCartItems = (): JSX.Element => {
         if(cartItems){
             return (
@@ -54,9 +55,9 @@ const PriceSummary = ({onButtonClick, toRenderCart, buttonLabel, onDeleteClick,o
                 {cartItemsWithDiscount.map((item,index) => {
                     return (
                         <CartItem 
-                        key={item.id.toString()}
+                        key={item.id ? item.id.toString() : '0'}
                         product={item}
-                        onDeleteClick={onDeleteClick}
+                        onDeleteClick={() => onDeleteButtonClick(item.id)}
                         onAddRemoveItemClick={onAddRemoveItemClick}
                         />
                     )

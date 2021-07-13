@@ -11,7 +11,7 @@ export type ModalProps = {
     show: boolean,
     onHide: () => void,
     children: JSX.Element,
-    footer:JSX.Element,
+    footer?:JSX.Element,
 }
 
 
@@ -26,7 +26,7 @@ const Modal = ({show, title, onHide,children, footer} : ModalProps) : JSX.Elemen
         contentClassName="modalContainer"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-      > <div className="modalInnerContainer">
+      >
         <BModal.Header closeButton id="contained-modal-header">
           <BModal.Title id="contained-modal-title-vcenter">
            {title}
@@ -35,10 +35,9 @@ const Modal = ({show, title, onHide,children, footer} : ModalProps) : JSX.Elemen
         <BModal.Body>
           {children}
         </BModal.Body>
-        <BModal.Footer>
+        {footer ? <BModal.Footer>
          {footer}
-        </BModal.Footer>
-        </div>
+        </BModal.Footer> : null}
       </BModal>
     )
 }

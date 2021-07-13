@@ -23,9 +23,14 @@
     height: 204px;
     display: block;
     background: #E5E5E5;
-    border-radius: 2px 2px 0px 0px;
 }
 
+.d-block{
+    border-radius: 10px 10px 0 0;
+}
+.carousel-item{
+    background-color: white;
+}
 .favouriteButtonWrapper {
     position: absolute;
     bottom: 104px;
@@ -82,5 +87,5 @@
 
 .productCardActions {
    border-top: 1px solid #a7a7a7;
-    padding: 0 2px;
+    padding: 4px 0 2px 0;
 }

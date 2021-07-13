@@ -20,9 +20,9 @@ import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { COLOR_SELECTOR_OPTIONS, SIZE_SELECTOR_OPTIONS } from '../../constants/staticData';
 
-import BuyNowModal from '../../components/organisms/modals/BuyNowModal/BuyNowModal';
 import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 import { toast } from 'react-toastify';
+import QuantityInput from '../../components/atoms/QuantityInput/QuantityInput';
 
 
 const REVIEW : CustomerReviewType = {
@@ -42,10 +42,9 @@ function ProductDetailPage() {
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     
     const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
-    const [product, setproduct] = useState<ProductModel | null>(null);
+    const [product, setProduct] = useState<ProductModel | null>(null);
 
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
-    const [showBuyNow, setShowBuyNow] = useState<boolean>(false);
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
 
 
@@ -55,7 +54,7 @@ function ProductDetailPage() {
     const fetchProductDetails= async () => {
         const response = await axios.get(`/products/${productId}`);
         if(response.data) {
-            setproduct(response.data);
+            setProduct(response.data);
         }
     }
 
@@ -78,7 +77,6 @@ function ProductDetailPage() {
     function onBuyNowHandler(suggestedProduct: ProductModel | null){
         if(suggestedProduct){
             setSelectedProduct(product);
-            setShowBuyNow(true);
         }  
         else if(product){
             if(!product.size || !product.color){
@@ -86,7 +84,7 @@ function ProductDetailPage() {
                     type: 'error'
                 })
             }
-            else onBuyNowClickHandler(product.size.toString(), product.color, suggestedProduct !== null)
+            else onBuyNowClickHandler(product.size.toString(), product.color, product.quantity, suggestedProduct === null)
         }
     }
 
@@ -102,13 +100,17 @@ function ProductDetailPage() {
                    type: 'error'
                })
            }
-         else onAddtoCartClickHandler(product.size.toString(), product.color, suggestedProduct !== null)
+         else onAddtoCartClickHandler(product.size.toString(), product.color, product.quantity, suggestedProduct !== null)
        }
     }
 
-    function onAddtoCartClickHandler(size: string, color: string, isMainProduct: boolean) {
+    function onAddtoCartClickHandler(size: string, color: string, quantity: number, isMainProduct: boolean) {
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
         dispatch(addProductinToCart(Object.assign({}, isMainProduct ? product: selectedProduct, 
-            {quantity: 1, size, color})));
+            {quantity, size, color})));
         
         toast('Item added to cart!', {
             type: 'success'
@@ -116,14 +118,16 @@ function ProductDetailPage() {
         setShowAddToCart(false);
     }
 
-    function onBuyNowClickHandler(size: string, color: string, isMainProduct: boolean) {
+    function onBuyNowClickHandler(size: string, color: string, quantity: number, isMainProduct: boolean) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
         if(userState.isUserLoggedIn && (selectedProduct || product)) {
-            dispatch(addProductinToCart(Object.assign({}, isMainProduct ? product : selectedProduct, 
-                {quantity: 1, size, color})));
+          
+            const mainProduct = isMainProduct ? product : selectedProduct;
+            dispatch(addProductinToCart(Object.assign({}, mainProduct, 
+                {quantity, size, color})));
             history.push("/cart");
         }
     }
@@ -134,10 +138,6 @@ function ProductDetailPage() {
         dispatch(addProductinToWishlist(product));
     }
 
-    const onBuyNowHide = () => {
-        setShowBuyNow(false)
-        setSelectedProduct(null);
-    };
     const onAddToCartHide = () => {
         setShowAddToCart(false);
         setSelectedProduct(null);
@@ -176,15 +176,11 @@ function ProductDetailPage() {
 
         return (
             <div className="productDetailPage">
-                <BuyNowModal 
-                    show={showBuyNow}
-                    onHide={onBuyNowHide}
-                    onBuyClick={(size: string, color: string) => onBuyNowClickHandler(size, color, false)}
-                />
                 <AddToCartModal 
                     show={showAddToCart}
                     onHide={onAddToCartHide}
-                    onAddClick={(size: string, color: string) => onAddtoCartClickHandler(size, color, false)}
+                    onBuyNowClick={(size: string, color: string, quantity: number) => onBuyNowClickHandler(size, color, quantity, false)}
+                    onAddClick={(size: string, color: string, quantity: number) => onAddtoCartClickHandler(size, color, quantity, false)}
                     />
                    
                 <div className="productDetailComponent">
@@ -232,6 +228,17 @@ function ProductDetailPage() {
                                         product.color = selected;
                                     }
                                 }}
+                            />
+                        </div>
+                        <div className="productColorSelectorWrapper">
+                            <QuantityInput 
+                            sendBackQuantity={(value) => {
+                                if(product) {
+                                    console.log(value)
+                                    product.quantity = value;
+                                }
+                            }}
+                            
                             />
                         </div>
                         <div className="productDetailButtonActionsWrapper">
@@ -285,7 +292,6 @@ function ProductDetailPage() {
                                     imgs={product.images} 
                                     isAddedInWishlist={isAddedInWishlist}
                                     onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                    buyNowHandler={(e) => onBuyNowHandler(product)} 
                                     addToCartHandler={() => onAddToCartHandler(product)}
                                     onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
