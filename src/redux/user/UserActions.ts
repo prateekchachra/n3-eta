@@ -53,7 +53,7 @@ export const addProductinToCart = (product: ProductModel)
             dispatch(
                 {
                     type: ADD_PRODUCT_TO_CART,
-                    payload: Object.assign({}, product, {quantity: 1})
+                    payload: product
                 }
             )
         }

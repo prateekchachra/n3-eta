@@ -4,6 +4,14 @@
     align-items: center;
 }
 
-.addToCartButtonWrapper{
+.buttonsContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 24px;
+    padding: 24px;   
+}
+.buttonWrapper{
+    margin: 0 12px;
 }

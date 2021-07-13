@@ -8,31 +8,48 @@ import SizeSelector from '../../sizeSelector/SizeSelector';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ProductModel } from '../../../../redux/cart/CartReducer';
 import { COLOR_SELECTOR_OPTIONS, SIZE_SELECTOR_OPTIONS } from '../../../../constants/staticData';
+import { toast } from 'react-toastify';
+import QuantityInput from '../../../atoms/QuantityInput/QuantityInput';
 
 
 export type AddToCartModalProps = {
     show: boolean,
     onHide: () => void,
-    onAddClick: (size: string, color: string) => void,
+    onAddClick: (size: string, color: string, quantity: number) => void,
+    onBuyNowClick: (size: string, color: string, quantity: number) => void,
 }
 
-const AddToCartModal = ({show, onHide, onAddClick} : AddToCartModalProps) :JSX.Element => {
+const AddToCartModal = ({show, onHide, onAddClick, onBuyNowClick} : AddToCartModalProps) :JSX.Element => {
     
     const [size, setSize] = useState<string>('');
     const [color, setColor] = useState<string>('');
+    const [quantity, setQuantity] = useState<number>(1);
     
     const {formatMessage} = useIntl();
     
-    const renderFooterComponent = () => {
-      return(  <Button type="contained" secondary label={formatMessage({id: 'close'})} onClick={onHide} />)
-  }
-        
-    
+   
+    const onBuyButtonClick = () =>  {
+        if(size === '' || color === ''){
+            toast('Please select a size and color',
+            {type: 'error'})
+        }
+        else onBuyNowClick(size, color, quantity)
+     }
+    const onAddButtonClick = () =>  {
+        if(size === '' || color === ''){
+            toast('Please select a size and color',
+            {type: 'error'})
+        }
+      
+        else onAddClick(size, color, quantity)
+     }
+     
+    const onChangeQuantity = (value: number) => setQuantity(value);
+
     return (
         <Modal 
             title={formatMessage({id: 'add_to_cart'})}
             show={show}
-            footer={renderFooterComponent()}
             onHide={onHide}>
                <div className="addToCartContainer">
                 <SizeSelector
@@ -45,8 +62,16 @@ const AddToCartModal = ({show, onHide, onAddClick} : AddToCartModalProps) :JSX.E
                     values={COLOR_SELECTOR_OPTIONS}
                     onSelectedChange={(selected:string) => setColor(selected)}
                 />
-                <div className="addToCartButtonWrapper">
-                    <Button type="contained" primary label={formatMessage({id: 'add_to_cart'})} onClick={() => onAddClick(size, color)} />
+                <QuantityInput 
+                    sendBackQuantity={onChangeQuantity}
+                />
+                <div className="buttonsContainer">
+                    <div className="buttonWrapper">
+                        <Button type="contained" primary label={formatMessage({id: 'buy_now'})} onClick={onBuyButtonClick} />
+                    </div>
+                    <div className="buttonWrapper">
+                        <Button type="contained" secondary label={formatMessage({id: 'add_to_cart'})} onClick={onAddButtonClick} />
+                    </div>  
                  </div>
             </div> 
         </Modal>

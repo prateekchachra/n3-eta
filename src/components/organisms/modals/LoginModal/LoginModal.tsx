@@ -230,17 +230,11 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
       console.log("ADDED NEW USER", response.data);
     }
     
-      
-    const renderFooterComponent = () => {
-        return(<>
-            <Button type="contained" secondary label={formatMessage({id: 'close'})} onClick={onHide} />
-          </>)
-    }
+    
     return (
     <Modal 
         title={formatMessage({id: 'login'})}
         show={show}
-        footer={renderFooterComponent()}
         onHide={onHide}>
             <div className="login-container">
               <input value={phoneNumber} onChange={handlePhoneChange} className="form-control phoneInput" placeholder={formatMessage({id: 'phone'})}/>

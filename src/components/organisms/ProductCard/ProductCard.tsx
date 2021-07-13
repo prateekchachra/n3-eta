@@ -11,7 +11,6 @@ type ProductCardProps = {
     price: number;
     discountPercent?: number;
     imgs: string[];
-    buyNowHandler: MouseEventHandler;
     addToCartHandler: MouseEventHandler;
     onClickHandler: MouseEventHandler;
     onAddToWishlist?: MouseEventHandler;
@@ -22,7 +21,7 @@ type ProductCardProps = {
 
 
 const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
-     withoutWishlistActions, isAddedInWishlist, imgs, buyNowHandler, addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
+     withoutWishlistActions, isAddedInWishlist, imgs,  addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
     const {formatMessage} = useIntl();
     function displayPrice() {
         let _price = price;
@@ -85,7 +84,6 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     function renderProductCardActions() {
         return (
             <div className="productCardActions">
-                <Button label={formatMessage({id: 'buy_now'})} type="outlined" onClick={(event: any) => buyNowHandler(event)}/>
                 <Button label={formatMessage({id: 'add_to_cart'})} type="outlined" onClick={(event: any) => addToCartHandler(event)}/>
             </div>
         )

@@ -16,7 +16,6 @@ import { RootState } from '../../store';
 import { heroBanner } from '../../assets/images';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
-import BuyNowModal from '../../components/organisms/modals/BuyNowModal/BuyNowModal';
 import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 
 
@@ -28,7 +27,6 @@ const HomePage = () => {
     
     const [productList, setProductList] = useState<ProductModel[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
-    const [showBuyNow, setShowBuyNow] = useState<boolean>(false);
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
 
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
@@ -72,19 +70,14 @@ const HomePage = () => {
         );
     }
 
-    function onBuyNowHandler(product: ProductModel){
-        setSelectedProduct(product);
-        setShowBuyNow(true);        
-    }
-
     function onAddToCartHandler(product: ProductModel){
         setSelectedProduct(product);
         setShowAddToCart(true);
     }
 
-    function onAddtoCartClickHandler(size: string, color: string) {
+    function onAddtoCartClickHandler(size: string, color: string, quantity: number) {
         dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
-            {quantity: 1, size, color})));
+            {quantity, size, color})));
         
         toast('Item added to cart!', {
             type: 'success'
@@ -92,14 +85,14 @@ const HomePage = () => {
         setShowAddToCart(false);
     }
 
-    function onBuyNowClickHandler(size: string, color: string) {
+    function onBuyNowClickHandler(size: string, color: string, quantity: number) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
         if(userState.isUserLoggedIn && selectedProduct) {
             dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
-                {quantity: 1, size, color})));
+                {quantity, size, color})));
             history.push("/cart");
         }
     }
@@ -110,10 +103,7 @@ const HomePage = () => {
         dispatch(addProductinToWishlist(product));
     }
 
-    const onBuyNowHide = () => {
-        setShowBuyNow(false)
-        setSelectedProduct(null);
-    };
+
     const onAddToCartHide = () => {
         setShowAddToCart(false);
         setSelectedProduct(null);
@@ -146,7 +136,6 @@ const HomePage = () => {
                                      onAddToWishlist={() => onAddToWishlistHandler(product)}
                                     discountPercent={product.discountPercent} 
                                     imgs={product.images} 
-                                    buyNowHandler={(e) => onBuyNowHandler(product)} 
                                     addToCartHandler={(e) => onAddToCartHandler(product)}
                                     onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                         event.preventDefault();
@@ -170,16 +159,11 @@ const HomePage = () => {
             <div className="bodyComponent">
                 {renderBannerColumn()}
                 {renderProductListColumns()}
-
-                <BuyNowModal 
-                    show={showBuyNow}
-                    onHide={onBuyNowHide}
-                    onBuyClick={onBuyNowClickHandler}
-                />
                 <AddToCartModal 
                     show={showAddToCart}
                     onHide={onAddToCartHide}
                     onAddClick={onAddtoCartClickHandler}
+                    onBuyNowClick={onBuyNowClickHandler}
                     />
             </div>
         )

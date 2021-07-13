@@ -15,7 +15,6 @@ import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import BuyNowModal from '../../components/organisms/modals/BuyNowModal/BuyNowModal';
 import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 
 
@@ -38,7 +37,6 @@ const ProductList = () :JSX.Element => {
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
     const [showLoader, setShowLoader] = useState<boolean>(false);
-    const [showBuyNow, setShowBuyNow] = useState<boolean>(false);
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
     
@@ -200,19 +198,16 @@ const ProductList = () :JSX.Element => {
         history.push(`/item/${productId}`);
     }
 
-    function onBuyNowHandler(product: ProductModel){
-        setSelectedProduct(product);
-        setShowBuyNow(true);        
-    }
+ 
 
     function onAddToCartHandler(product: ProductModel){
         setSelectedProduct(product);
         setShowAddToCart(true);
     }
 
-    function onAddtoCartClickHandler(size: string, color: string) {
+    function onAddtoCartClickHandler(size: string, color: string, quantity: number) {
         dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
-            {quantity: 1, size, color})));
+            {quantity, size, color})));
         
         toast('Item added to cart!', {
             type: 'success'
@@ -220,14 +215,14 @@ const ProductList = () :JSX.Element => {
         setShowAddToCart(false);
     }
 
-    function onBuyNowClickHandler(size: string, color: string) {
+    function onBuyNowClickHandler(size: string, color: string, quantity: number) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
         if(userState.isUserLoggedIn && selectedProduct) {
             dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
-                {quantity: 1, size, color})));
+                {quantity, size, color})));
             history.push("/cart");
         }
     }
@@ -238,10 +233,7 @@ const ProductList = () :JSX.Element => {
         dispatch(addProductinToWishlist(product));
     }
 
-    const onBuyNowHide = () => {
-        setShowBuyNow(false)
-        setSelectedProduct(null);
-    };
+   
     const onAddToCartHide = () => {
         setShowAddToCart(false);
         setSelectedProduct(null);
@@ -321,7 +313,6 @@ const ProductList = () :JSX.Element => {
                                 price={product.price} 
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
-                                buyNowHandler={() => onBuyNowHandler(product)}  
                                 isAddedInWishlist={isAddedInWishlist}
                                 onAddToWishlist={() => onAddToWishlistHandler(product)}
                                 addToCartHandler={ () => onAddToCartHandler(product) }
@@ -348,14 +339,10 @@ const ProductList = () :JSX.Element => {
                     {renderFilterColumn()}
                     {renderProductListColumn()}
                 </div>
-            <BuyNowModal 
-                show={showBuyNow}
-                onHide={onBuyNowHide}
-                onBuyClick={onBuyNowClickHandler}
-            />
             <AddToCartModal 
                 show={showAddToCart}
                 onHide={onAddToCartHide}
+                onBuyNowClick={onBuyNowClickHandler}
                 onAddClick={onAddtoCartClickHandler}
                 />
             </div>
