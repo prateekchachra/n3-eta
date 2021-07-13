@@ -17,7 +17,7 @@ export default {
     or: 'o',
     close: 'Cerrar',
     signin_text: 'Iniciar sesión con cualquier cuenta social',
-    add_to_cart: 'Carrito',
+    add_to_cart: 'Añadir al carrito',
     knockout_deals: 'Ofertas Eliminatorias',
     festive_deals: 'Ofertas especiales festivas',
     deals_of_day: 'Ofertas del día',

@@ -85,7 +85,6 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     function renderProductCardActions() {
         return (
             <div className="productCardActions">
-                <Button label={formatMessage({id: 'buy_now'})} type="outlined" onClick={(event: any) => buyNowHandler(event)}/>
                 <Button label={formatMessage({id: 'add_to_cart'})} type="outlined" onClick={(event: any) => addToCartHandler(event)}/>
             </div>
         )
