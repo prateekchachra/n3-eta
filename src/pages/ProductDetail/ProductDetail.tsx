@@ -267,19 +267,6 @@ function ProductDetailPage() {
                                 The model is wearing size 40
                             </p>
                         </div>
-                        <div className="productCustomerReviewWrapper">
-                            <span className="productCustomerReviewTitle">
-                                <FormattedMessage id="customer_reviews" />
-                            </span>
-                            <div className="productCustomerReview">
-                                <CustomerReview
-                                    review={REVIEW}
-                                />
-                                <CustomerReview
-                                    review={REVIEW}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div className="similarProductsContainer">

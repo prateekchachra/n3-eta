@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/bootstrap";
+@import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
+.loaderContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    color: $primary;
+    background: transparent;
+    backdrop-filter: 10px;
+}

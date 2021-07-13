@@ -37,7 +37,7 @@ const Filters = ({options, label, onSelect} : FilterProps): JSX.Element => {
 
             const {label, value, number} = item;
 
-            const labelStr = `${label} (${number})`
+            const labelStr = `${label}`
             return (
                 <Checkbox
                 onChange={(value: boolean) => onCheckboxChange(value, index)}
