@@ -4,6 +4,9 @@
 }
 .profileFieldWrapper{
     margin: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .profileImageContainer{
     display: flex;

@@ -1,13 +1,26 @@
+import { AddressType } from './../../components/organisms/Address/Address';
+import { CardType } from './../../components/organisms/Card/Card';
 import { ADD_PRODUCT_TO_WISHLIST } from './../wishlist/WishlistTypes';
 import { addProductToCart } from './../cart/CartAction';
 import { ADD_PRODUCT_TO_CART } from './../cart/CartTypes';
 import { AnyAction } from 'redux';
-import cartState, { cartInitialState, CartState, ProductModel } from './../cart/CartReducer';
-import { USER_ACTIONS } from './UserActions';
+import cartState, { cartInitialState, CartState } from './../cart/CartReducer';
 import wishlistState, { wishlistInitialState, WishlistState } from '../wishlist/WishlistReducer';
 import { addProductToWishlist } from '../wishlist/WishlistActions';
 import { LANGUAGES } from './../../utils/multilang/languages';
-import { MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT, SET_CURRENT_LOCALE } from './UserTypes';
+import { 
+    MARK_USER_AS_LOGGED_IN,
+    MARK_USER_AS_LOGGED_OUT,
+    SAVE_ADDRESS_TO_USER,
+    SAVE_CARD_TO_USER,
+    SAVE_ORDER_TO_USER,
+    SET_ADDRESS_AS_DEFAULT,
+    SET_CARD_AS_DEFAULT,
+    DELETE_ADDRESS,
+    DELETE_CARD,
+    SET_CURRENT_LOCALE
+} from './UserTypes';
+import { OrderType } from '../../components/organisms/Order/Order';
 
 export type UserModel = {
     id?: number,
@@ -17,8 +30,9 @@ export type UserModel = {
     phone: number,
     wishList: WishlistState,
     cart: CartState,
-    orders: ProductModel[],
-    addresses: []
+    orders: OrderType[],
+    addresses: AddressType[],
+    cards: CardType[]
 }
 
 export type UserState = {
@@ -36,7 +50,8 @@ export const initialUserState: UserState = {
         wishList: wishlistInitialState,
         cart: cartInitialState,
         orders: [],
-        addresses: []
+        addresses: [],
+        cards: []
     },
     isUserLoggedIn: false,
     selectedLocale: LANGUAGES.ENGLISH
@@ -62,6 +77,14 @@ const userState = (
             }
             return state;
         }
+        case MARK_USER_AS_LOGGED_OUT: {
+
+            if(state) {
+                console.info("User has logged out!");
+                return { state: initialUserState }
+            }
+            return state;
+        }
         case SET_CURRENT_LOCALE: {
             if(action.locale) {
                 return {
@@ -72,15 +95,166 @@ const userState = (
             }
             return state;
         }
+        case SAVE_ADDRESS_TO_USER: {
+            if(action.payload) {
+                const userAddresses = state.user.addresses ? [...state.user.addresses] : [];
+                userAddresses.push(action.payload)
 
-        case MARK_USER_AS_LOGGED_OUT: {
-
-            if(state) {
-                console.info("User has logged out!");
-                return { state: initialUserState }
+                return {
+                    ...state,
+                   user: {
+                    ...state.user,
+                    addresses: userAddresses,
+                    cards: []
+                },
+                  }
             }
             return state;
         }
+        case SAVE_CARD_TO_USER: {
+            if(action.payload) {
+                const userCards = state.user.cards ? [...state.user.cards] : [];
+                userCards.push(action.payload)
+
+                return {
+                    ...state,
+                   user: {
+                    ...state.user,
+                    cards: userCards,
+                }
+                  }
+            }
+            return state;
+        }
+        case SAVE_ORDER_TO_USER: {
+            if(action.payload) {
+                const userOrders = state.user.orders ? [...state.user.orders] : [];
+                userOrders.push(action.payload)
+
+                return {
+                    ...state,
+                   user: {
+                    ...state.user,
+                    orders: userOrders
+                    }
+                  }
+            }
+            return state;
+        }
+        case SET_ADDRESS_AS_DEFAULT: {
+            if(action.payload) {
+                const userAddresses = state.user.addresses ? [...state.user.addresses] : [];
+
+                let currentAddIndex = -1;
+                let defaultAddIndex = -1;
+                let currentAdd: AddressType = userAddresses[0];
+                let defaultAdd: AddressType = userAddresses[0];
+
+                userAddresses.map((item, index) => {
+                    if(item.name === action.payload.name){
+                        currentAddIndex = index;
+                        currentAdd = item;
+                    }
+                
+                    if(item.default === true){
+                        defaultAddIndex = index;
+                        defaultAdd = item;
+                    }
+                
+                });
+                if(currentAddIndex !== -1){
+                    if(defaultAddIndex !== -1){
+                        defaultAdd.default = false;
+                        userAddresses[defaultAddIndex] = defaultAdd;
+                    }
+                    currentAdd.default = true;
+                    userAddresses[currentAddIndex] = currentAdd;
+                }
+                return {
+                    ...state,
+                    user: {
+                    ...state.user,
+                    addresses: userAddresses,
+                    }
+                  }
+            }
+            return state;
+        }
+        case SET_CARD_AS_DEFAULT: {
+            if(action.payload) {
+                const userCards = state.user.cards ? [...state.user.cards] : [];
+
+                let currentCardIndex = -1;
+                let defaultCardIndex = -1;
+                
+                let currentCard: CardType = userCards[0];
+                let defaultCard: CardType = userCards[0];
+
+                userCards.map((item, index) => {
+                    if(item.cardNumber === action.payload.cardNumber){
+                        currentCardIndex = index;
+                        currentCard = item;
+                    }
+                
+                    if(item.default === true){
+                        defaultCardIndex = index;
+                        defaultCard = item;
+                    }
+                
+                });
+                if(currentCardIndex !== -1 && defaultCardIndex !== -1){
+                    defaultCard.default = false;
+                    currentCard.default = true;
+                    
+                    userCards[currentCardIndex] = currentCard;
+                    userCards[defaultCardIndex] = defaultCard;
+
+                }
+                return {
+                    ...state,
+                    user: {
+                    ...state.user,
+                    cards: userCards
+                    },
+                    isUserLoggedIn: state.isUserLoggedIn,
+                    selectedLocale: action.locale,
+                  }
+            }
+            return state;
+        }
+        case DELETE_ADDRESS: {
+            if(action.payload) {
+                const userAddresses = state.user.addresses ? [...state.user.addresses] : [];
+                const addressIndex = userAddresses.indexOf(action.payload.name);
+                userAddresses.splice(addressIndex)
+
+                return {
+                    ...state,
+                   user: {
+                    ...state.user,
+                    addresses: userAddresses
+                    }
+                  }
+            }
+            return state;
+        }
+        case DELETE_CARD: {
+            if(action.payload) {
+                const userCards = state.user.cards ? [...state.user.cards] : [];
+                const cardIndex = userCards.indexOf(action.payload.cardNumber);
+                userCards.splice(cardIndex)
+
+                return {
+                    ...state,
+                   user: {
+                    ...state.user,
+                    cards: userCards
+                    }
+                  }
+            }
+            return state;
+        }
+
 
         case ADD_PRODUCT_TO_CART: {
 

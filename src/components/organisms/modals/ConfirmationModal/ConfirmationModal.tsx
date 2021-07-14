@@ -16,17 +16,12 @@ const ConfirmationModal = ({show, onHide, descriptionText, label, onPressConfirm
     
 
     const {formatMessage} = useIntl();
-    
-    const renderFooterComponent = () => {
-      return(  <Button type="contained" secondary label={formatMessage({id: 'close'})} onClick={onHide} />)
-  }
-        
+
     
     return (
         <Modal 
             title={formatMessage({id: 'confirm'})}
             show={show}
-            footer={renderFooterComponent()}
             onHide={onHide}>
                <div className="confirmModalContainer">
                 <span>{descriptionText}</span> 

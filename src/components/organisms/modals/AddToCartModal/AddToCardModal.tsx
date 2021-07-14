@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Form } from 'react-bootstrap';
 import './AddToCartModal.scss';   
 import Modal from '../../../molecules/modal/Modal';
 import Button from '../../../molecules/button/Button';
 import ColorSelector from '../../colorSelector/ColorSelector';
 import SizeSelector from '../../sizeSelector/SizeSelector';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { ProductModel } from '../../../../redux/cart/CartReducer';
+import { useIntl } from 'react-intl';
 import { COLOR_SELECTOR_OPTIONS, SIZE_SELECTOR_OPTIONS } from '../../../../constants/staticData';
 import { toast } from 'react-toastify';
 import QuantityInput from '../../../atoms/QuantityInput/QuantityInput';

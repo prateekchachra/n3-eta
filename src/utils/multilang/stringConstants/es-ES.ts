@@ -84,12 +84,17 @@ export default {
     no_method_description: 'Seleccione una opción para pagar',
     card: 'Tarjeta',
     cod: 'Contra reembolso',
+    confirm: 'Confirmar',
     razorpay: 'RazorPay',
     buy_confirmation: '¿Estás segura de que quieres comprar este artículo?',
     buy_button_label: 'Si, por favor confirme',
+    proceed_to_payment: 'Proceder al pago',
+    confirm_payment: 'Confirmar pago',
 
     // Profile
     my_orders: 'Mis ordenes',
+    no_orders: 'No se encontraron pedidos. Explore nuestra colección!',
+    no_cards: 'No hay tarjetas guardadas.',
     s_no: 'Nom.',
     pay_methods: 'Métodos de pago',
     saved_add: 'Direcciones guardadas',

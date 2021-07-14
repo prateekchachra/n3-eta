@@ -174,7 +174,7 @@ const Header = () :JSX.Element => {
 
     function onLogOutClickHandler() {
         localStorage.clear();
-        dispatch(resetCart(userState.user.email));
+        dispatch(resetCart());
         dispatch(resetWishList(userState.user.email));
         dispatch(markUserAsLoggedOut(userState.user));
     }

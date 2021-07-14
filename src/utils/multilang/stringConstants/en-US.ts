@@ -83,13 +83,18 @@ export default {
      card_no: 'Card Number',
      no_method_description: 'Please Select an option to pay',
      card: 'Card',
+     confirm: 'Confirm',
      cod: 'Cash On Delivery',
      razorpay: 'RazorPay',
      buy_confirmation: 'Are you sure you want to buy this item?',
      buy_button_label: 'Yes, Please Confirm',
+     proceed_to_payment: 'Proceed To Payment',
+     confirm_payment: 'Confirm Payment',
 
      // Profile
      my_orders: 'My Orders',
+     no_orders: 'No orders found. Explore our collection!',
+     no_cards: 'No saved Cards.',
      s_no: 'Nom.',
      pay_methods: 'Payment Methods',
      saved_add: 'Saved Addresses',

@@ -1,3 +1,6 @@
+import { OrderType } from './../../components/organisms/Order/Order';
+import { CardType } from './../../components/organisms/Card/Card';
+import { AddressType } from './../../components/organisms/Address/Address';
 import { ADD_PRODUCT_TO_CART } from './../cart/CartTypes';
 import { ProductModel } from './../cart/CartReducer';
 import { RootState } from './../../store';
@@ -5,15 +8,20 @@ import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import { UserModel } from './UserReducers';
 import { 
-    MARK_USER_AS_LOGGED_IN, MARK_USER_AS_LOGGED_OUT, 
+    MARK_USER_AS_LOGGED_IN,
+    MARK_USER_AS_LOGGED_OUT,
+    SAVE_ADDRESS_TO_USER,
+    SAVE_CARD_TO_USER,
+    SAVE_ORDER_TO_USER,
+    SET_ADDRESS_AS_DEFAULT,
+    DELETE_ADDRESS,
+    DELETE_CARD,
+    SET_CARD_AS_DEFAULT,
     SET_CURRENT_LOCALE
 } from './UserTypes';
 import axios from "../../api/axios";
-import { CART_ACTIONS } from '../cart/CartAction';
-import { WISHLIST_ACTIONS } from '../wishlist/WishlistActions';
 import { ADD_PRODUCT_TO_WISHLIST } from '../wishlist/WishlistTypes';
 import { showLoginModal } from '../loginModal/LoginModalActions';
-import { toast } from 'react-toastify';
 
  type USER_LOGIN =  { type: string, userSnapShot: UserModel}
  type USER_LOGOUT = { type: string } 
@@ -37,6 +45,83 @@ export const markUserAsLoggedOut = (user: UserModel)
             console.log("UpdateUser:", updatedUser);
             dispatch({
                 type: MARK_USER_AS_LOGGED_OUT
+            });
+        }
+    }
+export const saveAddressToUser = (address: AddressType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: SAVE_ADDRESS_TO_USER,
+                payload: address
+            });
+        }
+    }
+export const saveCardToUser = (card: CardType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: SAVE_CARD_TO_USER,
+                payload: card
+            });
+        }
+    }
+export const saveOrderToUser = (order: OrderType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: SAVE_ORDER_TO_USER,
+                payload: order
+            });
+        }
+    }
+export const setAddressAsDefault = (address: AddressType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: SET_ADDRESS_AS_DEFAULT,
+                payload: address
+            });
+        }
+    }
+export const setCardAsDefault = (card: CardType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: SET_CARD_AS_DEFAULT,
+                payload: card
+            });
+        }
+    }
+export const deleteAddress = (address: AddressType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: DELETE_ADDRESS,
+                payload: address
+            });
+        }
+    }
+export const deleteCard = (card: CardType)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(getRootState().userState.isUserLoggedIn) {
+           
+            dispatch({
+                type: DELETE_CARD,
+                payload: card
             });
         }
     }
