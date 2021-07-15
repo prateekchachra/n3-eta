@@ -6,9 +6,14 @@
     outline: none;
     border-radius: 0.2rem;
     padding: 0.6rem 0.8rem;
-    width: 18rem;
+    width: 10rem;
     margin: 1rem;
     align-items: flex-start;
+}
+.searchContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .searchIconWrapper {

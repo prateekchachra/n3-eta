@@ -38,7 +38,7 @@ const Header = () :JSX.Element => {
         }
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
-        });
+    });
     
     const isMobile = windowDimension && windowDimension <= 640;
 

@@ -1,13 +1,48 @@
 @import 'src/App.scss';
 @import 'react-input-range/lib/css/index.css';
 
-.bodyComponent {
-    display: flex;
-    flex-direction: column;
-    margin-top: 80px;
-    padding: 0 32px;
-}
 
+@media screen and (min-width:520px){
+    
+    .bodyComponent {
+        display: flex;
+        flex-direction: column;
+        margin-top: 80px;
+        padding: 0 32px;
+    }
+    .mainBody {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .filterColumnContainer {
+        width: 12%;
+        padding: 24px 0 0 0;
+        display: -webkit-flex;
+        flex-direction: column;
+
+    }
+}
+@media screen and (max-width:520px){
+    
+    .bodyComponent {
+        display: flex;
+        flex-direction: column;
+        padding: 0 32px;
+    }
+    .mainBody {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .filterColumnContainer {
+        width: 90%;
+        margin: auto;
+        display: -webkit-flex;
+        flex-direction: column;
+    }
+    
+}
 .breadCrumsContainer {
     padding: 20px 0 0 0;
 }
@@ -28,18 +63,8 @@
     color: $text-color;
 }
 
-.mainBody {
-    display: flex;
-    flex-direction: row;
-}
 
-.filterColumnContainer {
-    width: 12%;
-    padding: 24px 0 0 0;
-    display: -webkit-flex;
-    flex-direction: column;
 
-}
 
 .filterTitleContainer {
     display: -webkit-flex;
