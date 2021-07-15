@@ -6,6 +6,7 @@ import Button from '../../../molecules/button/Button';
 import TypeSelector from '../../TypeSelector/TypeSelector';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AddressType } from '../../Address/Address';
+import { toast } from 'react-toastify';
 
 
 export type AddAddressModalProps = {
@@ -63,18 +64,27 @@ const AddAddressModal = ({show, onHide, onAddClick, isFirstAddress} : AddAddress
 
   const onAddAddressClick = (event: SyntheticEvent) => {
         event.preventDefault();
-        onAddClick({
-            name,
-            phone,
-            pin,
-            addressDetail,
-            locality,
-            city,
-            state,
-            typeOfAddress,
-            default : isFirstAddress ? true : false,
-        });
-        onHide();
+
+        if(name === '' || phone === '' || pin === ''
+        || addressDetail === '' || locality === '' 
+        || city === '' || state === '' || typeOfAddress === ''){
+            toast(formatMessage({id: 'add_detail'}),
+            {type: 'error'});
+        }
+        else {
+            onAddClick({
+                name,
+                phone,
+                pin,
+                addressDetail,
+                locality,
+                city,
+                state,
+                typeOfAddress,
+                default : isFirstAddress ? true : false,
+            });
+        }
+        
     }
 
 

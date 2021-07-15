@@ -99,7 +99,10 @@ const userState = (
             if(action.payload) {
                 const userAddresses = state.user.addresses ? [...state.user.addresses] : [];
                 userAddresses.push(action.payload)
-
+                
+                if(userAddresses.length === 1) {
+                    userAddresses[0].default = true;
+                }
                 return {
                     ...state,
                    user: {
@@ -116,6 +119,9 @@ const userState = (
                 const userCards = state.user.cards ? [...state.user.cards] : [];
                 userCards.push(action.payload)
 
+                if(userCards.length === 1) {
+                    userCards[0].default = true;
+                }
                 return {
                     ...state,
                    user: {
@@ -226,8 +232,11 @@ const userState = (
             if(action.payload) {
                 const userAddresses = state.user.addresses ? [...state.user.addresses] : [];
                 const addressIndex = userAddresses.indexOf(action.payload.name);
-                userAddresses.splice(addressIndex)
+                userAddresses.splice(addressIndex, 1)
 
+                if(userAddresses.length === 1){
+                    userAddresses[0].default = true;
+                }
                 return {
                     ...state,
                    user: {
@@ -242,8 +251,12 @@ const userState = (
             if(action.payload) {
                 const userCards = state.user.cards ? [...state.user.cards] : [];
                 const cardIndex = userCards.indexOf(action.payload.cardNumber);
-                userCards.splice(cardIndex)
+                userCards.splice(cardIndex, 1)
 
+                
+                if(userCards.length === 1){
+                    userCards[0].default = true;
+                }
                 return {
                     ...state,
                    user: {

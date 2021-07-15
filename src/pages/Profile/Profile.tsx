@@ -27,25 +27,25 @@ const Profile = () :JSX.Element => {
     const onSetAddressDefault = (item: AddressType) => {
 
             dispatch(setAddressAsDefault(item));
-            toast('Address has been set to default',{
+            toast(formatMessage({id: 'set_default_add'}),{
                 type: 'success'
             })
         }
     const onSetCardDefault = (item: CardType) => {
             dispatch(setCardAsDefault(item));
-            toast('Card has been set to default',{
+            toast(formatMessage({id: 'set_default_card'}),{
                 type: 'success'
             })
         }
     const onAddressDelete = (item: AddressType) => {
             dispatch(deleteAddress(item));
-            toast('Address deleted successfully',{
+            toast(formatMessage({id: 'delete_add'}),{
                 type: 'success'
             })
         }
     const onCardDelete = (item: CardType) => {
              dispatch(deleteCard(item));
-            toast('Card deleted successfully',{
+            toast(formatMessage({id: 'delete_card'}),{
                 type: 'success'
             })
         }

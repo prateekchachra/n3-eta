@@ -28,14 +28,14 @@ const AddToCartModal = ({show, onHide, onAddClick, onBuyNowClick} : AddToCartMod
    
     const onBuyButtonClick = () =>  {
         if(size === '' || color === ''){
-            toast('Please select a size and color',
+            toast(formatMessage({id: 'color_select'}),
             {type: 'error'})
         }
         else onBuyNowClick(size, color, quantity)
      }
     const onAddButtonClick = () =>  {
         if(size === '' || color === ''){
-            toast('Please select a size and color',
+            toast(formatMessage({id: 'color_select'}),
             {type: 'error'})
         }
       

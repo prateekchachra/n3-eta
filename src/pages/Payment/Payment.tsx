@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
-import Card from '../../components/organisms/Card/Card';
+import Card, { CardType } from '../../components/organisms/Card/Card';
 import { ChangeEvent } from 'react';
 import { saveCardToUser, saveOrderToUser } from '../../redux/user/UserActions';
 import { OrderItem } from '../../components/organisms/Order/Order';
@@ -48,17 +48,20 @@ const Payment = () :JSX.Element => {
           quantity}
       });
 
+      const defaultCardFromUser = user.cards && user.cards.length ? 
+      user.cards.filter(item => item.default)[0] : null;
+
     const [paymentOption, setPaymentOption] = useState<string>('');
     const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
     const [refundId, setRefundId] = useState<string>('');
 
     //For the card form
-
+    const [selectedCard, setSelectedCard] = useState<CardType | null>(defaultCardFromUser)
     const [cardNumber, setCardNumber] = useState<string>('')
     const [cardName, setCardName] = useState<string>('')
     const [expiryDate, setExpiryDate] = useState<string>('')
     const [cvv, setCvv] = useState<number>(0);
-
+    
     
     const onCardNumberChange = (event: ChangeEvent) => {
       const {target} = event;
@@ -131,26 +134,41 @@ const Payment = () :JSX.Element => {
       }
 
       const onConfirmHide = () => setShowConfirmModal(false);
+      const onConfirmPayClick = () => {
+        if(selectedCard === null && paymentOption === 'Card'){
+          if(cardNumber === '' || cardName === '' 
+          || cvv.toString().length !== 3 || expiryDate === ''){
+            toast(formatMessage({id: 'card_detail'}), 
+            {type: 'error'})
+          }  else setShowConfirmModal(true) 
+        }
+        else setShowConfirmModal(true)
+      }
       const onConfirmClick = () => {
 
-        dispatch(saveCardToUser({
-            cardNumber,
-            name: cardName,
-            expiryDate,
-            cvv,
-            default: user.cards && user.cards.length > 0 ? false : true ,
-        }))
+        if(selectedCard === null && paymentOption === 'Card'){
+            dispatch(saveCardToUser({
+              cardNumber,
+              name: cardName,
+              expiryDate,
+              cvv,
+              default: user.cards && user.cards.length > 0 ? false : true ,
+          }));
+        }
+        
         dispatch(saveOrderToUser({
           items: orderMappedCartItems,
           total: amount.toString()
         }))
         dispatch(resetCart());
-        toast('Order confirmed! It will reach you in 2-3 business days',{
+        toast(formatMessage({id: 'confirm_order'}),{
           type: 'success'
         });
         history.push('/')
       }
     
+      const onSelectNewRadioClick = () => setSelectedCard(null);
+
       const refundHandler =(e:MouseEvent) => {
         e.preventDefault();
         
@@ -185,9 +203,29 @@ const Payment = () :JSX.Element => {
                 <>
                 {user.cards && user.cards.length > 0 ? (
                   <>
-                    {user.cards.map((item, index) => <Card key={index.toString()} card={item}/>)}
+                    {user.cards.map((item, index) => 
+                    {
+                      
+                      const isSelected = item.cardNumber === selectedCard?.cardNumber;
+                      return (<Card 
+                      key={index.toString()}
+                      card={item}
+                      showSelect
+                      radioSelected={isSelected}
+                      onSelectRadioClick={() => setSelectedCard(item)}
+                    />)})}
+                    <div className="paymentCardNew">
+                    <span className="paymentCardNewText">OR</span>
+                      <Form.Check type="radio"
+                              aria-label="radio 1" 
+                              checked={selectedCard === null}
+                              onChange={onSelectNewRadioClick}
+                              />
+                    <span className="paymentCardNewText">Enter New Card Details</span>
+                  </div>
                   </>
                 ) : null}
+                
                   <Form className="paymentCardForm">
                     <Form.Group controlId="form.CardNumber">
                       <Form.Control type="number" onChange={onCardNumberChange} placeholder={formatMessage({id: 'card_no'})} />
@@ -246,7 +284,7 @@ const Payment = () :JSX.Element => {
                     <Col sm={6}>
                         <div className="paymentRowMain">
                             <PriceSummary 
-                            buttonLabel={formatMessage({id: 'confirm_payment'})} onButtonClick={() => setShowConfirmModal(true)} />
+                            buttonLabel={formatMessage({id: 'confirm_payment'})} onButtonClick={onConfirmPayClick} />
                         </div>
                     </Col>
                 </Row>

@@ -9,6 +9,7 @@
     border: $border-color solid 1px;
     font-size: 16px;
     padding: 4px;
+    margin-left: 24px;    
 }
 .typeSelectorContainer{
     display: flex;
@@ -19,7 +20,4 @@
 
 .typeSelectorContainer .selected{
     background-color: #fea13b;
-}
-.typeItem{
-    margin-left: 24px;
 }

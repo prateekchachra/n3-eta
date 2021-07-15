@@ -5,6 +5,7 @@ import './productCard.scss';
 import Button from '../../molecules/button/Button'
 import ImageSlider from '../../molecules/ImageSlider/ImageSlider';
 import { Heart, HeartFill } from 'react-bootstrap-icons';
+import { useDispatch } from 'react-redux';
 
 type ProductCardProps = {
     productTitle: string;
@@ -14,6 +15,7 @@ type ProductCardProps = {
     addToCartHandler: MouseEventHandler;
     onClickHandler: MouseEventHandler;
     onAddToWishlist?: MouseEventHandler;
+    onRemoveFromWishlistClick?: MouseEventHandler;
     isAddedInWishlist?: boolean,
     withoutWishlistActions?: boolean,
 }
@@ -21,8 +23,10 @@ type ProductCardProps = {
 
 
 const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
-     withoutWishlistActions, isAddedInWishlist, imgs,  addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
+     withoutWishlistActions, isAddedInWishlist, imgs,  addToCartHandler,onRemoveFromWishlistClick, onClickHandler} : ProductCardProps) :JSX.Element => {
+    
     const {formatMessage} = useIntl();
+    const dispatch = useDispatch();
     function displayPrice() {
         let _price = price;
         if(discountPercent > 0) {
@@ -59,6 +63,12 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
         )
     }
 
+    function renderRemoveFromWishlist() {
+        return withoutWishlistActions && (
+            <span className="removeFromWishlistButton" onClick={onRemoveFromWishlistClick}>x</span>
+        )
+    }
+
     function renderFavoriteButton() {
         return (
             <div className="favouriteButtonWrapper">
@@ -92,6 +102,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     return (
         <div className="productCardWrapper">
             { renderProductImageSlider() }
+            { renderRemoveFromWishlist() }
             {withoutWishlistActions ? null : renderFavoriteButton()}
             { renderProductCardText() }
             { renderProductCardActions() }

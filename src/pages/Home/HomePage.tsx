@@ -1,7 +1,7 @@
 import React, { ReactNodeArray, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from '../../api/axios';
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { toast } from 'react-toastify';
 import './HomePage.scss';
 
@@ -24,6 +24,7 @@ const HomePage = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+    const {formatMessage} = useIntl();
     
     const [productList, setProductList] = useState<ProductModel[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
@@ -79,7 +80,7 @@ const HomePage = () => {
         dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
             {quantity, size, color})));
         
-        toast('Item added to cart!', {
+        toast(formatMessage({id: 'added_to_cart'}), {
             type: 'success'
         })
         setShowAddToCart(false);
@@ -98,8 +99,13 @@ const HomePage = () => {
     }
 
 
-    const onAddToWishlistHandler = (product: ProductModel) => {
+    const onAddToWishlistHandler = (product: ProductModel, isAddedInWishlist: boolean) => {
         
+        isAddedInWishlist ? toast(formatMessage({id: 'remove_wishlist'}),
+        {type: 'success'}) :
+        toast(formatMessage({id: 'add_wishlist'}),
+         {type: 'success'})
+
         dispatch(addProductinToWishlist(product));
     }
 
@@ -133,7 +139,7 @@ const HomePage = () => {
                                     productTitle={product.name} 
                                     price={product.price} 
                                     isAddedInWishlist={isAddedInWishlist}
-                                     onAddToWishlist={() => onAddToWishlistHandler(product)}
+                                     onAddToWishlist={() => onAddToWishlistHandler(product, isAddedInWishlist)}
                                     discountPercent={product.discountPercent} 
                                     imgs={product.images} 
                                     addToCartHandler={(e) => onAddToCartHandler(product)}

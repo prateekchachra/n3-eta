@@ -209,7 +209,7 @@ const ProductList = () :JSX.Element => {
         dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
             {quantity, size, color})));
         
-        toast('Item added to cart!', {
+        toast(formatMessage({id: 'added_to_cart'}), {
             type: 'success'
         })
         setShowAddToCart(false);
@@ -228,8 +228,13 @@ const ProductList = () :JSX.Element => {
     }
 
 
-    const onAddToWishlistHandler = (product: ProductModel) => {
+    const onAddToWishlistHandler = (product: ProductModel, isAddedInWishlist: boolean) => {
         
+        isAddedInWishlist ? toast(formatMessage({id: 'remove_wishlist'}),
+        {type: 'success'}) :
+        toast(formatMessage({id: 'add_wishlist'}),
+         {type: 'success'})
+
         dispatch(addProductinToWishlist(product));
     }
 
@@ -314,7 +319,7 @@ const ProductList = () :JSX.Element => {
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
                                 isAddedInWishlist={isAddedInWishlist}
-                                onAddToWishlist={() => onAddToWishlistHandler(product)}
+                                onAddToWishlist={() => onAddToWishlistHandler(product, isAddedInWishlist)}
                                 addToCartHandler={ () => onAddToCartHandler(product) }
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();

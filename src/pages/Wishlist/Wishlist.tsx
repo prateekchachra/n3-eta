@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PageTemplate from '../../components/templates/PageTemplate';
 import { useHistory } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import './Wishlist.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
@@ -13,13 +13,16 @@ import { addProductinToCart } from '../../redux/user/UserActions';
 import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 import { toast } from 'react-toastify';
+import { removeItemFromWishlist } from '../../redux/wishlist/WishlistActions';
 
 const Wishlist = () :JSX.Element => {
 
     const history = useHistory();
+    const dispatch = useDispatch();
+    const {formatMessage} = useIntl();
+    
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-    const dispatch = useDispatch();
 
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
@@ -46,7 +49,7 @@ const Wishlist = () :JSX.Element => {
         dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
             {quantity, size, color})));
         
-        toast('Item added to cart!', {
+        toast(formatMessage({id: 'added_to_cart'}), {
             type: 'success'
         })
         setShowAddToCart(false);
@@ -55,6 +58,13 @@ const Wishlist = () :JSX.Element => {
     const onAddToCartHide = () => {
         setShowAddToCart(false);
         setSelectedProduct(null);
+    }
+    
+    const onRemoveItemClick = (productId: string) => {
+        toast(formatMessage({id: 'remove_wishlist'}), {
+            type: 'success'
+        });
+        dispatch(removeItemFromWishlist(productId))
     }
     
     function renderProductListColumn() {
@@ -69,6 +79,7 @@ const Wishlist = () :JSX.Element => {
                                 price={product.price} 
                                 discountPercent={product.discountPercentage} 
                                 imgs={product.images} 
+                                onRemoveFromWishlistClick={() => onRemoveItemClick(product.id)}
                                 addToCartHandler={(e) => onAddtoCartButtonClickHandler(product)}
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();

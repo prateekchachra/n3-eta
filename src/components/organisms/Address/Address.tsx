@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
 import './Address.scss';   
 import OptionWrapper from '../../molecules/OptionWrapper/OptionWrapper';
@@ -17,17 +17,24 @@ export type AddressType = {
 }
 export type AddressProps = {
     address: AddressType,
-    onRemoveClick?: () => void,
     showSelect?: boolean,
     showSetDefault?: boolean,
-    onDefaultRadioClick?: () => void,
+    radioSelected?: boolean,
     onDeleteClick?: () => void,
+    onDefaultRadioClick?: () => void,
+    onSelectRadioClick?: () => void,
+    
 }
 
 
 
-const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')}, showSelect,onDeleteClick, showSetDefault} : AddressProps) :JSX.Element => {
+const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')}, showSelect,
+    onDeleteClick,radioSelected, showSetDefault, onSelectRadioClick} : AddressProps) :JSX.Element => {
     
+    const [selected, setSelected] = useState<boolean>(radioSelected ? radioSelected: false);
+    useEffect(() => {
+        setSelected(radioSelected ? radioSelected: false);
+    }, [radioSelected])
   
     const{name, typeOfAddress,  pin, addressDetail, locality, city, state}=address;
     
@@ -45,7 +52,11 @@ const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')},
                 <Col>
                     <div className="addFieldsWrapper">
                         <div className="addFieldWrapper">
-                          {showSelect && <Form.Check type="radio" aria-label="radio 1" />}
+                          {showSelect && <Form.Check type="radio"
+                           aria-label="Select Address" 
+                           checked={selected}
+                           onChange={onSelectRadioClick}
+                           />}
                             <span className="addressField addressName">{name}</span>
                         </div>
                         <span className="addressField addressDetail">{addressDetail}, {locality}, {city}, ({state})</span>
@@ -60,8 +71,9 @@ const Address = ({address, onDefaultRadioClick = () => {console.log('clicked')},
             {showSetDefault &&
              (<Row>
                  <div className="addFieldWrapper">
-                    <Form.Check type="radio" aria-label="Default Setter Radio" onChange={onDefaultRadioChange}/>
-                    <span className="addressField addressDefault"><FormattedMessage id='set_default_add'/></span>
+                    <Form.Check type="radio" aria-label="Default Setter Radio" 
+                    onChange={onDefaultRadioChange}/>
+                    <span className="addressField addressDefault"><FormattedMessage id='set_default'/></span>
                 </div>
             </Row>)}
             </>

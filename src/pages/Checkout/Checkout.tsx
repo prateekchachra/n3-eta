@@ -17,26 +17,46 @@ import { saveAddressToUser } from '../../redux/user/UserActions';
 const Checkout = () :JSX.Element => {
 
     const history = useHistory();
-    const [showAddAddress, setShowAddAddress] = useState(false);
-
-    const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
-
     const dispatch = useDispatch();
 
-    const onAddAddressClick = () => setShowAddAddress(true);
+    const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
+    
+    const {user} = userState;
+    
+    const defaultAddressFromUser = user.addresses && user.addresses.length ? 
+    user.addresses.filter(item => item.default)[0] : null;
+    const [showAddAddress, setShowAddAddress] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState<AddressType | null>(defaultAddressFromUser);
+    
 
+    const onAddAddressClick = () => setShowAddAddress(true);
     const onHideAddressModal = () => setShowAddAddress(false);
 
     const onAddAddressSuccessClick = (address: AddressType) => {
-        
-        dispatch(saveAddressToUser(address));
-        toast('Address successfully added', {
-            type: 'success'
-        })
+        let indexOfAdd = -1;
+        user.addresses.map((item, index) => {
+            if(item.name === address.name){
+                indexOfAdd = index;
+                return;
+            }
+        });
+
+        if(indexOfAdd === -1){   
+            onHideAddressModal();
+            dispatch(saveAddressToUser(address));
+            setSelectedAddress(address);
+            toast(formatMessage({id: 'added_address'}), {
+                type: 'success'
+            })
+        }
+        else {
+            toast(formatMessage({id: 'exists_address'}), {
+                type: 'error'
+            })
+        }
     }
     const {formatMessage} = useIntl();
 
-    const {user} = userState;
 
     const renderAddresses = ():JSX.Element => {
         if(!user.addresses.length){
@@ -45,12 +65,19 @@ const Checkout = () :JSX.Element => {
         else{
             return (<div className="checkoutAddressWrapper">
             {user.addresses.map((item,index) =>
-             (<Address 
-            key={item.name} 
-            showSelect
-            address={item} 
-            onRemoveClick={() => console.log('remove')}
-            />))}
+            {
+                const isSelected = item.name === selectedAddress?.name;
+                return (<Address 
+                    key={item.name} 
+                    showSelect
+                    radioSelected={isSelected}
+                    address={item} 
+                    onSelectRadioClick={() => setSelectedAddress(item)}
+                    />)
+                }
+            )
+            
+            }
             </div>)
         }
     }
