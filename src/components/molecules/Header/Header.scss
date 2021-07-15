@@ -43,15 +43,6 @@
     font-size: $titleTextSize;
 }
 
-.navLinks {
-    width: 24%;
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: flex-start;
-    margin-left: 2%;
-}
-
 .navLinkWrapper {
     display: inline;
 }
@@ -69,7 +60,7 @@
 }
 
 .searchBarWrapper {
-    width: 54%;
+    width: max-content;
     display: flex;
     justify-content: flex-end;
     align-content: center;
@@ -85,7 +76,7 @@
     display: flex;
     flex-direction: row;
     font-size: $titleTextSize;
-    align-content: center;
+    align-items: center;
     justify-content: space-evenly;
 }
 
@@ -93,18 +84,23 @@
     color: $text-color;
     position: relative;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 32px;
 }
 
 .cartIcon {
     color: $text-color;
     position: relative;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 32px;
 }
 
 .userAccountIcon {
     color: $text-color;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 32px;
+}
+
+.languageWrapper {
+    margin-right: 32px;
+    font-size: $bodyTextSize;
 }
