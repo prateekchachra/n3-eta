@@ -304,6 +304,11 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="productSearchListColumnContainer">
                 <div className="productListContainer">
+                    {
+                        !showLoader && productList.length == 0 &&
+                        <h4 className="noProductsTextHeader">No Products Available</h4>
+                    }
+                    
                     {   !showLoader && productList &&
                         productList.map((product: ProductModel) => {
 
@@ -323,6 +328,7 @@ const ProductList = () :JSX.Element => {
                             />)
                         })
                     }
+                    
                     { showLoader && 
                         <FullPageLoader/>
                     }
