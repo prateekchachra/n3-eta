@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PageTemplate from '../../components/templates/PageTemplate';
 import { RootState } from '../../store';
 import { avatar } from '../../assets/images';
@@ -10,90 +10,7 @@ import { Col, Row, Table } from 'react-bootstrap';
 import Address, {  AddressType } from '../../components/organisms/Address/Address';
 import Card, { CardType } from '../../components/organisms/Card/Card';
 import { toast } from 'react-toastify';
-
-const CARDS: CardType[] = [
-    {
-        cardNumber: '5151000051510000',
-        name: 'Prateek',
-        expiryDate: '02/24',
-        cvv: 242,
-        default: true,
-    },
-    {
-        cardNumber: '5151000051510000',
-        name: 'Binod',
-        expiryDate: '08/26',
-        cvv: 991
-    },
-];
-
-const ITEMS_1: OrderItem[] = [
-    {
-        productName: "Men's shorts",
-        productId: 2,
-        size: 34,
-        color: 'red', 
-        quantity: 3,
-    },
-    {
-        productName: "Men's jeans",
-        productId: 3,
-        size: 32,
-        color: 'blue', 
-        quantity: 2,
-    },
-];
-const ITEMS_2: OrderItem[] = [
-    {
-        productName: "Men's shorts",
-        productId: 2,
-        size: 34,
-        color: 'red', 
-        quantity: 3,
-    },
-    {
-        productName: "Men's jeans",
-        productId: 3,
-        size: 32,
-        color: 'blue', 
-        quantity: 2,
-    },
-];
-
-
-const ORDERS: OrderType[] = [
-    {
-        items: ITEMS_1,
-        total: '142'
-    },
-    {
-        items: ITEMS_2,
-        total: '272'
-    },
-];
-const ADDRESSES: AddressType[] = [
-    {
-        name:'Harsh',
-        phone:'8587856661',
-        pin:'110034',
-        addressDetail:'E-109, Renusagar, Anpara',
-        locality: 'Anpara',
-        city:'Sonebhadra',
-        state:'U.P.',
-        typeOfAddress: 'Home',
-        default: true,
-    },
-    {
-        name:'Prateek',
-        phone:'8587856661',
-        pin:'110034',
-        addressDetail:'E-109, Renusagar, Anpara',
-        locality: 'Anpara',
-        city:'Sonebhadra',
-        state:'U.P.',
-        typeOfAddress: 'Home'
-    },
-];
+import { deleteAddress, deleteCard, setAddressAsDefault, setCardAsDefault } from '../../redux/user/UserActions';
 
 
 const Profile = () :JSX.Element => {
@@ -102,27 +19,33 @@ const Profile = () :JSX.Element => {
 
     const {user} = userState;
     const {formatMessage} = useIntl();
+    
+    const {addresses, orders, cards} = user;
+    console.log(addresses)
+    const dispatch = useDispatch();
+
     const onSetAddressDefault = (item: AddressType) => {
-            //API CALL
-            toast('Address has been set to default',{
+
+            dispatch(setAddressAsDefault(item));
+            toast(formatMessage({id: 'set_default_add'}),{
                 type: 'success'
             })
         }
     const onSetCardDefault = (item: CardType) => {
-            //API CALL
-            toast('Card has been set to default',{
+            dispatch(setCardAsDefault(item));
+            toast(formatMessage({id: 'set_default_card'}),{
                 type: 'success'
             })
         }
     const onAddressDelete = (item: AddressType) => {
-            //API CALL
-            toast('Address deleted successfully',{
+            dispatch(deleteAddress(item));
+            toast(formatMessage({id: 'delete_add'}),{
                 type: 'success'
             })
         }
     const onCardDelete = (item: CardType) => {
-            //API CALL
-            toast('Card deleted successfully',{
+             dispatch(deleteCard(item));
+            toast(formatMessage({id: 'delete_card'}),{
                 type: 'success'
             })
         }
@@ -130,7 +53,8 @@ const Profile = () :JSX.Element => {
         return(
             <div className="profileFieldWrapper">
                 <span className="profileLabel"><FormattedMessage id="my_orders"/></span>
-                <Table bordered className="profileOrderTable">
+                {orders && orders.length > 0 ? 
+                (<Table bordered className="profileOrderTable">
                     <thead>
                         <tr>
                             <th><FormattedMessage id="s_no"/></th>
@@ -139,13 +63,13 @@ const Profile = () :JSX.Element => {
                         </tr>
                     </thead>
                     <tbody>
-                       {ORDERS.map((item, index) => {
+                       {orders.map((item, index) => {
                         return (<Order key={index.toString()}
                         orderNumber={index + 1}
                         order={item}/>)
                     })}
                     </tbody>
-                </Table>    
+                </Table>) : <span><FormattedMessage id="no_orders"/></span>}  
             </div>
         )
     }
@@ -154,13 +78,14 @@ const Profile = () :JSX.Element => {
             <div className="profileFieldWrapper">
                 <span className="profileLabel"><FormattedMessage id="saved_add"/></span>
                 <div className="profileAddRow">
-                    {ADDRESSES.map((item, index) => {
+                    {addresses && addresses.length > 0 ?
+                    addresses.map((item, index) => {
                         return (<Address key={index.toString()}
                         showSetDefault={!item.default}
                         onDefaultRadioClick={() => onSetAddressDefault(item)}
                         onDeleteClick={() => onAddressDelete(item)}
                         address={item}/>)
-                    })}
+                    }) : <FormattedMessage id="no_addresses"/>}
                 </div>
                 
             </div>
@@ -171,13 +96,14 @@ const Profile = () :JSX.Element => {
             <div className="profileFieldWrapper">
                 <span className="profileLabel"><FormattedMessage id="pay_methods"/></span>
                 <div className="profileAddRow">
-                    {CARDS.map((item, index) => {
+                    {cards && cards.length > 0 ?
+                    cards.map((item, index) => {
                         return (<Card key={index.toString()}
                         showSetDefault={!item.default}
                         onDefaultRadioClick={() => onSetCardDefault(item)}
                         onDeleteClick={() => onCardDelete(item)}
                         card={item}/>)
-                    })}
+                    }) : <FormattedMessage id="no_cards"/>}
                 </div>
             </div>
         )

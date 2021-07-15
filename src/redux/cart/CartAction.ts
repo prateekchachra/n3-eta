@@ -2,7 +2,7 @@ import { ADD_PRODUCT_TO_CART, RESET_CART, REMOVE_FROM_CART } from './CartTypes';
 import { ProductModel } from './CartReducer';
 
 type ADD_PRODUCT_TO_CART_ACTION_TYPE = { type: string, payload: ProductModel}
-type RESET_CART_ACTION_TYPE = { type: string, userId: string }
+type RESET_CART_ACTION_TYPE = { type: string}
 type REMOVE_FROM_CART_TYPE = { type: string, productId: number }
 
 export type CART_ACTIONS =
@@ -18,7 +18,6 @@ export const removeItemFromCart = (productId: number): REMOVE_FROM_CART_TYPE => 
     productId
 })
 
-export const resetCart = (userId: string): RESET_CART_ACTION_TYPE => ({
-    type: RESET_CART,
-    userId: userId
+export const resetCart = (): RESET_CART_ACTION_TYPE => ({
+    type: RESET_CART
 })

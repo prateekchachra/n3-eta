@@ -154,6 +154,7 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
                   orders: [],
                   cart: cartInitialState,
                   addresses: [],
+                  cards:[]
                 };
                 addUser(newUser);
                 dispatch(markUserAsLoggedIn(newUser));
@@ -172,6 +173,7 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
                 orders: [],
                 cart: cartInitialState,
                 addresses: [],
+                cards: [],
               };
               addUser(newUser);
               dispatch(markUserAsLoggedIn(newUser));

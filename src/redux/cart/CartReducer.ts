@@ -1,5 +1,4 @@
 import { AnyAction } from 'redux';
-import { CART_ACTIONS } from './CartAction';
 import { 
     ADD_PRODUCT_TO_CART, RESET_CART, REMOVE_FROM_CART
 } from './CartTypes';
