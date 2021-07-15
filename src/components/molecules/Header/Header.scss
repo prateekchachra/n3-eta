@@ -30,7 +30,6 @@
 
 .logoWrapper {
     width: max-content;
-    margin-left: 2%;
 }
 
 .logo {
@@ -65,6 +64,7 @@
     justify-content: flex-end;
     align-content: center;
     float: right;
+    padding: 0 16px;
 }
 
 .searchBar {
@@ -78,6 +78,7 @@
     font-size: $titleTextSize;
     align-items: center;
     justify-content: space-evenly;
+    padding: 0 16px;
 }
 
 .wishListIcon {
