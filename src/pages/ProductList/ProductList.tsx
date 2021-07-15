@@ -56,6 +56,9 @@ const ProductList = () :JSX.Element => {
             fetchProductListByGender();
         } else if(!gender && queryParam) {
             searchProductListByTitle();
+            if(appliedCategoryFilterOptionList.length) {
+                setApplyClearAllFilter(true);
+            }
         } else {
             fetchProductList();
         }
