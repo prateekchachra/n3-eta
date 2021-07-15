@@ -19,13 +19,27 @@ const Search = ({placeholder, onEnterPress} : SearchProps) : JSX.Element => {
         if(target){
             setInputVal((target as HTMLInputElement).value)
         }
+        
+    }
+    
+    const handleKeyDownEvent = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log("From enter press");
+        if(event.key === 'Enter') {
+           onEnterPress(inputVal);
+           setInputVal("");
+        }
+    }
+
+    const handleSearchButtonClickEvent = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        onEnterPress(inputVal);
+        setInputVal("");
     }
 
     return (
     <div className="searchContainer">
         <input type="text" placeholder={placeholder} value={inputVal}
-        onChange={onChangeText}/>
-        <span className="searchIconWrapper" onClick={(event) => onEnterPress(inputVal)}>
+        onChange={onChangeText} onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownEvent(event)}/>
+        <span className="searchIconWrapper" onClick={(event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => handleSearchButtonClickEvent(event)}>
             <Icon/>
         </span>
     </div>)

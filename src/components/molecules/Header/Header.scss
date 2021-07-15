@@ -30,7 +30,6 @@
 
 .logoWrapper {
     width: max-content;
-    margin-left: 2%;
 }
 
 .logo {
@@ -41,15 +40,6 @@
     font-weight: 700;
     color: $primary;
     font-size: $titleTextSize;
-}
-
-.navLinks {
-    width: 24%;
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: flex-start;
-    margin-left: 2%;
 }
 
 .navLinkWrapper {
@@ -69,11 +59,12 @@
 }
 
 .searchBarWrapper {
-    width: 54%;
+    width: max-content;
     display: flex;
     justify-content: flex-end;
     align-content: center;
     float: right;
+    padding: 0 16px;
 }
 
 .searchBar {
@@ -85,26 +76,32 @@
     display: flex;
     flex-direction: row;
     font-size: $titleTextSize;
-    align-content: center;
+    align-items: center;
     justify-content: space-evenly;
+    padding: 0 16px;
 }
 
 .wishListIcon {
     color: $text-color;
     position: relative;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 32px;
 }
 
 .cartIcon {
     color: $text-color;
     position: relative;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 32px;
 }
 
 .userAccountIcon {
     color: $text-color;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 32px;
+}
+
+.languageWrapper {
+    margin-right: 32px;
+    font-size: $bodyTextSize;
 }

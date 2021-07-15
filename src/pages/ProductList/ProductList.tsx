@@ -56,6 +56,9 @@ const ProductList = () :JSX.Element => {
             fetchProductListByGender();
         } else if(!gender && queryParam) {
             searchProductListByTitle();
+            if(appliedCategoryFilterOptionList.length) {
+                setApplyClearAllFilter(true);
+            }
         } else {
             fetchProductList();
         }
@@ -304,6 +307,11 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="productSearchListColumnContainer">
                 <div className="productListContainer">
+                    {
+                        !showLoader && productList.length == 0 &&
+                        <h4 className="noProductsTextHeader">No Products Available</h4>
+                    }
+                    
                     {   !showLoader && productList &&
                         productList.map((product: ProductModel) => {
 
@@ -323,6 +331,7 @@ const ProductList = () :JSX.Element => {
                             />)
                         })
                     }
+                    
                     { showLoader && 
                         <FullPageLoader/>
                     }

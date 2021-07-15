@@ -85,6 +85,7 @@ const Header = () :JSX.Element => {
     }
 
     function onSearchBarEnterPressHandler(searchQuery: string) {
+        console.log("here");
         if(searchQuery) {
             history.push(`/searchResult/${searchQuery}`);
         }
