@@ -13,6 +13,7 @@ export default {
     logout: 'Logout',
     phone: 'Phone',
     send_otp: 'Send OTP',
+    check_number: 'Please enter a valid Phone Number',
     or: 'or',
     signin_text: 'Sign in with any Social Account',
     close: 'Close',

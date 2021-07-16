@@ -66,8 +66,6 @@ const userState = (
         case MARK_USER_AS_LOGGED_IN: {
 
             if(action.userSnapShot) {
-                console.info("User has logged in!");
-                console.log("User Snap Shot", action.userSnapShot);
                 return {
                     user: Object.assign({}, action.userSnapShot),
                     isUserLoggedIn: true,

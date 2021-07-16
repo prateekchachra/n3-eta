@@ -228,7 +228,7 @@ const Payment = () :JSX.Element => {
                 
                   <Form className="paymentCardForm">
                     <Form.Group controlId="form.CardNumber">
-                      <Form.Control type="number" onChange={onCardNumberChange} placeholder={formatMessage({id: 'card_no'})} />
+                      <Form.Control type="number" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}" onChange={onCardNumberChange} placeholder={formatMessage({id: 'card_no'})} />
                   </Form.Group>
                   <Form.Group controlId="form.Name">
                       <Form.Control type="text" onChange={onCardNameChange} placeholder={formatMessage({id: 'name'})} />

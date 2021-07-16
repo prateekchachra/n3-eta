@@ -239,7 +239,6 @@ function ProductDetailPage() {
                             <QuantityInput 
                             sendBackQuantity={(value) => {
                                 if(product) {
-                                    console.log(value)
                                     product.quantity = value;
                                 }
                             }}
