@@ -31,11 +31,20 @@
     font-size: 20px;
     font-weight: 700;
 }
+@media screen and (min-width:520px){
+    .profileAddRow{
+        width: 50%;
+        margin: auto;
+    }
 
-.profileAddRow{
-    width: 50%;
-    margin: auto;
 }
+@media screen and (max-width:520px){
+    .profileAddRow{
+        width: 80%;
+        margin: auto;
+    }
+}
+
 
 .profileOrderTable{
     margin-top: 24px;

@@ -33,6 +33,8 @@ const HomePage = () => {
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [windowDimension, setWindowDimension] = useState<number | null>(null);
+
     const banners = [
         heroBanner
       ];
@@ -55,6 +57,16 @@ const HomePage = () => {
         fetchProductList();
     }, []);
 
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimension(window.innerWidth);
+        }
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    });
+
+    const isMobile = windowDimension && windowDimension <= 640;
+
     function onViewAllClickHandler() {
         history.push('/offers/list');
     }
@@ -66,7 +78,7 @@ const HomePage = () => {
     function renderBannerColumn() {
         return (
             <div className="bannerColumnContainer">
-                <ImageSlider id="heroBanner" name="heroBanner" images={banners} style={{height: "500px"}}/>
+                <ImageSlider id="heroBanner" name="heroBanner" images={banners} style={{height: isMobile ? "200px": "500px"}}/>
             </div>
         );
     }
