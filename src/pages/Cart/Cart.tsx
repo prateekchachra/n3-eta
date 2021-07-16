@@ -18,31 +18,8 @@ const Cart = () :JSX.Element => {
     const onDeleteClick = (productId: number) => {
         dispatch(removeItemFromCart(productId))
     }
-    const onAddItemClick = () => {
-        console.log('added')
-    }
   
     const cartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
-
-    useEffect( () => {
-        /** FETCH ORDER HISTORY **/
-        /* const fetchOrderHistory = async () => {
-            const response = await axios.get("/orders?emailid=bobBuilder@gmail.com");
-            console.log("Orders", response);
-        } */
-
-        /** ADD ORDER SNIPPET **/
-        /* const addOrderItems = async () => {
-            const order: any = {
-                emailid: "bobBuilder@gmail.com",
-                orderAmount: 600,
-                products: cartState.cartItems.map(cartItem => cartItem.id)
-            }
-            await axios.post("/orders", order);
-        } */
-        /* addOrderItems();
-        fetchOrderHistory(); */
-    }, [])
 
     return (
         <PageTemplate>
@@ -52,7 +29,6 @@ const Cart = () :JSX.Element => {
               <PriceSummary
                 toRenderCart
                 onDeleteClick={onDeleteClick}
-                onAddRemoveItemClick={onAddItemClick}
                 buttonLabel={formatMessage({id: 'place_order'})} onButtonClick={() => history.push('checkout')} />:
                 (<span><FormattedMessage id="no_items_cart"/></span>)}
             </div>

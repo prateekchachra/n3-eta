@@ -21,7 +21,6 @@ const Profile = () :JSX.Element => {
     const {formatMessage} = useIntl();
     
     const {addresses, orders, cards} = user;
-    console.log(addresses)
     const dispatch = useDispatch();
 
     const onSetAddressDefault = (item: AddressType) => {

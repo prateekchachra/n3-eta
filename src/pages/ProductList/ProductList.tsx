@@ -137,9 +137,7 @@ const ProductList = () :JSX.Element => {
             if(results) {
                 setProducts(results);
             }
-        } else {
-            console.log("From else");
-        }
+        } 
 
         return;
     }
@@ -299,7 +297,6 @@ const ProductList = () :JSX.Element => {
                         draggableTrack={true}
                         onChange={(value) => {
                             setPriceFilter(value as Range);
-                            console.log();
                         }}
                         onChangeComplete={(value) => onPriceRangeFilterChangeHandler(value as Range)}
                     />

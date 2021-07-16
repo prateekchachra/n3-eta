@@ -41,8 +41,7 @@ export const markUserAsLoggedOut = (user: UserModel)
     : ThunkAction<void, RootState, unknown, AnyAction> => 
     async (dispatch, getRootState) => {
         if(getRootState().userState.isUserLoggedIn) {
-            const updatedUser = await axios.put(`users/${user.id}`, user);
-            console.log("UpdateUser:", updatedUser);
+            await axios.put(`users/${user.id}`, user);
             dispatch({
                 type: MARK_USER_AS_LOGGED_OUT
             });

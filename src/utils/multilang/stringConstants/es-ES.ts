@@ -13,6 +13,7 @@ export default {
     logout: 'Cerrar',
     phone: 'Teléfono',
     send_otp: 'Enviar OTP',
+    check_number: 'Por favor ingrese un número de teléfono válido',
     buy_now: 'Comprar',
     or: 'o',
     close: 'Cerrar',

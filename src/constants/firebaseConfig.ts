@@ -18,7 +18,6 @@ class Firebase {
   auth: any;
   googleAuthProvider: any;
   facebookAuthProvider: any;
-  recaptchaVerifier: any;
   storage: any;
 
   constructor() {
@@ -30,16 +29,12 @@ class Firebase {
     this.storage = firebase.storage();
     this.googleAuthProvider = new firebase.auth.GoogleAuthProvider();
     this.facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
-    // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-    //   'recaptcha-container'
-    //   );
+   
   }
 
   doGoogleSignIn = () => this.auth.signInWithPopup(this.googleAuthProvider);
 
   doFacebookSignIn = () => this.auth.signInWithPopup(this.facebookAuthProvider);
-
-  getRecaptcha = () => this.recaptchaVerifier;
 
   user = (uid: string) => this.db.ref(`/users/${uid}`);
 
@@ -58,11 +53,9 @@ class Firebase {
               emailVerified: authUser.emailVerified,
               ...dbUser,
             };
-            console.log(`authUser:: listener:: ${user}`);
             next(user);
           });
       } else {
-        console.log(`Now user is not available`);
         fallback();
       }
     });
