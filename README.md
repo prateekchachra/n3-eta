@@ -32,7 +32,20 @@ To get a local copy up and running for this website, please follow below simple 
   ```
 Open <a href="http://localhost:3000">http://localhost:3000</a> to use this website.
 
-### Deployment Information
+## Deployment Information
 
 This project is currently deployed on <a href="https://www.netlify.com">Netlify</a>, click on <a href="https://eta-store.netlify.app"> Style Zone </a> link to use the website.
 
+## API Information
+
+Use ``` https://stylezone-db-server.herokuapp.com/products ``` endpoint to load the products from the JSON Server API. Visit ``` https://stylezone-db-server.herokuapp.com ``` to know more about other database resources.
+
+## Resources
+- <a href="https://www.figma.com/file/TA8SOBCACMZdSuQV7F00tL/eCommerce-Clothing-Store?node-id=45%3A14"> Design Mockups </a>
+- <a href="https://drive.google.com/file/d/1GiBw5MiUFOHpOKgiZaMhIDFKly-VZ3ex/view?usp=sharing"> PRD </a>
+- <a href="https://drive.google.com/file/d/1BuS2LSuB5F5ypr1HoeUOQAG0ljIYrNJy/view?usp=sharing"> HLDA </a>
+
+## Contanct Information
+<a href="https://github.com/prateekchachra/n3-eta/edit/main/README.md">Prateek Chachra</a> - prateekchachra@live.com
+<br/>
+<a href="https://github.com/DParik">Dipen Parikh</a> - deepenparikh9@gmail.com
