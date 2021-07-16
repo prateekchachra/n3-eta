@@ -18,6 +18,28 @@ export default {
     close: 'Close',
     buy_now: 'Buy Now',
     add_to_cart: 'Add To Cart',
+    knockout_deals: 'Knockout Deals',
+    festive_deals: 'Festive Special Deals',
+    deals_of_day: 'Deals of the Day',
+       
+    //List Page
+    filters: 'filters',
+    clear_all: 'Clear All',
+    categories: 'Categories',
+    special_collection: 'Special Deal Collection',
+    men_collection: "Men's Collection",
+    women_collection: "Women's Collection",
+    search_results: 'Search Results',
+
+    //Details Page
+    inclusive_taxes: 'inclusive of all taxes',
+    select_size: 'select size',
+    select_colour: 'select colour',
+    product_details: 'product details',
+    size_fit: 'size and fit',
+    customer_reviews: 'customer reviews',
+    similar_products: 'similar products',
+    
 
     // Wishlist Page
     my_wishlist: 'My Wishlist',
@@ -48,11 +70,11 @@ export default {
     address: 'Address',
     mobile: 'Mobile Number',
     mobile_placeholder: 'Mobile no.',
-    pin_placeholder: 'Pin Code*',
+    pin_placeholder: 'Pin Code',
     add_main_placeholder: 'Address (House no., Building, Street Area)',
     locality_placeholder: 'Locality/Town',
     city_placeholder: 'City',
-    state_placeholder: 'State*',
+    state_placeholder: 'State',
     save_address: 'Save Address As',
     submit_address: 'Submit Address',
 
@@ -61,18 +83,40 @@ export default {
      card_no: 'Card Number',
      no_method_description: 'Please Select an option to pay',
      card: 'Card',
+     confirm: 'Confirm',
      cod: 'Cash On Delivery',
      razorpay: 'RazorPay',
+     buy_confirmation: 'Are you sure you want to buy this item?',
+     buy_button_label: 'Yes, Please Confirm',
+     proceed_to_payment: 'Proceed To Payment',
+     confirm_payment: 'Confirm Payment',
 
      // Profile
      my_orders: 'My Orders',
+     no_orders: 'No orders found. Explore our collection!',
+     no_cards: 'No saved Cards.',
      s_no: 'Nom.',
      pay_methods: 'Payment Methods',
      saved_add: 'Saved Addresses',
      email: 'Email',
-     set_default_add: 'Set As Default',
+     set_default: 'Set As Default',
      size: 'Size',
      color: 'Color',
      not_provided: 'Not Provided',
+
+     //Toasts
+      color_select: 'Please select a size and color',
+      added_to_cart: 'Item added to cart!',
+      added_address: 'Address successfully added!',
+      confirm_order: 'Order confirmed! It will reach you in 2-3 business days',
+      set_default_add: 'Address has been set to default',
+      set_default_card: 'Card has been set to default',
+      delete_add: 'Address deleted successfully',
+      delete_card: 'Card deleted successfully',
+      add_wishlist: 'Added to Wishlist Successfully!',
+      remove_wishlist: 'Removed from Wishlist Successfully!',
+      add_detail:'Please add Complete Details',
+      card_detail:'Please enter proper card details',
+      exists_address: 'Address name already exists. Please change name'
   },
 };

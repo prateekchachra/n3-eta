@@ -1,7 +1,8 @@
 import React, { ReactNodeArray, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import axios from '../../api/axios';
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { toast } from 'react-toastify';
 import './HomePage.scss';
 
 import PageTemplate from '../../components/templates/PageTemplate';
@@ -9,12 +10,13 @@ import ImageSlider from '../../components/molecules/ImageSlider/ImageSlider';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProductToCart } from '../../redux/cart/CartAction';
+import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { RootState } from '../../store';
-import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
-import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 
 import { heroBanner } from '../../assets/images';
+import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
+import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 
 
 
@@ -22,21 +24,30 @@ const HomePage = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+    const {formatMessage} = useIntl();
+    
     const [productList, setProductList] = useState<ProductModel[]>([]);
+    const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
+    const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
+
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [windowDimension, setWindowDimension] = useState<number | null>(null);
+
     const banners = [
         heroBanner
       ];
-    const specialCategories = ["Knockout Deals", "Festive Special Deals", "Deals of the Day"];
+    const specialCategoriesKeys = ["knockout_deals", "festive_deals", "deals_of_day"];
     const fetchProductList= async () => {
 
         try{
+            setShowLoader(true);
             const response = await axios.get("/products?_page=1&_limit=6");
             if(response.data) {
                 setProductList(response.data);
             }
-
+            setShowLoader(false);
         }catch(err){
             console.log(err)
         }
@@ -45,6 +56,16 @@ const HomePage = () => {
     useEffect( () => {
         fetchProductList();
     }, []);
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimension(window.innerWidth);
+        }
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    });
+
+    const isMobile = windowDimension && windowDimension <= 640;
 
     function onViewAllClickHandler() {
         history.push('/offers/list');
@@ -57,59 +78,63 @@ const HomePage = () => {
     function renderBannerColumn() {
         return (
             <div className="bannerColumnContainer">
-                <ImageSlider id="heroBanner" name="heroBanner" images={banners} style={{height: "500px"}}/>
+                <ImageSlider id="heroBanner" name="heroBanner" images={banners} style={{height: isMobile ? "200px": "500px"}}/>
             </div>
         );
     }
 
-    function onAddtoCartButtonClickHandler(product: ProductModel) {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-        }
+    function onAddToCartHandler(product: ProductModel){
+        setSelectedProduct(product);
+        setShowAddToCart(true);
     }
 
-    function onBuyNowButtonClickHandler(product: ProductModel | null) {
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-            history.push("/checkout");
-        }
-    }
-
-    const onAddToWishlistHandler = (product: ProductModel) => {
-
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-
-        if(userState.isUserLoggedIn && product){
-            dispatch(addProductToWishlist(Object.assign({}, product)));
-        }
+    function onAddtoCartClickHandler(size: string, color: string, quantity: number) {
+        dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
+            {quantity, size, color})));
         
+        toast(formatMessage({id: 'added_to_cart'}), {
+            type: 'success'
+        })
+        setShowAddToCart(false);
+    }
+
+    function onBuyNowClickHandler(size: string, color: string, quantity: number) {
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+        if(userState.isUserLoggedIn && selectedProduct) {
+            dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
+                {quantity, size, color})));
+            history.push("/cart");
+        }
+    }
+
+
+    const onAddToWishlistHandler = (product: ProductModel, isAddedInWishlist: boolean) => {
+        
+        isAddedInWishlist ? toast(formatMessage({id: 'remove_wishlist'}),
+        {type: 'success'}) :
+        toast(formatMessage({id: 'add_wishlist'}),
+         {type: 'success'})
+
+        dispatch(addProductinToWishlist(product));
+    }
+
+
+    const onAddToCartHide = () => {
+        setShowAddToCart(false);
+        setSelectedProduct(null);
     }
     
     //TODO: add 'listOfProductsByCategoryMap' as an arg, iterator through each item
     function renderProductListColumns() {
         const productListColumnRendererArray: ReactNodeArray = [];
-        specialCategories.forEach(element => {
+        specialCategoriesKeys.forEach(element => {
             productListColumnRendererArray.push(
                 <div className="productListColumnContainer" key={element}>
                     <div className="textBannerContainer">
-                        <h4 className="textBannerTitle"><FormattedMessage id="categories_text" /></h4>
-                        <a href="">
-                            <h4 className="textBannerTitleLink"></h4>
-                        </a>
-                        <h4 className="textBannerTitle">{element}</h4>
+                        <h4 className="textBannerTitle"><FormattedMessage id={element} /></h4>
                         <h4 
                             className="textBannerTitleLink"
                             onClick={() => onViewAllClickHandler()}
@@ -118,7 +143,7 @@ const HomePage = () => {
                         </h4>
                     </div>
                     <div className="productListContainer">
-                        {   productList &&
+                        {   !showLoader && productList &&
                             productList.map((product: any) => {
 
                                 const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
@@ -126,17 +151,19 @@ const HomePage = () => {
                                     productTitle={product.name} 
                                     price={product.price} 
                                     isAddedInWishlist={isAddedInWishlist}
-                                     onAddToWishlist={() => onAddToWishlistHandler(product)}
+                                     onAddToWishlist={() => onAddToWishlistHandler(product, isAddedInWishlist)}
                                     discountPercent={product.discountPercent} 
                                     imgs={product.images} 
-                                    buyNowHandler={(e) => onBuyNowButtonClickHandler(product)} 
-                                    addToCartHandler={(e) => onAddtoCartButtonClickHandler(product)}
+                                    addToCartHandler={(e) => onAddToCartHandler(product)}
                                     onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                         event.preventDefault();
                                         onProductCardClickHandler(product.id);
                                     }}
                                 />)
                             })
+                        }
+                        { showLoader &&
+                            <FullPageLoader/>
                         }
                     </div>
                 </div>
@@ -150,6 +177,12 @@ const HomePage = () => {
             <div className="bodyComponent">
                 {renderBannerColumn()}
                 {renderProductListColumns()}
+                <AddToCartModal 
+                    show={showAddToCart}
+                    onHide={onAddToCartHide}
+                    onAddClick={onAddtoCartClickHandler}
+                    onBuyNowClick={onBuyNowClickHandler}
+                    />
             </div>
         )
     }

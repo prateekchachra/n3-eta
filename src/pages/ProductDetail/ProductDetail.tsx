@@ -15,12 +15,16 @@ import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
-import { addProductToCart } from '../../redux/cart/CartAction';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { COLOR_SELECTOR_OPTIONS, SIZE_SELECTOR_OPTIONS } from '../../constants/staticData';
 
-const SIZE_SELECTOR_OPTIONS = ['39', '40', '41', '42'];
-const COLOR_SELECTOR_OPTIONS = ['turqoise', 'blue', 'green', 'yellow'];
+import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
+import { toast } from 'react-toastify';
+import QuantityInput from '../../components/atoms/QuantityInput/QuantityInput';
+
+
 const REVIEW : CustomerReviewType = {
     title: 'This product is awesome',
     text: 'Loved using this product! Every single thing was perfect',
@@ -35,14 +39,22 @@ function ProductDetailPage() {
     const dispatch = useDispatch();
     const {productId} = useParams<Record<string, string | undefined>>();
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-    const [product, setproduct] = useState<ProductModel | null>(null);
-    const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     
+    const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
+    const [product, setProduct] = useState<ProductModel | null>(null);
+
+    const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
+    const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
+
+
+    const {formatMessage} = useIntl();
+
+
     const fetchProductDetails= async () => {
         const response = await axios.get(`/products/${productId}`);
         if(response.data) {
-            setproduct(response.data);
+            setProduct(response.data);
         }
     }
 
@@ -61,40 +73,79 @@ function ProductDetailPage() {
         fetchSimilarProductSuggestions();
     }, [product]);
 
-    const onAddToWishlistHandler = (product: ProductModel) => {
+    
+    function onBuyNowHandler(suggestedProduct: ProductModel | null){
+        if(suggestedProduct){
+            setSelectedProduct(product);
+        }  
+        else if(product){
+            if(!product.size || !product.color){
+                toast(formatMessage({id: 'color_select'}),{
+                    type: 'error'
+                })
+            }
+            else onBuyNowClickHandler(product.size.toString(), product.color, product.quantity, suggestedProduct === null)
+        }
+    }
 
+    function onAddToCartHandler(suggestedProduct: ProductModel | null){
+       
+       if(suggestedProduct){
+            setSelectedProduct(suggestedProduct);
+            setShowAddToCart(true);
+       }
+       else if(product){
+           if(!product.size || !product.color){
+               toast(formatMessage({id: 'color_select'}),{
+                   type: 'error'
+               })
+           }
+         else onAddtoCartClickHandler(product.size.toString(), product.color, product.quantity, suggestedProduct !== null)
+       }
+    }
+
+    function onAddtoCartClickHandler(size: string, color: string, quantity: number, isMainProduct: boolean) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
-
-        if(userState.isUserLoggedIn && product){
-            dispatch(addProductToWishlist(Object.assign({}, product, {quantity: 1})));
-        }
+        dispatch(addProductinToCart(Object.assign({}, isMainProduct ? product: selectedProduct, 
+            {quantity, size, color})));
         
+        toast(formatMessage({id: 'added_to_cart'}), {
+            type: 'success'
+        })
+        setShowAddToCart(false);
     }
 
-    function onAddtoCartButtonClickHandler(product: ProductModel | null) {
-
+    function onBuyNowClickHandler(size: string, color: string, quantity: number, isMainProduct: boolean) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
-
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        if(userState.isUserLoggedIn && (selectedProduct || product)) {
+          
+            const mainProduct = isMainProduct ? product : selectedProduct;
+            dispatch(addProductinToCart(Object.assign({}, mainProduct, 
+                {quantity, size, color})));
+            history.push("/cart");
         }
     }
 
-    function onBuyNowButtonClickHandler(product: ProductModel | null) {
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-            history.push("/checkout");
-        }
+
+    const onAddToWishlistHandler = (product: ProductModel, isAddedInWishlist: boolean) => {
+        
+        isAddedInWishlist ? toast(formatMessage({id: 'remove_wishlist'}),
+        {type: 'success'}) :
+        toast(formatMessage({id: 'add_wishlist'}),
+         {type: 'success'})
+
+        dispatch(addProductinToWishlist(product));
+    }
+
+    const onAddToCartHide = () => {
+        setShowAddToCart(false);
+        setSelectedProduct(null);
     }
 
     function renderBody() {
@@ -130,6 +181,13 @@ function ProductDetailPage() {
 
         return (
             <div className="productDetailPage">
+                <AddToCartModal 
+                    show={showAddToCart}
+                    onHide={onAddToCartHide}
+                    onBuyNowClick={(size: string, color: string, quantity: number) => onBuyNowClickHandler(size, color, quantity, false)}
+                    onAddClick={(size: string, color: string, quantity: number) => onAddtoCartClickHandler(size, color, quantity, false)}
+                    />
+                   
                 <div className="productDetailComponent">
                     <div className="productImageSliderContainer">
                         <ImageSlider
@@ -151,14 +209,15 @@ function ProductDetailPage() {
                             {displayDiscountPrice()}
                         </div>
                         <div className="productPriceInclusiveAllTaxesWrapper">
-                            <span className="productPriceInclusiveAllTaxes">inclusive of all taxes</span>
+                            <span className="productPriceInclusiveAllTaxes">
+                                <FormattedMessage id="inclusive_taxes" />
+                            </span>
                         </div>
                         <div className="productSizeSelectorWrapper">
                             <SizeSelector
-                                label="select size"
+                                label={formatMessage({id: 'select_size'})}
                                 values={SIZE_SELECTOR_OPTIONS}
                                 onSelectedChange={(selected:string) => {
-                                    console.log(selected);
                                     if(product) {
                                         product.size = +selected;
                                     }
@@ -167,41 +226,51 @@ function ProductDetailPage() {
                         </div>
                         <div className="productColorSelectorWrapper">
                             <ColorSelector
-                                label="select colour"
+                                label={formatMessage({id: 'select_colour'})}
                                 values={COLOR_SELECTOR_OPTIONS}
                                 onSelectedChange={(selected) => {
-                                    console.log(selected);
                                     if(product) {
                                         product.color = selected;
                                     }
                                 }}
                             />
                         </div>
+                        <div className="productColorSelectorWrapper">
+                            <QuantityInput 
+                            sendBackQuantity={(value) => {
+                                if(product) {
+                                    console.log(value)
+                                    product.quantity = value;
+                                }
+                            }}
+                            
+                            />
+                        </div>
                         <div className="productDetailButtonActionsWrapper">
                             <div className="addToCartButton">
                                 <ContainedButton
-                                    label="Add to Cart"
-                                    onClick={() => onAddtoCartButtonClickHandler(product)}
+                                    label={formatMessage({id: 'buy_now'})}
+                                    onClick={() => onBuyNowHandler(null)}
                                 />
                             </div>
                             <div className="buyNowButton">
                                 <ContainedButton
-                                    label="Buy Now"
+                                    label={formatMessage({id: 'add_to_cart'})}
                                     secondary={true}
-                                    onClick={() => onBuyNowButtonClickHandler(product)}
+                                    onClick={() => onAddToCartHandler(null)}
                                 />
                             </div>
                         </div>
                         <div className="productDetailDiscriptionWrapper">
                             <span className="productDetailTitle">
-                                product details
+                            <FormattedMessage id="product_details" />
                             </span>
                             <p className="productDetail">
                                 White and sea green slim fit striped casual shirt, has a spread collar, button pocket,
                                 1 pocket, long sleeves, curved hem
                             </p>
                             <span className="productDetailTitle">
-                                size and fit
+                                <FormattedMessage id="size_fit" />
                             </span>
                             <p className="productDetail">
                                 Slim Fit
@@ -210,24 +279,11 @@ function ProductDetailPage() {
                                 The model is wearing size 40
                             </p>
                         </div>
-                        <div className="productCustomerReviewWrapper">
-                            <span className="productCustomerReviewTitle">
-                                customer reviews
-                            </span>
-                            <div className="productCustomerReview">
-                                <CustomerReview
-                                    review={REVIEW}
-                                />
-                                <CustomerReview
-                                    review={REVIEW}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div className="similarProductsContainer">
                     <span className="similarProductsTitle">
-                        similar products
+                        <FormattedMessage id="similar_products" />
                     </span>
                     <div className="similarProductListWrapper">
                     {   similarProductSuggestions &&
@@ -235,17 +291,16 @@ function ProductDetailPage() {
 
                             const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
                             return (<ProductCard key={product.id}
-                                productTitle={product.name} 
-                                price={product.price} 
-                                discountPercent={product.discountPercent} 
-                                imgs={product.images} 
-                                isAddedInWishlist={isAddedInWishlist}
-                                onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                buyNowHandler={(e) => onBuyNowButtonClickHandler(product)} 
-                                addToCartHandler={() => onAddtoCartButtonClickHandler(product)}
-                                onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
+                                    productTitle={product.name} 
+                                    price={product.price} 
+                                    discountPercent={product.discountPercent} 
+                                    imgs={product.images} 
+                                    isAddedInWishlist={isAddedInWishlist}
+                                    onAddToWishlist={() => onAddToWishlistHandler(product, isAddedInWishlist)}
+                                    addToCartHandler={() => onAddToCartHandler(product)}
+                                    onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
-                                    // onProductCardClickHandler(product.id);
+                                    history.replace(`/item/${product.id}`);
                                 }}
                             />)
                         })

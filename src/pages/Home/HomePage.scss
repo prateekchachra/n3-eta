@@ -1,15 +1,32 @@
 @import 'src/App.scss';
 
-.bodyComponent {
-    display: flex;
-    flex-direction: column;
-    margin-top: 80px;
+@media screen and (min-width:520px){
+    
+    .bodyComponent {
+        display: flex;
+        flex-direction: column;
+        margin-top: 80px;
+    }
+    
+    .bannerColumnContainer {
+        height: 540px;
+        margin: 2% 0 0 0;
+    }
+    
+}
+@media screen and (max-width:520px){
+    
+    .bodyComponent {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .bannerColumnContainer {
+        height: 200px;
+        margin: 2% 0 0 0;
+    }    
 }
 
-.bannerColumnContainer {
-    height: 540px;
-    margin: 2% 0 0 0;
-}
 
 .productListColumnContainer {
     display: flex;
@@ -30,6 +47,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin: 24px 0;
 }
 
 .textBannerTitle {

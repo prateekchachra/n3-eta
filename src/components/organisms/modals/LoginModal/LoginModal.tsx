@@ -1,19 +1,25 @@
 import React, {ChangeEvent, useState} from 'react';
-import Modal from '../../molecules/modal/Modal';
+import Modal from '../../../molecules/modal/Modal';
 import { FormGroup,Row,Col } from 'react-bootstrap';
 import {
     google_login_btn,
     facebook_login_btn,
-  } from '../../../assets/images';
-import Firebase from '../../../constants/firebaseConfig';
-import Button from '../../molecules/button/Button';
+    google_login_btn_es,
+    facebook_login_btn_es,
+  } from '../../../../assets/images';
+import Firebase from '../../../../constants/firebaseConfig';
+import Button from '../../../molecules/button/Button';
 import './LoginModal.scss';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {STATIC_DATA} from '../../../constants/staticData'
-import { markUserAsLoggedIn } from '../../../redux/user/UserActions';
-import { useDispatch } from 'react-redux';
-import axios from '../../../api/axios';
-import { UserModel } from '../../../redux/user/UserReducers';
+import {STATIC_DATA} from '../../../../constants/staticData'
+import { markUserAsLoggedIn } from '../../../../redux/user/UserActions';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from '../../../../api/axios';
+import { UserModel } from '../../../../redux/user/UserReducers';
+import { wishlistInitialState } from '../../../../redux/wishlist/WishlistReducer';
+import { cartInitialState } from '../../../../redux/cart/CartReducer';
+import { RootState } from '../../../../store';
+import { LANGUAGES } from '../../../../utils/multilang';
 
 export type LoginModalProps = {
     show: boolean,
@@ -29,7 +35,15 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
   const [isRequiredPhone, setIsRequiredPhone] = useState(false);
   const [requiredPhoneOTP, setRequiredPhoneOTP] = useState(false);
   const [displayPhone, setdisplayPhone] = useState(true);
+  const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
   
+  
+  const facebookLocaleButton = userState && userState.selectedLocale === LANGUAGES.ENGLISH ? facebook_login_btn
+  : facebook_login_btn_es;
+
+  const googleLocaleButton = userState && userState.selectedLocale === LANGUAGES.ENGLISH ? google_login_btn
+  : google_login_btn_es;
+
   const [errorMessage, setErrorMessage] = useState('');
   const firebase = new Firebase();
 
@@ -131,14 +145,16 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
               if ( !user ) {
                 console.log("inside if");
                 const newUser: UserModel = {
+                  id: authUser.user.id,
                   email: authUser.user.email,
                   name: authUser.user.displayName,
                   phone: authUser.user.phoneNumber,
                   profileImage: authUser.user.photoURL,
-                  wishList: [],
+                  wishList: wishlistInitialState,
                   orders: [],
-                  cartItems: [],
+                  cart: cartInitialState,
                   addresses: [],
+                  cards:[]
                 };
                 addUser(newUser);
                 dispatch(markUserAsLoggedIn(newUser));
@@ -148,14 +164,16 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
               }
             } else {
               const newUser: UserModel = {
+                id: authUser.user.uid,
                 email: authUser.user.email,
                 name: authUser.user.displayName,
                 phone: authUser.user.phoneNumber,
                 profileImage: authUser.user.photoURL,
-                wishList: [],
+                wishList: wishlistInitialState,
                 orders: [],
-                cartItems: [],
+                cart: cartInitialState,
                 addresses: [],
+                cards: [],
               };
               addUser(newUser);
               dispatch(markUserAsLoggedIn(newUser));
@@ -214,17 +232,11 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
       console.log("ADDED NEW USER", response.data);
     }
     
-      
-    const renderFooterComponent = () => {
-        return(<>
-            <Button type="contained" secondary label={formatMessage({id: 'close'})} onClick={onHide} />
-          </>)
-    }
+    
     return (
     <Modal 
         title={formatMessage({id: 'login'})}
         show={show}
-        footer={renderFooterComponent()}
         onHide={onHide}>
             <div className="login-container">
               <input value={phoneNumber} onChange={handlePhoneChange} className="form-control phoneInput" placeholder={formatMessage({id: 'phone'})}/>
@@ -238,14 +250,14 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
                 <Col xs={6}>
                 <img
                 className="login_img"
-                src={google_login_btn}
+                src={googleLocaleButton}
                 alt={DEFAULT_IMAGE_ALT}
                 onClick={handleGoogleSignIn} />
                 </Col>
                 <Col xs={6}>
                 <img
                 className="login_img"
-                src={facebook_login_btn}
+                src={facebookLocaleButton}
                 alt={DEFAULT_IMAGE_ALT}
                 onClick={handleFacebookSignIn} />
                 </Col>

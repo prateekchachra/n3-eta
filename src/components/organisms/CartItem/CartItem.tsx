@@ -45,7 +45,7 @@ const CartItem = ({product, onDeleteClick, onAddRemoveItemClick} : CartItemProps
             <div className="cartItemText">
                 <div className="cartImageContainer">
                     <X onClick={onDeleteClick} color="red" className="cartDeleteIcon" size={16}/>
-                    <img src={images[0]} className="productImage"/>
+                    {images ? <img src={images[0]} className="productImage"/> : null}
                  </div>
                 <div className="productTitlebar">
                     {name}

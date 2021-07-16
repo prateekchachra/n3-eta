@@ -6,44 +6,63 @@ import './ProductList.scss';
 import PageTemplate from '../../components/templates/PageTemplate';
 import ProductCard from '../../components/organisms/ProductCard/ProductCard';
 import Filters, { FilterOption } from '../../components/organisms/filters/Filters';
+import InputRange, { Range } from 'react-input-range';
 
-import { addProductToCart } from '../../redux/cart/CartAction';
 import { ProductModel } from '../../redux/cart/CartReducer';
 import { RootState } from '../../store';
-import { addProductToWishlist } from '../../redux/wishlist/WishlistActions';
+import { addProductinToCart, addProductinToWishlist } from '../../redux/user/UserActions';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
+import FullPageLoader from '../../components/atoms/fullPageLoader/FullPageLoader';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
+import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
+
+
 
 const ProductList = () :JSX.Element => {
+    const MIN_PRICE_RANGE = 199;
+    const MAX_PRICE_RANGE = 1999;
     const history = useHistory();
     const dispatch = useDispatch();
+
     const {gender} = useParams<Record<string, string | undefined>>();
     const {queryParam} = useParams<Record<string, string | undefined>>();
+
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
     const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    
     const [productList, setProducts] = useState<ProductModel[]>([]);
     const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
+    const [priceFilter, setPriceFilter] = useState<Range>({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE})
     const [appliedCategoryFilterOptionList, setAppliedCategoryFilterOptionList] = useState<string[]>([]);
     const [applyClearAllFilter, setApplyClearAllFilter] = useState<boolean>(true);
+    const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
+    const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
+    
+    const {formatMessage} = useIntl();
 
     useEffect( () => {
         if(applyClearAllFilter) {
             fetchCategoryFilterList();
+            setPriceFilter({ max: MAX_PRICE_RANGE, min: MIN_PRICE_RANGE});
         }
     }, [applyClearAllFilter])
 
     useEffect( () => {
-        if(gender) {
+        if(gender && queryParam) {
+            searchProductListByTitle();
+        } else if(gender && !queryParam) {
             fetchProductListByGender();
+        } else if(!gender && queryParam) {
+            searchProductListByTitle();
+            if(appliedCategoryFilterOptionList.length) {
+                setApplyClearAllFilter(true);
+            }
         } else {
             fetchProductList();
         }
-    }, [gender]);
-
-    useEffect( () => {
-        if(queryParam) {
-            searchProductListByTitle();
-        }
-    }, [queryParam]);
+    }, [gender, queryParam]);
 
     useEffect( () => {
         if(appliedCategoryFilterOptionList.length) {
@@ -63,25 +82,33 @@ const ProductList = () :JSX.Element => {
     }
 
     const fetchProductList = async () => {
+        setShowLoader(true);
         const productsResponse = await axios.get("/products");
         setProducts(productsResponse.data);
+        setShowLoader(false);
         return productsResponse;
     }
 
     const fetchProductListByGender = async () => {
+        setShowLoader(true);
         const productsResponse = await axios.get(`/products?gender=${gender}`);
         setProducts(productsResponse.data);
+        setShowLoader(false);
         return productsResponse;
     }
     
     const searchProductListByTitle = async () => {
-        const queryResponse = await axios.get(`/products?name_like='*${queryParam}*`);
+        setShowLoader(true);
+        const url = (gender) ? `/products?gender=${gender}&name_like='*${queryParam}*`
+            : `/products?name_like='*${queryParam}*`;
+        const queryResponse = await axios.get(url);
         if(queryResponse.data) {
             if(productList) {
                 setProducts([]);
             }
             setProducts(queryResponse.data);
         }
+        setShowLoader(false);
         return queryResponse;
     }
 
@@ -117,10 +144,22 @@ const ProductList = () :JSX.Element => {
         return;
     }
 
+    const fetchProductListByPriceRange = async (value: Range) => {
+
+        const url = `/products?discountedPrice_gte=${value.min}&discountedPrice_lte=${value.max}` + 
+            ((gender) ? `&gender=${gender}` : '');
+        const searchResult = await axios.get(url);
+        if(searchResult.data) {
+            setProducts(searchResult.data);
+        }
+
+    }
+
     function onCategoryFilterClickHandler(filters: FilterOption[]) {
         const includedFilterOptions: string[] = filters.filter( filter => filter.value)
             .map( filter => filter.label);
         if(!includedFilterOptions.length) {
+            setApplyClearAllFilter(true);
             if(gender) {
                 fetchProductListByGender();
             } else {
@@ -129,6 +168,20 @@ const ProductList = () :JSX.Element => {
         } else {
             setApplyClearAllFilter(false);
             setAppliedCategoryFilterOptionList(includedFilterOptions);
+        }
+    }
+
+    function onPriceRangeFilterChangeHandler(value: Range) {
+        if(value.min > MIN_PRICE_RANGE || value.max < MAX_PRICE_RANGE) {
+            setApplyClearAllFilter(false);
+            fetchProductListByPriceRange(value);
+        } else {
+            setApplyClearAllFilter(true);
+            if(gender) {
+                fetchProductListByGender();
+            } else {
+                fetchProductList();
+            }
         }
     }
 
@@ -148,41 +201,52 @@ const ProductList = () :JSX.Element => {
         history.push(`/item/${productId}`);
     }
 
-    const onAddToWishlistHandler = (product: ProductModel) => {
+ 
 
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
+    function onAddToCartHandler(product: ProductModel){
+        setSelectedProduct(product);
+        setShowAddToCart(true);
+    }
 
-        if(userState.isUserLoggedIn && product){
-            dispatch(addProductToWishlist(Object.assign({}, product)));
-        }
+    function onAddtoCartClickHandler(size: string, color: string, quantity: number) {
+        dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
+            {quantity, size, color})));
         
+        toast(formatMessage({id: 'added_to_cart'}), {
+            type: 'success'
+        })
+        setShowAddToCart(false);
     }
 
-    function onAddtoCartButtonClickHandler(product: ProductModel) {
-
+    function onBuyNowClickHandler(size: string, color: string, quantity: number) {
         if(!userState.isUserLoggedIn) {
             dispatch(showLoginModal(true));
             return;
         }
-
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
+        if(userState.isUserLoggedIn && selectedProduct) {
+            dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
+                {quantity, size, color})));
+            history.push("/cart");
         }
     }
 
-    function onBuyNowButtonClickHandler(product: ProductModel | null) {
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
-        if(userState.isUserLoggedIn && product) {
-            dispatch(addProductToCart(Object.assign({}, product, {quantity: 1})));
-            history.push("/checkout");
-        }
+
+    const onAddToWishlistHandler = (product: ProductModel, isAddedInWishlist: boolean) => {
+        
+        isAddedInWishlist ? toast(formatMessage({id: 'remove_wishlist'}),
+        {type: 'success'}) :
+        toast(formatMessage({id: 'add_wishlist'}),
+         {type: 'success'})
+
+        dispatch(addProductinToWishlist(product));
     }
+
+   
+    const onAddToCartHide = () => {
+        setShowAddToCart(false);
+        setSelectedProduct(null);
+    }
+    
 
     //TODO: create component for BreadCrums
     function renderBreadCrumsRow() {
@@ -199,8 +263,9 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="pageTitleContainer">
                 <div className="pageTitle">
-                    {gender && <p>{gender}&apos;s COLLECTION</p>}
-                    {!gender && <p> Special Deal Collection</p>}
+                    {(gender && !queryParam) && <p><FormattedMessage id={`${gender}_collection`}/></p>}
+                    {(!gender && queryParam) && <p><FormattedMessage id="search_results"/></p>}
+                    {(!gender && !queryParam) && <p> <FormattedMessage id="special_collection"/></p>}
                 </div>
             </div>
         )
@@ -210,20 +275,34 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="filterColumnContainer">
                 <div className="filterTitleContainer">
-                    <span className="filterTitle">Filters</span>
-                    { (appliedCategoryFilterOptionList.length > 0) && <span 
+                    <span className="filterTitle"><FormattedMessage id="filters" /></span>
+                    { !applyClearAllFilter && <span 
                         className="clearFilterTitle"
                         onClick={() => onClearAllClickHandler()}
                     >
-                        Clear All
+                        <FormattedMessage id="clear_all" />
                     </span>}
                 </div>
                 <div className="secondaryFilterTitleText">
                     <Filters
                         options={categoryFilterOptionList} 
-                        label="Categories" 
+                        label={formatMessage({id: 'categories'})}
                         onSelect={ (filters) => onCategoryFilterClickHandler(filters) }
                     />  
+                </div>
+                <div className="priceRangeFilterWrapper">
+                    <div className="priceRangeFilterTitleText"><FormattedMessage id="price" /></div>
+                    <InputRange
+                        maxValue={1999}
+                        minValue={199}
+                        value={priceFilter}
+                        draggableTrack={true}
+                        onChange={(value) => {
+                            setPriceFilter(value as Range);
+                            console.log();
+                        }}
+                        onChangeComplete={(value) => onPriceRangeFilterChangeHandler(value as Range)}
+                    />
                 </div>
             </div>
         );
@@ -233,7 +312,12 @@ const ProductList = () :JSX.Element => {
         return (
             <div className="productSearchListColumnContainer">
                 <div className="productListContainer">
-                    {   productList &&
+                    {
+                        !showLoader && productList.length == 0 &&
+                        <h4 className="noProductsTextHeader">No Products Available</h4>
+                    }
+                    
+                    {   !showLoader && productList &&
                         productList.map((product: ProductModel) => {
 
                             const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
@@ -242,16 +326,19 @@ const ProductList = () :JSX.Element => {
                                 price={product.price} 
                                 discountPercent={product.discountPercent} 
                                 imgs={product.images} 
-                                buyNowHandler={() => onBuyNowButtonClickHandler(product)}  
                                 isAddedInWishlist={isAddedInWishlist}
-                                onAddToWishlist={() => onAddToWishlistHandler(product)}
-                                addToCartHandler={ () => onAddtoCartButtonClickHandler(product) }
+                                onAddToWishlist={() => onAddToWishlistHandler(product, isAddedInWishlist)}
+                                addToCartHandler={ () => onAddToCartHandler(product) }
                                 onClickHandler={(event: React.MouseEvent<Element, MouseEvent>) => {
                                     event.preventDefault();
                                     onProductCardClickHandler(product.id);
                                 }}
                             />)
                         })
+                    }
+                    
+                    { showLoader && 
+                        <FullPageLoader/>
                     }
                 </div>
             </div>
@@ -266,6 +353,12 @@ const ProductList = () :JSX.Element => {
                     {renderFilterColumn()}
                     {renderProductListColumn()}
                 </div>
+            <AddToCartModal 
+                show={showAddToCart}
+                onHide={onAddToCartHide}
+                onBuyNowClick={onBuyNowClickHandler}
+                onAddClick={onAddtoCartClickHandler}
+                />
             </div>
         );
     }

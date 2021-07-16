@@ -8,11 +8,33 @@
     border-bottom: 1px solid #848484;
     padding-bottom: 12px;
 }
-.cartContainer{
-    width: 50%;
-    margin:auto;
-    padding-bottom: 48px;
+@media screen and (min-width:520px){
+    .cartContainer{
+        width: 50%;
+        margin:auto;
+        padding-bottom: 48px;
+    }
+    .priceTable{
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+
 }
+@media screen and (max-width:520px){
+    .cartContainer{
+        width: 80%;
+        margin:auto;
+        padding-bottom: 48px;
+    }
+    .priceTable{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+}
+
 .itemContainer{
     display: flex;
     margin:24px;
@@ -35,8 +57,4 @@
 .cartTotalLabel, .cartTotalValue{
     font-weight: 700;
     text-transform: uppercase;
-}
-.priceTable{
-    margin-top: 24px;
-    margin-bottom: 24px;
 }

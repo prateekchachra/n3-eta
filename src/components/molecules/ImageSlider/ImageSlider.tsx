@@ -14,10 +14,10 @@ type ImageSliderProps = {
 const ImageSlider = ( {id, name, images, style}: ImageSliderProps ) :JSX.Element => {
 
     function renderImageItems(images: string[]) {
-        const imageItems = images.map( image => { 
+        const imageItems = images.map( (image, index) => { 
             const imgSrc = image;
             return (
-            <Carousel.Item key={id} className="imageWrapper">
+            <Carousel.Item key={index} className="imageWrapper">
                 <img
                     className="d-block w-100 image"
                     src = {imgSrc}

@@ -5,16 +5,17 @@ import './productCard.scss';
 import Button from '../../molecules/button/Button'
 import ImageSlider from '../../molecules/ImageSlider/ImageSlider';
 import { Heart, HeartFill } from 'react-bootstrap-icons';
+import { useDispatch } from 'react-redux';
 
 type ProductCardProps = {
     productTitle: string;
     price: number;
     discountPercent?: number;
     imgs: string[];
-    buyNowHandler: MouseEventHandler;
     addToCartHandler: MouseEventHandler;
     onClickHandler: MouseEventHandler;
     onAddToWishlist?: MouseEventHandler;
+    onRemoveFromWishlistClick?: MouseEventHandler;
     isAddedInWishlist?: boolean,
     withoutWishlistActions?: boolean,
 }
@@ -22,12 +23,14 @@ type ProductCardProps = {
 
 
 const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
-     withoutWishlistActions, isAddedInWishlist, imgs, buyNowHandler, addToCartHandler, onClickHandler} : ProductCardProps) :JSX.Element => {
+     withoutWishlistActions, isAddedInWishlist, imgs,  addToCartHandler,onRemoveFromWishlistClick, onClickHandler} : ProductCardProps) :JSX.Element => {
+    
     const {formatMessage} = useIntl();
+    const dispatch = useDispatch();
     function displayPrice() {
         let _price = price;
         if(discountPercent > 0) {
-            _price = (price * discountPercent) / 100;
+            _price = price - (price * discountPercent) / 100;
         }
         return (
             <span className="priceWrapper">
@@ -60,6 +63,12 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
         )
     }
 
+    function renderRemoveFromWishlist() {
+        return withoutWishlistActions && (
+            <span className="removeFromWishlistButton" onClick={onRemoveFromWishlistClick}>x</span>
+        )
+    }
+
     function renderFavoriteButton() {
         return (
             <div className="favouriteButtonWrapper">
@@ -85,7 +94,6 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     function renderProductCardActions() {
         return (
             <div className="productCardActions">
-                <Button label={formatMessage({id: 'buy_now'})} type="outlined" onClick={(event: any) => buyNowHandler(event)}/>
                 <Button label={formatMessage({id: 'add_to_cart'})} type="outlined" onClick={(event: any) => addToCartHandler(event)}/>
             </div>
         )
@@ -94,6 +102,7 @@ const ProductCard = ({productTitle, price, discountPercent = 0, onAddToWishlist,
     return (
         <div className="productCardWrapper">
             { renderProductImageSlider() }
+            { renderRemoveFromWishlist() }
             {withoutWishlistActions ? null : renderFavoriteButton()}
             { renderProductCardText() }
             { renderProductCardActions() }

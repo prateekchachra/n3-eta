@@ -4,17 +4,19 @@ import PageTemplate from '../../components/templates/PageTemplate';
 import './Cart.scss'
 import { useHistory } from 'react-router-dom';
 import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { removeItemFromCart } from '../../redux/cart/CartAction';
 
 
 const Cart = () :JSX.Element => {
 
     const history = useHistory();
+    const dispatch = useDispatch();
     const {formatMessage} = useIntl();
-    const onDeleteClick = () => {
-        console.log('deleted')
+    const onDeleteClick = (productId: number) => {
+        dispatch(removeItemFromCart(productId))
     }
     const onAddItemClick = () => {
         console.log('added')

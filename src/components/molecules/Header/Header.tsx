@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react'
+import React, { SyntheticEvent, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import './Header.scss';
@@ -20,14 +20,27 @@ import { LANGUAGES_OPTIONS } from '../../../utils/multilang/languages';
 const Header = () :JSX.Element => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const {formatMessage} = useIntl();
-
-    const cartState = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState);
-    const wishlistState = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState);
-    const numItemsInCart = (cartState.cartItems) ? cartState.cartItems.length : 0;
-    const numItemsInWishlist = (wishlistState.wishlistItems) ? wishlistState.wishlistItems.length : 0;
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
+    const numItemsInCart = (userState.user && userState.user.cart) ? userState.user.cart.cartItems.length : 0;
+    const numItemsInWishlist = (userState.user && userState.user.wishList) ? userState.user.wishList.wishlistItems.length : 0;
+    const {formatMessage} = useIntl();
     const {selectedLocale} = userState;
+
+    const [windowDimension, setWindowDimension] = useState<number | null>(null);
+
+    useEffect(() => {
+        setWindowDimension(window.innerWidth);
+    }, []);
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimension(window.innerWidth);
+        }
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    });
+    
+    const isMobile = windowDimension && windowDimension <= 640;
 
     const onLanguageSelect = (event: SyntheticEvent) => {
         const {target} = event;
@@ -72,6 +85,7 @@ const Header = () :JSX.Element => {
     }
 
     function onSearchBarEnterPressHandler(searchQuery: string) {
+        console.log("here");
         if(searchQuery) {
             history.push(`/searchResult/${searchQuery}`);
         }
@@ -87,9 +101,10 @@ const Header = () :JSX.Element => {
         );
     }
 
-    function renderQuickActionLinks() {
+    function renderQuickActionLinks(displayLocaleSelect: boolean) {
         return (
             <div className="quickActionLinkWrapper">
+                 {displayLocaleSelect ?  renderLanguageSelect() : null}
                 <div className="wishListIcon">
                     <Heart onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
                             event.preventDefault();
@@ -114,9 +129,7 @@ const Header = () :JSX.Element => {
                     }  />
                     <Badge value={numItemsInCart} />
                 </div>
-                <div className="cartIcon">
-                    <DropDown onSelect={onLanguageSelect} selected={selectedLocale} options={LANGUAGES_OPTIONS}/>
-                </div>
+               
                 { userState.isUserLoggedIn && 
                     (<div className="userAccountIcon">
                         <Person onClick={(event: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -131,6 +144,12 @@ const Header = () :JSX.Element => {
                 </div>
             </div>
         );
+    }
+
+    function renderLanguageSelect(){
+        return (<div className="languageWrapper">
+        <DropDown onSelect={onLanguageSelect} selected={selectedLocale} options={LANGUAGES_OPTIONS}/>
+    </div>)
     }
 
     function renderAuthenticationButton() {
@@ -156,17 +175,30 @@ const Header = () :JSX.Element => {
 
     function onLogOutClickHandler() {
         localStorage.clear();
-        dispatch(resetCart(userState.user.email));
+        dispatch(resetCart());
         dispatch(resetWishList(userState.user.email));
-        dispatch(markUserAsLoggedOut());
+        dispatch(markUserAsLoggedOut(userState.user));
     }
 
-    return (
+    return isMobile ? (
+        <header className="headerMobileContainer">
+           <div className="headerMobileRow">
+              {renderLogo()} 
+              {renderQuickActionLinks(false)}
+           </div>
+           <div className="headerMobileRow">
+                {renderSearchBar()}
+                {renderLanguageSelect()}
+           </div>
+          
+        </header>
+    ) : (
         <header className="headerContainer">
             {renderLogo()}
             {renderNavLinks()}
             {renderSearchBar()}
-            {renderQuickActionLinks()}
+            {renderQuickActionLinks(true)}
+          
         </header>
     )
 }

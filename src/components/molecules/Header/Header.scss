@@ -15,9 +15,21 @@
     z-index: 10;
 }
 
+.headerMobileContainer{
+    width: 100%;
+    height: 160px;
+    box-shadow: 0 4px 12px 0 #282c340f;
+}
+.headerMobileRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px;
+}
+
 .logoWrapper {
-    width: 18%;
-    margin-left: 2%;
+    width: max-content;
 }
 
 .logo {
@@ -30,18 +42,8 @@
     font-size: $titleTextSize;
 }
 
-.navLinks {
-    width: 24%;
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: flex-start;
-    margin-left: 2%;
-}
-
 .navLinkWrapper {
     display: inline;
-    line-height: 80px;
 }
 
 .navLink {
@@ -57,11 +59,12 @@
 }
 
 .searchBarWrapper {
-    width: 54%;
+    width: max-content;
     display: flex;
     justify-content: flex-end;
     align-content: center;
     float: right;
+    padding: 0 16px;
 }
 
 .searchBar {
@@ -69,27 +72,36 @@
 }
 
 .quickActionLinkWrapper {
-    width: 16%;
+    width: max-content;
     display: flex;
     flex-direction: row;
     font-size: $titleTextSize;
-    align-content: center;
+    align-items: center;
     justify-content: space-evenly;
+    padding: 0 16px;
 }
 
 .wishListIcon {
     color: $text-color;
     position: relative;
     cursor: pointer;
+    margin-right: 32px;
 }
 
 .cartIcon {
     color: $text-color;
     position: relative;
     cursor: pointer;
+    margin-right: 32px;
 }
 
 .userAccountIcon {
     color: $text-color;
     cursor: pointer;
+    margin-right: 32px;
+}
+
+.languageWrapper {
+    margin-right: 32px;
+    font-size: $bodyTextSize;
 }
