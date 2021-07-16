@@ -1,0 +1,241 @@
+[
+    {
+        "id": 1,
+        "name": "Men's Polo Tshirt",
+        "price": 450,
+        "discountPercent": 40,
+        "category": "tshirt",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80"
+        ]
+    },
+
+    {
+        "id": 2,
+        "name": "Men's Polo Jacket",
+        "price": 650,
+        "discountPercent": 50,
+        "category": "jacket",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 3,
+        "name": "Men's Polo Track",
+        "price": 850,
+        "discountPercent": 0,
+        "category": "track",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 4,
+        "name": "Men's Polo Shirt",
+        "price": 550,
+        "discountPercent": 60,
+        "category": "shirt",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 5,
+        "name": "Men's Polo Tshirt",
+        "price": 450,
+        "discountPercent": 40,
+        "category": "tshirt",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 6,
+        "name": "Men's Polo Jacket",
+        "price": 650,
+        "discountPercent": 50,
+        "category": "jacket",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80"
+        ]
+    },
+
+    {
+        "id": 7,
+        "name": "Men's Polo Track",
+        "price": 850,
+        "discountPercent": 0,
+        "category": "track",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 8,
+        "name": "Men's Polo Shirt",
+        "price": 550,
+        "discountPercent": 60,
+        "category": "shirt",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 9,
+        "name": "Men's Polo Tshirt",
+        "price": 450,
+        "discountPercent": 40,
+        "category": "tshirt",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 10,
+        "name": "Men's Polo Jacket",
+        "price": 650,
+        "discountPercent": 50,
+        "category": "jacket",
+        "gender": "men",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 11,
+        "name": "Men's Polo Track",
+        "price": 850,
+        "discountPercent": 0,
+        "category": "track",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 12,
+        "name": "Men's Polo Shirt",
+        "price": 550,
+        "discountPercent": 60,
+        "category": "shirt",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 13,
+        "name": "Men's Polo Tshirt",
+        "price": 450,
+        "discountPercent": 40,
+        "category": "tshirt",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 14,
+        "name": "Men's Polo Jacket",
+        "price": 650,
+        "discountPercent": 50,
+        "category": "jacket",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 15,
+        "name": "Men's Polo Track",
+        "price": 850,
+        "discountPercent": 0,
+        "category": "track",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 16,
+        "name": "Men's Polo Shirt",
+        "price": 550,
+        "discountPercent": 60,
+        "category": "shirt",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 17,
+        "name": "Men's Polo Tshirt",
+        "price": 450,
+        "discountPercent": 40,
+        "category": "tshirt",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 18,
+        "name": "Men's Polo Jacket",
+        "price": 650,
+        "discountPercent": 50,
+        "category": "jacket",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 19,
+        "name": "Men's Polo Track",
+        "price": 850,
+        "discountPercent": 0,
+        "category": "track",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    },
+
+    {
+        "id": 20,
+        "name": "Men's Polo Shirt",
+        "price": 550,
+        "discountPercent": 60,
+        "category": "shirt",
+        "gender": "women",
+        "images": [
+            "https://images.unsplash.com/photo-1467043237213-65f2da53396f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        ]
+    }
+]

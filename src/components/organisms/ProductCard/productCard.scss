@@ -1,0 +1,118 @@
+@import 'src/App.scss';
+
+@media screen and (min-width:520px){
+    .productCardWrapper {
+        display: flex;
+        flex-direction: column;
+        width: 228px;
+        height: 308px;
+        border-radius: 16px;
+        position: relative;
+        margin: 2% 2%;
+        padding: 8px;
+        box-shadow: 0 2px 2px 2px #a7a7a7;
+        transition: 0.4s;
+    }
+
+}
+@media screen and (max-width:520px){
+    .productCardWrapper {
+        display: flex;
+        flex-direction: column;
+        width: 228px;
+        height: 308px;
+        border-radius: 16px;
+        position: relative;
+        margin: 4% auto;
+        padding: 8px;
+        box-shadow: 0 2px 2px 2px #a7a7a7;
+        transition: 0.4s;
+    }
+
+}
+
+
+.removeFromWishlistButton{
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: red;
+    font-size: 20px;
+    font-weight: 600;  
+}
+.productCardWrapper:hover {
+    box-shadow: 0 2px 16px 4px #E5E5E5;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.productCardImageCarousel {
+    height: 204px;
+    display: block;
+    background: #E5E5E5;
+}
+
+.d-block{
+    border-radius: 10px 10px 0 0;
+}
+.carousel-item{
+    background-color: white;
+}
+.favouriteButtonWrapper {
+    position: absolute;
+    bottom: 104px;
+    align-self: flex-end;
+    padding: 0 8px 8px 0;
+    color: $disable;
+}
+
+.favouriteButtonWrapper:hover {
+    color: $error;
+}
+
+.productCardText {
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    font-size: $bodyTextSize;
+    padding: 4px;
+    color: $text-color;
+}
+
+.productTitlebar {
+    text-align: start;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 86%;
+}
+
+.productPricebar {
+    display: block;
+}
+
+.priceWrapper {
+    font-size: $productCardPriceTextSize;
+    padding-right: 4px;
+    font-weight: 550;
+}
+
+.discountPriceWrapper {
+    font-size: $productCardDiscountPriceTextSize;
+    padding-left: 4px;
+    color: $disable;
+    text-decoration: line-through;
+}
+
+.discountPercentageWrapper {
+    font-size: $productCardDiscountPriceTextSize;
+    padding-left: 4px;
+    color: $error;
+}
+
+.productCardActions {
+   border-top: 1px solid #a7a7a7;
+    padding: 4px 0 2px 0;
+}

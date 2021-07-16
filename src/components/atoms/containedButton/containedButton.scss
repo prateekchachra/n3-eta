@@ -1,0 +1,36 @@
+@import '../../../App.scss';
+
+.buttonContained {
+    background-color: $primary;
+    display: inline-block;
+    border: none;
+    width: max-content;
+    border-radius: 0.2rem;
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    color:  #fff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 100ms ease-in-out, 
+                transform 100ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+
+.buttonContained.button-primary {
+    background-color: $primary;
+}
+.buttonContained.button-secondary{
+    background-color: #413c9b;
+}
+.buttonContained.button-primary:hover, .buttonContained.button-primary:focus {
+    background-color: $primary;
+}
+.buttonContained.button-secondary:hover, .buttonContained.button-secondary:focus {
+    background-color: #413c9b;
+}
+.buttonContained:active {
+    transform: scale(0.9);
+}

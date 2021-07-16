@@ -1,0 +1,52 @@
+.profileContainer{
+    margin-top: 108px;
+
+}
+.profileFieldWrapper{
+    margin: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profileImageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profileImage{
+    margin-bottom: 12px;    
+    width: 120px;
+    height: 120px; 
+    border-radius: 60px;
+}
+.profileText{
+    font-size: 16px;
+    font-weight: 400;
+}
+.profileDetailsRow{
+    margin-top: 24px;
+}
+.profileLabel{
+    padding: 24px;
+    font-size: 20px;
+    font-weight: 700;
+}
+@media screen and (min-width:520px){
+    .profileAddRow{
+        width: 50%;
+        margin: auto;
+    }
+
+}
+@media screen and (max-width:520px){
+    .profileAddRow{
+        width: 80%;
+        margin: auto;
+    }
+}
+
+
+.profileOrderTable{
+    margin-top: 24px;
+    width: 80%;
+}

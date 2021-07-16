@@ -1,0 +1,203 @@
+@import 'src/App.scss';
+
+.productDetailPage {
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px;
+    margin-top: 80px;
+}
+
+
+.productTitleWrapper {
+    text-align: start;
+    padding: 32px 0 0 0;
+}
+
+.productTitle {
+    font-size: $productTitleTextSize;
+    font-weight: 500;
+}
+
+.productDiscriptionWrapper {
+    text-align: start;
+    padding: 0;
+    margin-bottom: 16px;
+    border-bottom: 1px $disable solid;
+}
+
+.productDiscritpion {
+    font-size: $productSubTitleTextSize;
+    font-weight: 400;
+    color: $disable;
+}
+
+.productDetailPriceWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.productPriceWrapper {
+    font-size: $productTitleTextSize;
+    font-weight: 550;
+    margin-right: 12px;
+}
+
+.productDiscountPriceWrapper {
+    font-size: $productSubTitleTextSize;
+    color: $disable;
+    text-decoration: line-through;
+    margin-right: 12px;
+}
+
+.productDiscountPercentageWrapper {
+    font-size: $productSubTitleTextSize;
+    color: $error;
+    margin-right: 12px;
+}
+
+.productPriceInclusiveAllTaxesWrapper {
+    text-align: start;
+    margin-bottom: 12px;
+}
+
+.productPriceInclusiveAllTaxes {
+    color: $secondary;
+    font-weight: 500;
+    font-size: $bodyTextSize;
+    margin: 5px 10px 12px 0;
+}
+
+.productSelectSizeTextWrapper {
+    text-align: start;
+}
+
+.productSelectSizeText {
+    font-size: $titleTextSize;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.productSizeSelectorWrapper  {
+    align-content: flex-start;
+    width: fit-content;
+    margin-bottom: 12px;
+}
+
+.productColorSelectorWrapper {
+    align-content: flex-start;
+    width: fit-content;
+    margin-bottom: 12px;
+}
+
+.productDetailButtonActionsWrapper {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px $border-color solid;
+}
+
+.buyNowButton {
+    margin: 0 12px 32px 0;
+}
+
+.addToCartButton {
+    margin: 0 8px 32px 0;
+}
+
+.productDetailDiscriptionWrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px $border-color solid;
+}
+
+.productDetailTitle {
+    text-align: start;
+    font-size: $productDetailTextSize;
+    font-weight: 550;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 16px 0;
+}
+
+.productDetail {
+    text-align: start;
+    font-size: $productDetailTextSize;
+    color: $disable;
+    font-weight: 400;
+    margin-bottom: 12;
+}
+
+.productCustomerReviewWrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px $border-color solid;
+}
+
+.productCustomerReviewTitle {
+    text-align: start;
+    font-size: $productDetailTextSize;
+    font-weight: 550;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 16px 0;
+}
+
+.productCustomerReview {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 16px 0;
+}
+
+.similarProductsContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 0;
+}
+
+.similarProductsTitle {
+    font-size: $productSubTitleTextSize;
+    text-align: start;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+@media screen and (min-width:520px){
+    .similarProductListWrapper, .productDetailComponent {
+        display: flex;
+        flex-direction: row;
+    }
+    .productImageSliderContainer {
+        width: 40%;
+        padding: 32px 0;
+    }
+    .productDetailContainer {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 32px;
+    }
+}
+@media screen and (max-width:520px){
+    .similarProductListWrapper, .productDetailComponent  {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .productImageSliderContainer {
+        width: 80%;
+        height: 200px;
+    }
+    .productDetailContainer {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+}
