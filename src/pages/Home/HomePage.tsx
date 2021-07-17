@@ -31,12 +31,12 @@ const HomePage = () => {
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
 
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    const [wishlistItems, setWishlistItems] = useState<ProductModel[]>([]);
     const [showLoader, setShowLoader] = useState<boolean>(false);
     const [windowDimension, setWindowDimension] = useState<number | null>(null);
 
     const banners = [
-        heroBanner
+        "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/7/15/addf1f17-6747-4a35-8133-19a2cc1bfc4f1626370991148-Weekend-sale_DK-2.jpg"
       ];
     const specialCategoriesKeys = ["knockout_deals", "festive_deals", "deals_of_day"];
     const fetchProductList= async () => {
@@ -56,6 +56,12 @@ const HomePage = () => {
     useEffect( () => {
         fetchProductList();
     }, []);
+
+    useEffect( () => {
+        if(userState.user.wishList) {
+            setWishlistItems(userState.user.wishList.wishlistItems);
+        }  
+    }, [userState]);
 
     useEffect(() => {
         function handleResize() {

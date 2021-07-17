@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageTemplate from '../../components/templates/PageTemplate';
 import { useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -9,11 +9,10 @@ import { connect } from 'react-redux'
 
 import { RootState } from '../../store';
 import { ProductModel } from '../../redux/cart/CartReducer';
-import { addProductinToCart } from '../../redux/user/UserActions';
+import { addProductinToCart, removeProductFromWishlist } from '../../redux/user/UserActions';
 import AddToCartModal from '../../components/organisms/modals/AddToCartModal/AddToCardModal';
 import { showLoginModal } from '../../redux/loginModal/LoginModalActions';
 import { toast } from 'react-toastify';
-import { removeItemFromWishlist } from '../../redux/wishlist/WishlistActions';
 
 const Wishlist = () :JSX.Element => {
 
@@ -21,11 +20,16 @@ const Wishlist = () :JSX.Element => {
     const dispatch = useDispatch();
     const {formatMessage} = useIntl();
     
-    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-
+    const [wishlistItems, setWishlistItems] = useState<ProductModel[]>([]);
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
+
+    useEffect( () => {
+      if(userState.user.wishList) {
+          setWishlistItems(userState.user.wishList.wishlistItems);
+      }  
+    }, [userState]);
 
     const onProductCardClickHandler = (productId: number) => {
         history.push(`/item/${productId}`);
@@ -60,11 +64,11 @@ const Wishlist = () :JSX.Element => {
         setSelectedProduct(null);
     }
     
-    const onRemoveItemClick = (productId: string) => {
+    const onRemoveItemClick = (productId: number) => {
         toast(formatMessage({id: 'remove_wishlist'}), {
             type: 'success'
         });
-        dispatch(removeItemFromWishlist(productId))
+        dispatch(removeProductFromWishlist(productId))
     }
     
     function renderProductListColumn() {

@@ -6,15 +6,11 @@ import loginModalState, { LoginModalState } from './redux/loginModal/LoginModalR
 import thunk from 'redux-thunk';
 
 export type RootState = {
-    cartState: CartState,
-    wishlistState: WishlistState
     userState: UserState,
     loginModalState: LoginModalState
 }
 
 const rootReducer = combineReducers({
-    cartState,
-    wishlistState,
     userState,
     loginModalState
 });

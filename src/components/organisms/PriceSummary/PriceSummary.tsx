@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Button from '../../../components/molecules/button/Button';
 import CartItem from '../CartItem/CartItem';
@@ -8,6 +8,7 @@ import { Table } from 'react-bootstrap';
 import './PriceSummary.scss';
 import { RootState } from '../../../store';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { ProductModel } from '../../../redux/cart/CartReducer';
 
 
 export type PriceSummaryProps = {
@@ -22,11 +23,18 @@ export type PriceSummaryProps = {
 
 const PriceSummary = ({onButtonClick, toRenderCart, buttonLabel, onDeleteClick,onAddRemoveItemClick} : PriceSummaryProps) : JSX.Element => {
 
-    const cartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
+    const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
+    const [cartItems, setCartItems] = useState<ProductModel[]>([]);
     const calculateDiscountedPrice = (price: number, discountPercent: number) => (price - ((price * discountPercent) / 100));
     const {formatMessage} = useIntl();
     let sumTotal = 0;
     let sumDiscount = 0;
+
+    useEffect( () => {
+        if(userState.user.cart) {
+            setCartItems(userState.user.cart.cartItems);
+        }  
+      }, [userState]);
 
     const cartItemsWithDiscount = cartItems.map((item, index) => {
         const {price, discountPercent, quantity} = item;

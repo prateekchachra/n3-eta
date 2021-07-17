@@ -29,7 +29,6 @@ const ProductList = () :JSX.Element => {
     const {queryParam} = useParams<Record<string, string | undefined>>();
 
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     
     const [productList, setProducts] = useState<ProductModel[]>([]);
     const [categoryFilterOptionList, setCategoryFilterOptionList] = useState<FilterOption[]>([]);
@@ -317,7 +316,8 @@ const ProductList = () :JSX.Element => {
                     {   !showLoader && productList &&
                         productList.map((product: ProductModel) => {
 
-                            const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
+                            const isAddedInWishlist = ( userState.user.wishList &&
+                                userState.user.wishList.wishlistItems.filter(item => item.id === product.id).length > 0);
                             return (<ProductCard key={product.id}
                                 productTitle={product.name} 
                                 price={product.price} 
