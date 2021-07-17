@@ -119,7 +119,10 @@ const HomePage = () => {
 
 
     const onAddToWishlistHandler = (product: ProductModel, isAddedInWishlist: boolean) => {
-        
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
         isAddedInWishlist ? toast(formatMessage({id: 'remove_wishlist'}),
         {type: 'success'}) :
         toast(formatMessage({id: 'add_wishlist'}),
