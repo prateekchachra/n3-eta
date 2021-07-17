@@ -36,7 +36,7 @@ const HomePage = () => {
     const [windowDimension, setWindowDimension] = useState<number | null>(null);
 
     const banners = [
-        heroBanner
+        "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/7/15/addf1f17-6747-4a35-8133-19a2cc1bfc4f1626370991148-Weekend-sale_DK-2.jpg"
       ];
     const specialCategoriesKeys = ["knockout_deals", "festive_deals", "deals_of_day"];
     const fetchProductList= async () => {
