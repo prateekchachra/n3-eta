@@ -187,6 +187,7 @@ const Payment = () :JSX.Element => {
         toast(formatMessage({id: 'confirm_order'}),{
           type: 'success'
         });
+        setShowConfirmModal(false)
         history.push('/')
       }
     
