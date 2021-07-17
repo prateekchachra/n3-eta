@@ -19,20 +19,20 @@
 }
 @media screen and (max-width:520px){
     .imageContainer {
-        height: 200px;
+        height: 200px !important;
     }
     
     .carousel-inner {
-        height: 200px;
+        height: 200px !important;
     }
     
     .imageSlider {
-        height: 200px;
+        height: 200px !important;
     }
     
     
     .image, .imageWrapper {
-        height: 200px;
+        height: 200px !important;
     }
     
 }

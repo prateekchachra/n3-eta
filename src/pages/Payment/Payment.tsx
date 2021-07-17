@@ -146,7 +146,14 @@ const Payment = () :JSX.Element => {
             {type: 'error'})
           }  else setShowConfirmModal(true) 
         }
-        else setShowConfirmModal(true)
+        else if(paymentOption === '') {
+          
+          toast(formatMessage({id: 'select_payment'}), 
+          {type: 'error'})
+        }
+        else {
+          setShowConfirmModal(true)
+        }
       }
       const onConfirmClick = () => {
 

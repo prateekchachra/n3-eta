@@ -21,7 +21,7 @@ const ImageSlider = ( {id, name, images, style}: ImageSliderProps ) :JSX.Element
                 <img
                     className="d-block w-100 image"
                     src = {imgSrc}
-                    alt="First slide"
+                    alt="Loading..."
                 />
             </Carousel.Item>
             )}

@@ -201,6 +201,10 @@ const ProductList = () :JSX.Element => {
  
 
     function onAddToCartHandler(product: ProductModel){
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
         setSelectedProduct(product);
         setShowAddToCart(true);
     }
@@ -216,10 +220,7 @@ const ProductList = () :JSX.Element => {
     }
 
     function onBuyNowClickHandler(size: string, color: string, quantity: number) {
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
+        
         if(userState.isUserLoggedIn && selectedProduct) {
             dispatch(addProductinToCart(Object.assign({}, selectedProduct, 
                 {quantity, size, color})));

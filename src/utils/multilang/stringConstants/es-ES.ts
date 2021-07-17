@@ -62,6 +62,7 @@ export default {
 
     //Checkout Page
     no_addresses: 'No se encontraron direcciones. ¡Crea uno!',
+    select_address: 'Seleccione o cree una dirección para continuar',
     bill_info: 'Info de facturación',
     enter_details: 'Ingrese los detalles, por favor',
     add_address: 'Añadir dirección',
@@ -89,6 +90,7 @@ export default {
     razorpay: 'RazorPay',
     buy_confirmation: '¿Estás segura de que quieres comprar este artículo?',
     buy_button_label: 'Si, por favor confirme',
+    select_payment: 'Seleccione una opción para pagar',
     proceed_to_payment: 'Proceder al pago',
     confirm_payment: 'Confirmar pago',
 

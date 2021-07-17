@@ -83,12 +83,16 @@ function ProductDetailPage() {
                     type: 'error'
                 })
             }
-            else onBuyNowClickHandler(product.size.toString(), product.color, product.quantity, suggestedProduct === null)
+            else onBuyNowClickHandler(product.size.toString(), product.color, 
+            product.quantity ? product.quantity : 1, suggestedProduct === null)
         }
     }
 
     function onAddToCartHandler(suggestedProduct: ProductModel | null){
-       
+        if(!userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
        if(suggestedProduct){
             setSelectedProduct(suggestedProduct);
             setShowAddToCart(true);
@@ -99,15 +103,13 @@ function ProductDetailPage() {
                    type: 'error'
                })
            }
-         else onAddtoCartClickHandler(product.size.toString(), product.color, product.quantity, suggestedProduct !== null)
+         else onAddtoCartClickHandler(product.size.toString(), product.color,
+          product.quantity ? product.quantity : 1, suggestedProduct !== null)
        }
     }
 
     function onAddtoCartClickHandler(size: string, color: string, quantity: number, isMainProduct: boolean) {
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
+       
         dispatch(addProductinToCart(Object.assign({}, isMainProduct ? product: selectedProduct, 
             {quantity, size, color})));
         
@@ -118,10 +120,7 @@ function ProductDetailPage() {
     }
 
     function onBuyNowClickHandler(size: string, color: string, quantity: number, isMainProduct: boolean) {
-        if(!userState.isUserLoggedIn) {
-            dispatch(showLoginModal(true));
-            return;
-        }
+       
         if(userState.isUserLoggedIn && (selectedProduct || product)) {
           
             const mainProduct = isMainProduct ? product : selectedProduct;

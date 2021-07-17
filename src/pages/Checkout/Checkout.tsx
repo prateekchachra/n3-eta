@@ -32,6 +32,12 @@ const Checkout = () :JSX.Element => {
     const onAddAddressClick = () => setShowAddAddress(true);
     const onHideAddressModal = () => setShowAddAddress(false);
 
+    const onProceedClick = () => {
+        if(selectedAddress === null){
+            toast(formatMessage({id: 'select_address'}), {type: 'error'})
+        }
+        else history.push('/payment')
+    }
     const onAddAddressSuccessClick = (address: AddressType) => {
         let indexOfAdd = -1;
         user.addresses.map((item, index) => {
@@ -101,7 +107,7 @@ const Checkout = () :JSX.Element => {
                     <span className="checkoutTitle"><FormattedMessage id='bill_info'/></span>
                     <span className="checkoutDescription"><FormattedMessage id='enter_details'/></span>
                         <PriceSummary 
-                        buttonLabel={formatMessage({id: 'proceed_to_payment'})} onButtonClick={() => history.push('payment')} />
+                        buttonLabel={formatMessage({id: 'proceed_to_payment'})} onButtonClick={onProceedClick} />
                     </div>
                 </Col>
                 </Row>

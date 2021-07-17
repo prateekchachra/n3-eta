@@ -135,17 +135,59 @@ const LoginModal = ({show,onHide} : LoginModalProps) : JSX.Element => {
     firebase
       .doFacebookSignIn()
       .then((authUser: any) => {
-        return firebase.user(authUser.user.uid).set({
-          email: authUser.user.email,
-          username: authUser.user.displayName,
-          roles: {},
-        });
+        
+        fetchUser(authUser.user.email)
+          .then ( response => {
+            if(response.data.length) {
+              const user = response.data[0];
+              if ( !user ) {
+                const newUser: UserModel = {
+                  id: authUser.user.id,
+                  email: authUser.user.email,
+                  name: authUser.user.displayName,
+                  phone: authUser.user.phoneNumber,
+                  profileImage: authUser.user.photoURL,
+                  wishList: wishlistInitialState,
+                  orders: [],
+                  cart: cartInitialState,
+                  addresses: [],
+                  cards:[]
+                };
+                addUser(newUser);
+                dispatch(markUserAsLoggedIn(newUser));
+              } else {
+                dispatch(markUserAsLoggedIn(user));
+              }
+            } else {
+              const newUser: UserModel = {
+                id: authUser.user.uid,
+                email: authUser.user.email,
+                name: authUser.user.displayName,
+                phone: authUser.user.phoneNumber,
+                profileImage: authUser.user.photoURL,
+                wishList: wishlistInitialState,
+                orders: [],
+                cart: cartInitialState,
+                addresses: [],
+                cards: [],
+              };
+              addUser(newUser);
+              dispatch(markUserAsLoggedIn(newUser));
+            }
+            localStorage.setItem("userToken", authUser.user.uid);
+          }).catch ( (error) => console.error(error));
+        // firebase.db
+        // .ref(`users/${authUser.user.uid}`)
+        // .once('value', (snap: any) => {
+        //     const user = snap.val();
+        
+          // });
       })
       .then(() => {
         onHide();
       })
       .catch((error: any) => {
-        console.log({ errorMessage: error });
+        onHide();
       });
   };
 

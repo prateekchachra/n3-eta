@@ -1,13 +1,25 @@
 @import 'src/App.scss';
 
 
+@media screen and (min-width:520px){
+    .searchContainer input{
+        width: 16rem;
+        font-size: 1rem;
+    }
+}
+@media screen and (max-width:520px){
+    .searchContainer input{
+        width: 12rem;
+        font-size: 0.8rem;
+    }
+}
+
 .searchContainer input{
     border: 0.1rem solid #000;
     outline: none;
     border-radius: 0.2rem;
     padding: 0.6rem 0.8rem;
-    width: 16rem;
-    margin: 1rem;
+    margin: 1rem 1rem 1rem 0;
     align-items: flex-start;
 }
 .searchContainer{
