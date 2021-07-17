@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import PageTemplate from '../../components/templates/PageTemplate';
 import { Row,Col, Form } from 'react-bootstrap';
 import './Payment.scss'
@@ -13,9 +13,9 @@ import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import Card, { CardType } from '../../components/organisms/Card/Card';
 import { ChangeEvent } from 'react';
-import { saveCardToUser, saveOrderToUser } from '../../redux/user/UserActions';
+import { resetCartState, saveCardToUser, saveOrderToUser } from '../../redux/user/UserActions';
 import { OrderItem } from '../../components/organisms/Order/Order';
-import { resetCart } from '../../redux/cart/CartAction';
+import { ProductModel } from '../../redux/cart/CartReducer';
 
 
 
@@ -24,14 +24,13 @@ const Payment = () :JSX.Element => {
     const history = useHistory();
 
     const userState = useSelector<RootState, RootState["userState"]>((state: RootState) => state.userState);
-    const cartState = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState);
+    const [cartItems, setCartItems] = useState<ProductModel[]>([]);
     const calculateDiscountedPrice = (price: number, discountPercent: number) => (price - ((price * discountPercent) / 100));
    
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
     
     const {user} = userState;
-    const {cartItems} = cartState;
 
     let amount = 0;
 
@@ -62,7 +61,12 @@ const Payment = () :JSX.Element => {
     const [expiryDate, setExpiryDate] = useState<string>('')
     const [cvv, setCvv] = useState<number>(0);
     
-    
+    useEffect( () => {
+      if(userState.user.cart) {
+          setCartItems(userState.user.cart.cartItems);
+      }  
+    }, [userState]);
+
     const onCardNumberChange = (event: ChangeEvent) => {
       const {target} = event;
       setCardNumber((target as HTMLInputElement).value)
@@ -160,7 +164,7 @@ const Payment = () :JSX.Element => {
           items: orderMappedCartItems,
           total: amount.toString()
         }))
-        dispatch(resetCart());
+        dispatch(resetCartState());
         toast(formatMessage({id: 'confirm_order'}),{
           type: 'success'
         });
@@ -238,7 +242,7 @@ const Payment = () :JSX.Element => {
                         <Form.Control type="date" onChange={onExpiryDateChange} placeholder="DD/MM/YYYY" />
                       </Col>
                       <Col>
-                        <Form.Control type="number" onChange={onCvvChange} placeholder="CVV" />
+                        <Form.Control type="password" onChange={onCvvChange} placeholder="CVV" />
                       </Col>
                 </Row>
                 </Form>

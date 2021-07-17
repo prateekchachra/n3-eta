@@ -31,7 +31,7 @@ const HomePage = () => {
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
 
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
+    const [wishlistItems, setWishlistItems] = useState<ProductModel[]>([]);
     const [showLoader, setShowLoader] = useState<boolean>(false);
     const [windowDimension, setWindowDimension] = useState<number | null>(null);
 
@@ -56,6 +56,12 @@ const HomePage = () => {
     useEffect( () => {
         fetchProductList();
     }, []);
+
+    useEffect( () => {
+        if(userState.user.wishList) {
+            setWishlistItems(userState.user.wishList.wishlistItems);
+        }  
+    }, [userState]);
 
     useEffect(() => {
         function handleResize() {

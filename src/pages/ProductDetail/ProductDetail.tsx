@@ -39,7 +39,6 @@ function ProductDetailPage() {
     const dispatch = useDispatch();
     const {productId} = useParams<Record<string, string | undefined>>();
     const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
-    const wishlistItems = useSelector<RootState, RootState["wishlistState"]>((state: RootState) => state.wishlistState).wishlistItems;
     
     const [similarProductSuggestions, setSimilarProductSuggestions] = useState<ProductModel[]>([]);
     const [product, setProduct] = useState<ProductModel | null>(null);
@@ -288,7 +287,8 @@ function ProductDetailPage() {
                     {   similarProductSuggestions &&
                         similarProductSuggestions.map((product: any) => {
 
-                            const isAddedInWishlist = wishlistItems.filter(item => item.id === product.id).length > 0;
+                            const isAddedInWishlist = ( userState.user.wishList &&
+                                userState.user.wishList.wishlistItems.filter(item => item.id === product.id).length > 0);
                             return (<ProductCard key={product.id}
                                     productTitle={product.name} 
                                     price={product.price} 

@@ -1,7 +1,7 @@
 import { OrderType } from './../../components/organisms/Order/Order';
 import { CardType } from './../../components/organisms/Card/Card';
 import { AddressType } from './../../components/organisms/Address/Address';
-import { ADD_PRODUCT_TO_CART } from './../cart/CartTypes';
+import { ADD_PRODUCT_TO_CART, REMOVE_FROM_CART, RESET_CART } from './../cart/CartTypes';
 import { ProductModel } from './../cart/CartReducer';
 import { RootState } from './../../store';
 import { ThunkAction } from 'redux-thunk';
@@ -20,7 +20,7 @@ import {
     SET_CURRENT_LOCALE
 } from './UserTypes';
 import axios from "../../api/axios";
-import { ADD_PRODUCT_TO_WISHLIST } from '../wishlist/WishlistTypes';
+import { ADD_PRODUCT_TO_WISHLIST, REMOVE_FROM_WISHLIST } from '../wishlist/WishlistTypes';
 import { showLoginModal } from '../loginModal/LoginModalActions';
 
  type USER_LOGIN =  { type: string, userSnapShot: UserModel}
@@ -143,6 +143,41 @@ export const addProductinToCart = (product: ProductModel)
         }
     }
 
+export const removeProductFromCart = (productId: number)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(!getRootState().userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(getRootState().userState.isUserLoggedIn && productId) {
+            dispatch(
+                {
+                    type: REMOVE_FROM_CART,
+                    payload: productId
+                }
+            )
+        }
+    }
+
+export const resetCartState = ()
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(!getRootState().userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(getRootState().userState.isUserLoggedIn) {
+            dispatch(
+                {
+                    type: RESET_CART
+                }
+            )
+        }
+    }
+
 export const addProductinToWishlist = (product: ProductModel)
     : ThunkAction<void, RootState, unknown, AnyAction> => 
     async (dispatch, getRootState) => {
@@ -156,6 +191,24 @@ export const addProductinToWishlist = (product: ProductModel)
                 {
                     type: ADD_PRODUCT_TO_WISHLIST,
                     payload: Object.assign({}, product, {quantity: 1})
+                }
+            )
+        }
+    }
+
+export const removeProductFromWishlist = (productId: number)
+    : ThunkAction<void, RootState, unknown, AnyAction> => 
+    async (dispatch, getRootState) => {
+        if(!getRootState().userState.isUserLoggedIn) {
+            dispatch(showLoginModal(true));
+            return;
+        }
+
+        if(getRootState().userState.isUserLoggedIn && productId) {
+            dispatch(
+                {
+                    type: REMOVE_FROM_WISHLIST,
+                    payload: productId
                 }
             )
         }

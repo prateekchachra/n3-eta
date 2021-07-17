@@ -174,10 +174,8 @@ const Header = () :JSX.Element => {
     }
 
     function onLogOutClickHandler() {
-        localStorage.clear();
-        dispatch(resetCart());
-        dispatch(resetWishList(userState.user.email));
         dispatch(markUserAsLoggedOut(userState.user));
+        history.push("/");
     }
 
     return isMobile ? (

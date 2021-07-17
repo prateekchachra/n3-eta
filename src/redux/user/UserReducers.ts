@@ -1,12 +1,12 @@
 import { AddressType } from './../../components/organisms/Address/Address';
 import { CardType } from './../../components/organisms/Card/Card';
-import { ADD_PRODUCT_TO_WISHLIST } from './../wishlist/WishlistTypes';
-import { addProductToCart } from './../cart/CartAction';
-import { ADD_PRODUCT_TO_CART } from './../cart/CartTypes';
+import { ADD_PRODUCT_TO_WISHLIST, REMOVE_FROM_WISHLIST } from './../wishlist/WishlistTypes';
+import { addProductToCart, removeItemFromCart } from './../cart/CartAction';
+import { ADD_PRODUCT_TO_CART, REMOVE_FROM_CART, RESET_CART } from './../cart/CartTypes';
 import { AnyAction } from 'redux';
 import cartState, { cartInitialState, CartState } from './../cart/CartReducer';
 import wishlistState, { wishlistInitialState, WishlistState } from '../wishlist/WishlistReducer';
-import { addProductToWishlist } from '../wishlist/WishlistActions';
+import { addProductToWishlist, removeItemFromWishlist } from '../wishlist/WishlistActions';
 import { LANGUAGES } from './../../utils/multilang/languages';
 import { 
     MARK_USER_AS_LOGGED_IN,
@@ -79,7 +79,7 @@ const userState = (
 
             if(state) {
                 console.info("User has logged out!");
-                return { state: initialUserState }
+                return initialUserState;
             }
             return state;
         }
@@ -105,8 +105,7 @@ const userState = (
                     ...state,
                    user: {
                     ...state.user,
-                    addresses: userAddresses,
-                    cards: []
+                    addresses: userAddresses
                 },
                   }
             }
@@ -282,6 +281,32 @@ const userState = (
             return state;
         }
 
+        case REMOVE_FROM_CART: {
+
+            if(action.payload) {
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        cart: cartState(state.user.cart, removeItemFromCart(action.payload))
+                    }
+                }
+            }
+
+            return state;
+        }
+
+        case RESET_CART: {
+
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    cart: cartInitialState
+                }
+            }
+        }
+
         case ADD_PRODUCT_TO_WISHLIST: {
 
             if(action.payload) {
@@ -290,6 +315,21 @@ const userState = (
                     user: {
                         ...state.user,
                         wishList: wishlistState(state.user.wishList, addProductToWishlist(action.payload))
+                    }
+                }
+            }
+
+            return state;
+        }
+
+        case REMOVE_FROM_WISHLIST: {
+
+            if(action.payload) {
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        wishList: wishlistState(state.user.wishList, removeItemFromWishlist(action.payload))
                     }
                 }
             }

@@ -7,7 +7,8 @@ import PriceSummary from '../../components/organisms/PriceSummary/PriceSummary';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { removeItemFromCart } from '../../redux/cart/CartAction';
+import { removeProductFromCart } from '../../redux/user/UserActions';
+import { ProductModel } from '../../redux/cart/CartReducer';
 
 
 const Cart = () :JSX.Element => {
@@ -16,10 +17,17 @@ const Cart = () :JSX.Element => {
     const dispatch = useDispatch();
     const {formatMessage} = useIntl();
     const onDeleteClick = (productId: number) => {
-        dispatch(removeItemFromCart(productId))
+        dispatch(removeProductFromCart(productId))
     }
-  
-    const cartItems = useSelector<RootState, RootState["cartState"]>((state: RootState) => state.cartState).cartItems;
+    
+    const userState = useSelector<RootState , RootState["userState"]>((state: RootState) => state.userState);
+    const [cartItems, setCartItems] = useState<ProductModel[]>([]);
+
+    useEffect( () => {
+        if(userState.user.cart) {
+            setCartItems(userState.user.cart.cartItems);
+        }  
+      }, [userState]);
 
     return (
         <PageTemplate>
