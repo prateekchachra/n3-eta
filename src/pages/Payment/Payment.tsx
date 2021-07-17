@@ -16,6 +16,7 @@ import { ChangeEvent } from 'react';
 import { resetCartState, saveCardToUser, saveOrderToUser } from '../../redux/user/UserActions';
 import { OrderItem } from '../../components/organisms/Order/Order';
 import { ProductModel } from '../../redux/cart/CartReducer';
+import axios from 'axios';
 
 
 
@@ -89,17 +90,24 @@ const Payment = () :JSX.Element => {
     
  
 
-    const paymentHandler = (e: MouseEvent) => {
+    const paymentHandler = async (e: MouseEvent) => {
         e.preventDefault();
     
-        
+        try {
+        const result: any = await axios.post(
+          "https://stylezone-razorpay.herokuapp.com/initRazorpay",
+          {
+            amount,
+          }
+        );
+        const {  order_id, currency } = result.data;
         const options = {
-          key: process.env.REACT_API_RAZORPAY_TEST_KEY_ID,
-          //key_secret: process.env.REACT_API_RAZORPAY_TEST_KEY_SECRET,
-          amount: amount*100,
-          name: 'Payments',
-          order_id: '1234',
-          description: 'Donate yourself some time',
+          key_id: process.env.REACT_API_RAZORPAY_TEST_KEY_ID,
+          amount,
+          name: 'Style Zone',
+          order_id,
+          currency,
+          description: 'Your one store for all styles',
           image: '',
           handler: function(response:any) {
             const paymentId = response.razorpay_payment_id;
@@ -129,12 +137,16 @@ const Payment = () :JSX.Element => {
             address: 'Goa,India',
           },
           theme: {
-            color: '#9D50BB',
+            color: '#ff6c04',
           },
         };
         const rzp1 = new (window as any).Razorpay(options);
     
         rzp1.open();
+        }catch(err: any){
+          toast(formatMessage({id: 'err_usual'}), {type: 'error'})
+          console.log(err)
+        }
       }
 
       const onConfirmHide = () => setShowConfirmModal(false);

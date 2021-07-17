@@ -93,6 +93,7 @@ export default {
     select_payment: 'Seleccione una opción para pagar',
     proceed_to_payment: 'Proceder al pago',
     confirm_payment: 'Confirmar pago',
+    err_usual: 'Ocurrió algún error. Inténtalo de nuevo',
 
     // Profile
     my_orders: 'Mis ordenes',

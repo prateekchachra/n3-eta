@@ -21,8 +21,8 @@ export default {
     add_to_cart: 'Add To Cart',
     knockout_deals: 'Knockout Deals',
     festive_deals: 'Festive Special Deals',
-    deals_of_day: 'Deals of the Day',
-       
+    deals_of_day: 'Deals of the Day',   
+
     //List Page
     filters: 'filters',
     clear_all: 'Clear All',
@@ -93,6 +93,7 @@ export default {
      select_payment: 'Please select an option to pay',
      proceed_to_payment: 'Proceed To Payment',
      confirm_payment: 'Confirm Payment',
+     err_usual: 'Some error occurred. Please try again',
 
      // Profile
      my_orders: 'My Orders',
